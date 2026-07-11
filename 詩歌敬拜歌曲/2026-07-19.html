@@ -61,18 +61,20 @@
   .song-head .order{margin-left:auto;font-size:12.5px;color:var(--ink-soft);align-self:center}
   .song-head .order code{font-family:var(--sans);background:var(--paper);padding:2px 7px;border-radius:6px;border:1px solid var(--hair);color:var(--ink)}
 
-  /* 串場稿 —— 簡化：標籤 + 要說的話 */
-  .say{margin-bottom:20px}
+  /* 串場稿 —— 卡片樣式（標籤 + 代號說明 + 引用框） */
+  .say{background:var(--card);border:1px solid var(--hair);border-radius:14px;padding:20px 24px;margin-bottom:20px}
   .say.after{margin:20px 0 0}
-  .say-label{font-size:12px;letter-spacing:.06em;color:var(--stage,var(--gold));margin-bottom:6px}
-  .say-line{font-family:var(--serif);font-size:15.5px;line-height:1.95;color:var(--ink)}
-  .say-alt{font-size:12.5px;color:var(--ink-soft);margin:12px 0 3px}
+  .say-head{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:14px}
+  .say-badge{font-size:13px;color:#fff;background:var(--s4);border-radius:8px;padding:5px 14px;white-space:nowrap}
+  .say-pos{font-weight:700;color:var(--ink);white-space:nowrap}
+  .say-desc{color:var(--ink-soft);font-weight:400;font-size:14.5px}
+  .say-line{font-family:var(--sans);font-size:15.5px;line-height:1.95;color:var(--ink);font-weight:500;border-left:3px solid var(--gold-soft);padding:2px 0 2px 16px;margin:4px 0}
+  .say-alt{font-size:12.5px;color:var(--ink-soft);margin:14px 0 4px;font-weight:400}
 
   .lyrics{margin-top:20px;padding-top:18px;border-top:1px dashed var(--hair)}
   .lyrics .lyr-lab{font-size:11px;letter-spacing:.16em;color:var(--stage,var(--gold));margin:16px 0 5px;text-transform:uppercase}
   .lyrics .lyr-lab:first-child{margin-top:0}
   .lyrics p{font-family:var(--serif);font-size:15.5px;line-height:1.95;color:var(--ink);white-space:pre-wrap}
-  .lyrics p.tail{color:var(--stage,var(--gold));border-left:3px solid var(--stage,var(--gold-soft));padding-left:14px;margin-top:2px}
 
   .lead-notes{margin-top:22px;border-top:1px dashed var(--hair);padding-top:16px}
   .ln-head{display:flex;align-items:baseline;gap:9px;margin-bottom:12px;flex-wrap:wrap}
@@ -104,7 +106,6 @@
   .song-head .idx{font-weight:900}
   .song-head .name{font-weight:700}
   .song-head .tag,.song-head .order code{font-weight:500}
-  .say-label{font-weight:700}
   .say-line{font-weight:500}
   .lyr-lab{font-weight:700}
   .lyrics p{font-weight:500}
@@ -180,8 +181,17 @@
     </div>
 
     <div class="say">
-      <div class="say-label">進歌前先說 · 開場</div>
-      <p class="say-line">（安靜片刻，等琴聲進來）我們一起把手上的事、心裡的忙碌先放下。今天，讓我們單單來到神面前，把心轉向祂——祂是我們心切切渴慕的那一位。我們一起來敬拜。</p>
+      <div class="say-head"><span class="say-badge">進歌前先說</span></div>
+      <p class="say-line">在開始之前，讓我們先安靜下來。想一想這個禮拜，你經歷了什麼——有沒有哪個時刻，其實很想跟神說些什麼，卻還沒有機會說。現在，把這些話，安靜地告訴祂，把這一個禮拜的心情，還有接下來要面對的，都交在祂的手中。</p>
+      <div class="say-alt">留一段安靜默禱，末了後再說：</div>
+      <p class="say-line">接下來，先由敬拜團為大家首先服侍這首歌。</p>
+    </div>
+
+    <div class="say">
+      <div class="say-head"><span class="say-badge">Vocal Solo 提示</span></div>
+      <p class="say-line">第一段 Solo，眾人先聽；末了後再一起唱。</p>
+      <div class="say-alt">投影（溫泉）：</div>
+      <p class="say-line">第一遍 V→C 先不要放歌詞，第二遍再開始上詞。</p>
     </div>
 
     <div class="lyrics">
@@ -196,10 +206,10 @@
       <div class="lyr-lab">Chorus</div>
       <p>我要永永遠遠來愛你　我要永永遠遠渴慕你
 你是我一切　我心不住思念你
-只願與你面對面</p>
-      <div class="lyr-lab">＊尾句</div>
-      <p class="tail">你的愛最美　我心不住思念你
-只願與你面對面</p>
+只願與你面對面
+
+*你的愛最美　我心不住思念你
+只願與你面對面 (尾句)</p>
     </div>
 
     <div class="lead-notes">
@@ -207,7 +217,7 @@
       <div class="note-grid">
         <div class="cell"><div class="lab">屬 靈 焦 點</div><div class="val">把心從忙碌轉向神，向祂表達渴慕、思念——「你是我一切」。</div></div>
         <div class="cell"><div class="lab">情 緒 動 線</div><div class="val">柔和開場、向內。琴聲鋪底，不急著滿。</div></div>
-        <div class="cell"><div class="lab">動 態 提 示</div><div class="val">從輕、乾淨進來；*尾句放慢，留一點空間讓人沉澱。</div></div>
+        <div class="cell"><div class="lab">動 態 提 示</div><div class="val">第一段 V→C 為 Vocal Solo，會眾先聽；第二段起會眾一起進來。*尾句放慢，留一點空間讓人沉澱。</div></div>
       </div>
     </div>
   </div>
@@ -222,7 +232,7 @@
     </div>
 
     <div class="say">
-      <div class="say-label">進歌前先說 · 1→2（同主題，可用音樂接、省略不說）</div>
+      <div class="say-head"><span class="say-badge">進歌前先說</span></div>
       <p class="say-line">祂是我們一切的渴慕——現在，讓我們單單來到祂面前，回應祂的愛。</p>
       <div class="say-alt">升 C 拉高處可再邀請：</div>
       <p class="say-line">再靠近一點，把你的心完全交給祂。</p>
@@ -241,10 +251,10 @@
 我要抬起頭定睛來仰望祢</p>
       <div class="lyr-lab">Chorus</div>
       <p>讓我們單單敬拜祢　讓我們在主裡歡慶
-用盡我全心全意　更多更深的認識你</p>
-      <div class="lyr-lab">＊升 C · Solo 尾句</div>
-      <p class="tail">讓我們單單來愛你　超過一切的渴慕祢
-祢是我唯一渴望　耶穌</p>
+用盡我全心全意　更多更深的認識你
+
+*讓我們單單來愛你　超過一切的渴慕祢
+祢是我唯一渴望　耶穌 (Solo 尾句)</p>
     </div>
 
     <div class="lead-notes">
@@ -267,10 +277,17 @@
     </div>
 
     <div class="say">
-      <div class="say-label">進歌前先說 · 最重要的轉場</div>
-      <p class="say-line">生活裡，有很多時候我們走不動、也看不清前面的路。這一首，我們就像小孩子一樣，求主牽著我們的手，一步一步帶我們走。</p>
-      <div class="say-alt">台語版（台語自在的話用這句開頭會特別暖）：</div>
-      <p class="say-line">咱人生的路，有時行袂落去，有時看無前面的路。這條歌，咱就親像囡仔仝款，求主牽咱的手，一步一步chhōa咱行。</p>
+      <div class="say-head"><span class="say-badge">進歌前先說</span></div>
+      <p class="say-line">這禮拜，有沒有哪一段路，你走得特別不安？有沒有哪個決定，到現在你還不確定？如果有，這首歌就是為你唱的。我們一起把手交出去，求主牽著我們走。</p>
+      <div class="say-alt">接著說：</div>
+      <p class="say-line">接下來，先由敬拜團為大家首先服侍這首歌。</p>
+    </div>
+
+    <div class="say">
+      <div class="say-head"><span class="say-badge">Vocal Solo 提示</span></div>
+      <p class="say-line">主歌第一段（V 第一段）Solo，眾人先聽；第二段起再一起唱。</p>
+      <div class="say-alt">投影（溫泉）：</div>
+      <p class="say-line">主歌第一段先不要放歌詞，第二段起再開始上詞。</p>
     </div>
 
     <div class="lyrics">
@@ -283,10 +300,10 @@
 有時敢若聽不著祢的聲</p>
       <div class="lyr-lab">Chorus</div>
       <p>牽我的手　請祢與我作伴
-互我的腳步又穩又定</p>
-      <div class="lyr-lab">＊尾句</div>
-      <p class="tail">走到祢的門前　聽到祢的聲
-與我說「入來我的囝」</p>
+互我的腳步又穩又定
+
+*走到祢的門前　聽到祢的聲
+與我說「入來我的囝」 (尾句)</p>
     </div>
 
     <div class="lead-notes">
@@ -308,8 +325,8 @@
     </div>
 
     <div class="say">
-      <div class="say-label">進歌前先說 · 3→4</div>
-      <p class="say-line">這位一路牽著我們手的主，就是那位為我們釘在十字架、又坐在寶座上的羔羊。祂配得我們一切的敬拜——我們一起來尊崇祂。</p>
+      <div class="say-head"><span class="say-badge">進歌前先說</span></div>
+      <p class="say-line">我們常常以為，牽著我們的，只是一雙溫暖的手。但其實，那雙手，曾經被釘子穿過。祂不是站在遠處安慰我們的神——祂親自走進了我們最痛的地方。而今天，這位曾經被釘的，如今坐在寶座上。這樣的一位主，我們一起來敬拜祂。</p>
     </div>
 
     <div class="lyrics">
@@ -324,9 +341,8 @@
 頭戴著尊貴冠冕　祢作王到永遠
 
 來尊崇讚美　耶穌神兒子
-從天降下被釘十架</p>
-      <div class="lyr-lab">＊尾句 ×3</div>
-      <p class="tail">神羔羊配得　神羔羊配得</p>
+從天降下被釘十架
+*神羔羊配得　神羔羊配得 (尾句)</p>
     </div>
 
     <div class="lead-notes">
@@ -339,7 +355,7 @@
     </div>
 
     <div class="say after">
-      <div class="say-label">唱畢後說 · 收尾交棒</div>
+      <div class="say-head"><span class="say-badge">唱畢後說</span></div>
       <p class="say-line">神羔羊配得——祂配得我們一生的敬拜。現在，讓我們安靜下來，一起預備心，來領受神今天要對我們說的話。</p>
     </div>
   </div>
@@ -350,6 +366,7 @@
   </div>
   <div class="callout">
     <ul>
+      <li><b>開場有調整。</b>會眾先閉眼默想、安靜片刻後才進歌；第一段 V→C 是<b>敬拜團 Vocal Solo</b>，Sofia、Amy 這段先鋪底、不搶拍，第二段起再帶會眾一起進來。</li>
       <li><b>動態是這場的靈魂。</b>沒有鼓，全靠琴、吉他、和聲的收放。練習時就先跟 Sofia、Amy 講好哪裡收、哪裡放。</li>
       <li><b>最柔的點</b>在〈牽我的手〉主歌——刻意收、刻意輕；<b>最飽滿的點</b>在〈神羔羊配得〉的 <span class="pill">尾句 ×3</span>。</li>
       <li>所有標 <span class="pill">*尾句</span> 的地方，都是<b>留白給會眾停留</b>的空間。與其一直下指令唱，不如配著琴聲帶一段簡短禱告或安靜回應。</li>
@@ -360,7 +377,7 @@
 
   <footer>
     <p class="verse">「忠心的預備 ＋ 一顆謙卑的心，勝過完美的演出。」</p>
-    <p>你不需要把每個轉場講得漭亮——你只要幫會眾看見神就夠了。</p>
+    <p>你不需要把每個轉場講得漂亮——你只要幫會眾看見神就夠了。</p>
   </footer>
 
 </div>

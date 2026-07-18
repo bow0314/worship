@@ -205,6 +205,10 @@
   .theme-toggle .icon{font-size:15px;line-height:1}
   @media print{.theme-toggle{display:none}}
   @media (max-width:560px){.theme-toggle{top:12px;right:12px;padding:8px 13px;font-size:12px}}
+  @media (max-width:560px){
+    .lyrics p{font-size:24px;line-height:1.55}
+    .say-line{font-size:24px;line-height:1.55}
+  }
 
   /* 浮動順序面板：跟隨滾動顯示當前這首的順序，毛玻璃 + 階段色染色 */
   .order-float{
@@ -218,15 +222,41 @@
     opacity:0;transform:translateY(8px);pointer-events:none;
     transition:opacity .25s,transform .25s,background-color .3s;
     max-width:min(80vw,360px);
+    cursor:grab;touch-action:none;
   }
+  .order-float.dragging{transition:none;cursor:grabbing}
   html[data-theme="dark"] .order-float{box-shadow:0 6px 22px rgba(0,0,0,.5)}
   .order-float.show{opacity:1;transform:translateY(0);pointer-events:auto}
   .of-name{font-size:12.5px;color:rgba(255,255,255,.82);margin-bottom:4px}
-  .of-code{font-size:19px;color:#fff;letter-spacing:.02em}
+  .of-code{font-size:19px;color:#fff;letter-spacing:.02em;white-space:pre-line}
+  .of-top{display:flex;align-items:center;gap:10px}
+  .of-name{flex:1}
+  .of-switch{display:none}
+  .of-switch.show{display:flex}
+  .ios-switch{
+    position:relative;display:flex;width:80px;height:22px;
+    border-radius:11px;border:none;padding:2px;cursor:pointer;
+    background:rgba(255,255,255,.16);
+  }
+  .switch-knob{
+    position:absolute;top:2px;left:2px;
+    width:calc(50% - 2px);height:calc(100% - 4px);
+    border-radius:9px;background:#fff;
+    transition:transform .2s,background-color .2s;
+  }
+  .ios-switch.on .switch-knob{transform:translateX(100%);background:#F0B429}
+  .switch-text{
+    position:relative;flex:1;text-align:center;
+    font-size:10.5px;line-height:18px;color:rgba(255,255,255,.6);
+    transition:color .2s,font-weight .2s;
+  }
+  .ios-switch:not(.on) .switch-text[data-mode="worship"]{color:#1c1c1e;font-weight:700}
+  .ios-switch.on .switch-text[data-mode="response"]{color:#1c1c1e;font-weight:700}
   @media (max-width:560px){
     .order-float{right:12px;bottom:12px;padding:10px 16px}
     .of-name{font-size:11px}
     .of-code{font-size:16px}
+    .of-code.compact{font-size:11px}
   }
 </style>
 </head>
@@ -238,7 +268,16 @@
   </button>
 
   <div class="order-float" id="orderFloat">
-    <div class="of-name" id="ofName"></div>
+    <div class="of-top">
+      <div class="of-name" id="ofName"></div>
+      <div class="of-switch" id="ofSwitch">
+        <button type="button" class="ios-switch" id="songTwoSwitch" onclick="toggleSongTwoMode()" aria-label="切換敬拜／回應順序">
+          <span class="switch-knob" id="switchKnob"></span>
+          <span class="switch-text" data-mode="worship">敬拜</span>
+          <span class="switch-text" data-mode="response">回應</span>
+        </button>
+      </div>
+    </div>
     <div class="of-code" id="ofCode"></div>
   </div>
 
@@ -349,7 +388,7 @@
   </div>
 
   <!-- 2 -->
-  <div class="song" style="--stage:var(--s2);--panel:var(--s2-panel)" data-song data-name="( 2 ) 我唯一渴望" data-order="V–C–V–C–C–升C–*尾" data-stage="s2">
+  <div class="song" style="--stage:var(--s2);--panel:var(--s2-panel)" data-song data-name="( 2 ) 我唯一渴望" data-order="V–C–V–C–C–升C–*尾" data-order-alt="V1–V2–C (衛) V1–V2–C&#10;V2–C–C–尾–尾–尾" data-stage="s2">
     <details class="song-collapse" open>
       <summary class="song-bar">
         <span class="idx">2</span>
@@ -547,17 +586,42 @@
     var floatEl = document.getElementById('orderFloat');
     var nameEl = document.getElementById('ofName');
     var codeEl = document.getElementById('ofCode');
+    var switchEl = document.getElementById('ofSwitch');
+    var switchToggle = document.getElementById('songTwoSwitch');
     var songs = Array.prototype.slice.call(document.querySelectorAll('[data-song]'));
     if(!songs.length) return;
 
     var current = null;
     var ticking = false;
+    var songTwoMode = 'worship'; // 第 2 首的預設狀態：敬拜／回應
+
+    function syncSwitchVisual(){
+      switchToggle.classList.toggle('on', songTwoMode === 'response');
+    }
+
+    function renderCode(song){
+      var hasAlt = song.hasAttribute('data-order-alt');
+      var showResponse = hasAlt && songTwoMode === 'response';
+      codeEl.textContent = showResponse
+        ? song.getAttribute('data-order-alt')
+        : song.getAttribute('data-order');
+      codeEl.classList.toggle('compact', showResponse);
+      switchEl.classList.toggle('show', hasAlt);
+      if(hasAlt) syncSwitchVisual();
+    }
+
+    window.toggleSongTwoMode = function(){
+      songTwoMode = songTwoMode === 'worship' ? 'response' : 'worship';
+      if(current && current.hasAttribute('data-order-alt')){
+        renderCode(current);
+      }
+    };
 
     function update(song){
       if(song === current) return;
       current = song;
       nameEl.textContent = song.getAttribute('data-name');
-      codeEl.textContent = song.getAttribute('data-order');
+      renderCode(song);
       floatEl.style.setProperty('--panel', 'var(--' + song.getAttribute('data-stage') + '-panel)');
     }
 
@@ -604,6 +668,59 @@
     window.addEventListener('scroll', onScroll, { passive:true });
     window.addEventListener('resize', onScroll);
     check();
+  })();
+
+  // 浮動面板：可用滑鼠或手指拖曳到任意位置
+  (function(){
+    var panel = document.getElementById('orderFloat');
+    var dragging = false;
+    var offsetX = 0, offsetY = 0;
+    var moved = false;
+
+    function lockToPixelPosition(){
+      var rect = panel.getBoundingClientRect();
+      panel.style.left = rect.left + 'px';
+      panel.style.top = rect.top + 'px';
+      panel.style.right = 'auto';
+      panel.style.bottom = 'auto';
+    }
+
+    function clamp(val, min, max){ return Math.min(Math.max(val, min), max); }
+
+    function onPointerDown(e){
+      // 點在切換開關上時不啟動拖曳，讓開關的點擊正常運作
+      if(e.target.closest && e.target.closest('.ios-switch')) return;
+      dragging = true;
+      moved = false;
+      lockToPixelPosition();
+      var rect = panel.getBoundingClientRect();
+      offsetX = e.clientX - rect.left;
+      offsetY = e.clientY - rect.top;
+      panel.classList.add('dragging');
+      try{ panel.setPointerCapture(e.pointerId); }catch(_){}
+    }
+
+    function onPointerMove(e){
+      if(!dragging) return;
+      moved = true;
+      var w = panel.offsetWidth, h = panel.offsetHeight;
+      var left = clamp(e.clientX - offsetX, 8, window.innerWidth - w - 8);
+      var top = clamp(e.clientY - offsetY, 8, window.innerHeight - h - 8);
+      panel.style.left = left + 'px';
+      panel.style.top = top + 'px';
+    }
+
+    function onPointerUp(e){
+      if(!dragging) return;
+      dragging = false;
+      panel.classList.remove('dragging');
+      try{ panel.releasePointerCapture(e.pointerId); }catch(_){}
+    }
+
+    panel.addEventListener('pointerdown', onPointerDown);
+    panel.addEventListener('pointermove', onPointerMove);
+    panel.addEventListener('pointerup', onPointerUp);
+    panel.addEventListener('pointercancel', onPointerUp);
   })();
 </script>
 </body>

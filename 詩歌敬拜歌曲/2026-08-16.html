@@ -124,7 +124,10 @@
   .lyrics{margin-top:20px}
   .lyrics .lyr-lab{font-size:11px;letter-spacing:.16em;color:var(--stage,var(--gold));margin:16px 0 5px;text-transform:uppercase}
   .lyrics .lyr-lab:first-child{margin-top:0}
-  .lyrics p{font-family:var(--serif);font-size:46.5px;line-height:1.65;color:var(--ink);white-space:pre-wrap}
+  /* keep-all：禁止在中文字之間斷行，只在全形空格（歌詞的分句點）斷。
+     否則窄螢幕會斷在句子中間，例如「每個狂風暴雨裡　祢同在 / 在那裡」。
+     最長的分句是 10 字，任何裝置寬度都放得下，不會溢出。 */
+  .lyrics p{font-family:var(--serif);font-size:46.5px;line-height:1.65;color:var(--ink);white-space:pre-wrap;word-break:keep-all}
   /* 主歌／副歌／Bridge／尾句 開頭第一字標色，同色相多種深淺 */
   .lc-verse{color:color-mix(in srgb, var(--stage, var(--gold)) 65%, white 35%)}
   .lc-chorus{color:var(--stage, var(--gold))}
@@ -240,6 +243,12 @@
   @media (max-width:560px){
     .lyrics p{font-size:24px;line-height:1.55}
     .say-line{font-size:24px;line-height:1.55}
+    /* 進歌前先說：字級用「可用寬度 ÷ 15」換算，讓每行剛好排滿 15 個全形字，
+       消掉行尾除不盡的殘寬（視覺上右邊會比左邊多出一截）。
+       97px = body 左右 padding 40 + .song 左右框線 5 + .say-content 左右 padding 52，
+       再多扣 1px 當餘裕。justify 負責把禁則造成的短行也拉齊，
+       段落最後一行維持靠左，不受影響。想再小一點就把 15 改成 16。 */
+    .say-content .say-line{font-size:calc((100vw - 98px) / 15);text-align:justify}
     /* 結尾小字：手機上壓成不斷行的一行。
        全形字寬 = 1em，共 28 字，可用寬度為 100vw 減去 body 左右 padding；
        多扣 4px 當餘裕。若日後改動文案，28 這個字數要跟著改。 */

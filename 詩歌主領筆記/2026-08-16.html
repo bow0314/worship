@@ -96,11 +96,15 @@
   .say.after{margin:20px 0 0}
   .say-line{font-family:var(--sans);font-size:46.5px;line-height:1.7;color:var(--ink-soft);font-weight:500;margin:4px 0}
   .say-alt{font-size:12.5px;color:var(--ink-soft);margin:14px 0 4px;font-weight:400}
-  .say.compact .say-line, .say .compact .say-line{font-size:15.5px;line-height:1.95}
-  .say-divider{height:1px;background:var(--hair);margin:18px 0;border:none}
-  /* 可收合的區塊（進歌前先說） */
-  details.say summary, details.compact summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:14px}
-  details.say summary::-webkit-details-marker, details.compact summary::-webkit-details-marker{display:none}
+  /* 唱畢後說：沿用交接卡片的膠囊標籤語彙，並吃該首歌的階段色 */
+  .say-head{margin-bottom:14px}
+  .say-badge{
+    display:inline-block;font-size:11px;letter-spacing:.1em;font-weight:500;
+    color:var(--stage,var(--gold));
+    border:1px solid color-mix(in srgb, var(--stage, var(--gold)) 45%, transparent);
+    background:color-mix(in srgb, var(--stage, var(--gold)) 12%, transparent);
+    border-radius:20px;padding:3px 12px;
+  }
   details .say-chev{margin-left:auto;display:inline-flex;color:var(--ink-soft);transition:transform .2s}
   details .say-chev svg{width:21px;height:21px;display:block}
   details[open] .say-chev{transform:rotate(180deg)}
@@ -120,7 +124,6 @@
   .song-bar::-webkit-details-marker{display:none}
   .song-bar .idx{font-family:var(--serif);font-size:20px;color:#fff;line-height:1;opacity:.9}
   .song-bar .name{font-family:var(--serif);font-size:19px;color:#fff}
-  .song-bar .bar-tag{font-size:11px;padding:2px 9px;border-radius:20px;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.25);color:rgba(255,255,255,.85)}
   .song-bar .bar-sep{color:rgba(255,255,255,.5);font-size:16px}
   .song-bar .bar-label{font-size:14.5px;color:rgba(255,255,255,.78)}
   .song-bar .say-chev{color:rgba(255,255,255,.85)}
@@ -165,7 +168,8 @@
   html[data-theme="dark"] [data-stage="s3"] .lc-bridge{color:#F2652A}
   /* 暗黑模式下，s4（靛紫）直接當文字色時太暗，小標籤額外加亮 */
   html[data-theme="dark"] [data-stage="s4"] .lyr-lab,
-  html[data-theme="dark"] [data-stage="s4"] .ln-tag{
+  html[data-theme="dark"] [data-stage="s4"] .ln-tag,
+  html[data-theme="dark"] [data-stage="s4"] .say-badge{
     color:color-mix(in srgb, var(--stage) 55%, white 45%);
   }
 
@@ -245,6 +249,8 @@
   @media (max-width:560px){
     .lyrics p{font-size:24px;line-height:1.55}
     .say-line{font-size:24px;line-height:1.55}
+    /* 進歌前先說：見證稿篇幅長，手機上再縮一級比較好讀 */
+    .say-content .say-line{font-size:22px}
   }
 
   /* 浮動順序面板：跟隨滾動顯示當前這首的順序，毛玻璃 + 階段色染色 */

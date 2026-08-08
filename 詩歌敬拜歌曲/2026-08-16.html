@@ -250,9 +250,11 @@
        段落最後一行維持靠左，不受影響。想再小一點就把 15 改成 16。 */
     .say-content .say-line{font-size:calc((100vw - 98px) / 15);text-align:justify}
     /* 結尾小字：手機上壓成不斷行的一行。
-       全形字寬 = 1em，共 28 字，可用寬度為 100vw 減去 body 左右 padding；
-       多扣 4px 當餘裕。若日後改動文案，28 這個字數要跟著改。 */
-    footer p:not(.verse){white-space:nowrap;font-size:min(13px,calc((100vw - 44px) / 28))}
+       18.8 是這段文案的實測字寬（單位 em）。全形字各佔 1em，但半形的
+       " - " 不足 1em，所以不能直接數字數，改文案後要重新量過。
+       可用寬度 = 100vw 減去 body 左右 padding 40px，再多扣 4px 當餘裕。
+       目前文案在 288px 以上的螢幕都維持 13px，公式只在更窄時才會縮。 */
+    footer p:not(.verse){white-space:nowrap;font-size:min(13px,calc((100vw - 44px) / 18.8))}
   }
 
   /* 浮動順序面板：跟隨滾動顯示當前這首的順序，毛玻璃 + 階段色染色 */
@@ -577,7 +579,7 @@
 
   <footer>
     <p class="verse">「忠心的預備 ＋ 一顆謙卑的心，勝過完美的演出。」</p>
-    <p>你不需要把每個轉場講得漂亮——你只要幫會眾看見神就夠了。</p>
+    <p>不需追求完美 - 你只要幫會眾看見神就夠了</p>
   </footer>
 
 </div>

@@ -186,7 +186,17 @@
   .cell .val{font-size:14.5px;color:var(--ink);line-height:1.7}
   .cell .val a{color:var(--gold);word-break:break-all}
   /* 樂譜連結後綴：縮小並降低對比，讓歌名維持主體、(樂譜) 只作辨識用 */
-  .cell .val .sheet-tag{font-size:.78em;opacity:.8;display:inline-block;text-decoration:none}
+  /* 樂譜連結：可點按的標籤鈕。沿用文件既有的金色膠囊語彙（同 .pill 的
+     --gold-soft 底 / --pill-ink 字），亮暗兩模式都已定義，不另開色票。 */
+  .cell .val a.sheet{
+    display:inline-block;text-decoration:none;word-break:keep-all;
+    background:var(--gold-soft);color:var(--pill-ink,#6d5322);
+    border:1px solid color-mix(in srgb, var(--gold) 45%, transparent);
+    border-radius:6px;padding:1px 10px;margin:0 3px;
+    transition:background-color .15s,color .15s;
+  }
+  .cell .val a.sheet:hover{background:var(--gold);color:var(--paper)}
+  .cell .val a.sheet .sheet-tag{font-size:.78em;opacity:.75}
 
   .callout{background:linear-gradient(180deg,var(--callout-top,#FCFAF4),var(--card));border:1px solid var(--gold-soft);border-radius:14px;padding:24px 26px;margin-top:8px}
 
@@ -406,7 +416,7 @@
         <div class="cell"><div class="lab">屬 靈 焦 點</div><div class="val">從忙碌與重擔中，把眼光抬起、定睛仰望掌權的神。</div></div>
         <div class="cell"><div class="lab">情 緒 動 線</div><div class="val">開場穩定、逐漸明亮；三段主歌反覆堆疊仰望的姿態。</div></div>
         <div class="cell"><div class="lab">動 態 提 示</div><div class="val">鼓從輕巧的節奏帶入，避免一開始就太滿；第二次副歌可以加厚一點。</div></div>
-        <div class="cell"><div class="lab">連 結</div><div class="val"><a href="https://www.youtube.com/watch?v=iGtWQIS-gBo" target="_blank" rel="noopener">YouTube</a> · <a href="https://drive.google.com/file/d/1RlCczkXmw-ATTIY4wMeEF7swCHsZNt02/view?usp=drive_link" target="_blank" rel="noopener">仰望主 <span class="sheet-tag">(樂譜)</span></a></div></div>
+        <div class="cell"><div class="lab">連 結</div><div class="val"><a href="https://www.youtube.com/watch?v=iGtWQIS-gBo" target="_blank" rel="noopener">YouTube</a> <a class="sheet" href="https://drive.google.com/file/d/1RlCczkXmw-ATTIY4wMeEF7swCHsZNt02/view?usp=drive_link" target="_blank" rel="noopener">仰望主 <span class="sheet-tag">(樂譜)</span></a></div></div>
       </div>
     </div>
   </div>
@@ -454,7 +464,7 @@
         <div class="cell"><div class="lab">屬 靈 焦 點</div><div class="val">從仰望轉為信靠與跟隨，宣告神的信實與良善。</div></div>
         <div class="cell"><div class="lab">情 緒 動 線</div><div class="val">兩段主歌情感層層堆疊，副歌打開，Bridge 段釋放。</div></div>
         <div class="cell"><div class="lab">動 態 提 示</div><div class="val">Bridge 段可以做動態上的推進；*尾句 ×2 收束要有力。</div></div>
-        <div class="cell"><div class="lab">連 結</div><div class="val"><a href="https://www.youtube.com/watch?v=9RH92wohZqM" target="_blank" rel="noopener">YouTube</a> · <a href="https://drive.google.com/file/d/1SnHVNK5bZL3BmTahDcIOTFButdvr0mFr/view?usp=drive_link" target="_blank" rel="noopener">信靠跟隨 <span class="sheet-tag">(樂譜)</span></a></div></div>
+        <div class="cell"><div class="lab">連 結</div><div class="val"><a href="https://www.youtube.com/watch?v=9RH92wohZqM" target="_blank" rel="noopener">YouTube</a> <a class="sheet" href="https://drive.google.com/file/d/1SnHVNK5bZL3BmTahDcIOTFButdvr0mFr/view?usp=drive_link" target="_blank" rel="noopener">信靠跟隨 <span class="sheet-tag">(樂譜)</span></a></div></div>
       </div>
     </div>
   </div>
@@ -513,7 +523,7 @@
         <div class="cell"><div class="lab">屬 靈 焦 點</div><div class="val">在風暴與難處中，因神的愛與同在而奔跑不放棄。</div></div>
         <div class="cell"><div class="lab">情 緒 動 線</div><div class="val">副歌是全場能量最高的段落；Bridge／尾句安靜下來，只留 Vocal 和鋼琴，形成對比。</div></div>
         <div class="cell"><div class="lab">動 態 提 示</div><div class="val">副歌鼓點最有力度，子咪可以把節奏感做足；進入 Bridge／尾句時鼓與吉他先退下，只留 Vocal 和鋼琴，安靜地收。</div></div>
-        <div class="cell"><div class="lab">連 結</div><div class="val"><a href="https://www.youtube.com/watch?v=WC6bCBSgNtQ" target="_blank" rel="noopener">YouTube</a> · <a href="https://drive.google.com/file/d/1KoE3vy4iGLuNyYCrHL5Q-5A8ZZlOETiS/view?usp=drive_link" target="_blank" rel="noopener">奔跑不放棄 <span class="sheet-tag">(樂譜)</span></a></div></div>
+        <div class="cell"><div class="lab">連 結</div><div class="val"><a href="https://www.youtube.com/watch?v=WC6bCBSgNtQ" target="_blank" rel="noopener">YouTube</a> <a class="sheet" href="https://drive.google.com/file/d/1KoE3vy4iGLuNyYCrHL5Q-5A8ZZlOETiS/view?usp=drive_link" target="_blank" rel="noopener">奔跑不放棄 <span class="sheet-tag">(樂譜)</span></a></div></div>
       </div>
     </div>
   </div>
@@ -578,7 +588,7 @@
         <div class="cell"><div class="lab">屬 靈 焦 點</div><div class="val">從個人經歷神的偉大，拉高到全地共同的宣告與敬拜。</div></div>
         <div class="cell"><div class="lab">情 緒 動 線</div><div class="val">莊嚴、堆疊，Chorus 2 是全場最後的高峰。</div></div>
         <div class="cell"><div class="lab">動 態 提 示</div><div class="val">兩首組合曲，三段主歌（V1-V2-V3）加上 Chorus 1 重複、再進 Chorus 2 的銜接要順；尾句樂團可全開。</div></div>
-        <div class="cell"><div class="lab">連 結</div><div class="val"><a href="https://www.youtube.com/watch?v=IAjDVVlOQQc" target="_blank" rel="noopener">YouTube</a> · <a href="https://drive.google.com/file/d/1R4XR5nw4dWq9y94hr-iSVWPDKnyEGIOF/view?usp=drive_link" target="_blank" rel="noopener">你真偉大 <span class="sheet-tag">(樂譜)</span></a> · <a href="https://drive.google.com/file/d/1-eAwzV3H3bUEnxSTSNWBA4g-qjfM0rt0/view?usp=drive_link" target="_blank" rel="noopener">我神真偉大 <span class="sheet-tag">(樂譜)</span></a></div></div>
+        <div class="cell"><div class="lab">連 結</div><div class="val"><a href="https://www.youtube.com/watch?v=IAjDVVlOQQc" target="_blank" rel="noopener">YouTube</a> <a class="sheet" href="https://drive.google.com/file/d/1R4XR5nw4dWq9y94hr-iSVWPDKnyEGIOF/view?usp=drive_link" target="_blank" rel="noopener">你真偉大 <span class="sheet-tag">(樂譜)</span></a> <a class="sheet" href="https://drive.google.com/file/d/1-eAwzV3H3bUEnxSTSNWBA4g-qjfM0rt0/view?usp=drive_link" target="_blank" rel="noopener">我神真偉大 <span class="sheet-tag">(樂譜)</span></a></div></div>
       </div>
     </div>
 

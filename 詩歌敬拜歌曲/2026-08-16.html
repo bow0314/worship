@@ -173,6 +173,10 @@
   .ln-hint{font-size:9.5px;color:var(--ink-soft);letter-spacing:.04em}
   .note-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px 24px}
   @media(max-width:560px){.note-grid{grid-template-columns:1fr;gap:12px}}
+  /* 桌機／平板：第 3 格（動態提示）跨滿兩欄，讓 YOUTUBE 與樂譜落在同一列。
+     動態提示通常是最長的一段，跨欄也比較好讀。
+     手機為單欄，本來就逐項堆疊，不受影響。 */
+  @media(min-width:561px){.note-grid .cell:nth-child(3){grid-column:1 / -1}}
   .cell .lab{font-size:11px;letter-spacing:.14em;color:var(--ink-soft);margin-bottom:3px}
   .cell .val{font-size:14.5px;color:var(--ink);line-height:1.7}
   .cell .val a{color:var(--gold);word-break:break-all}

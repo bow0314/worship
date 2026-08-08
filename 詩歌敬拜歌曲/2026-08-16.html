@@ -182,12 +182,17 @@
      margin 只留右側與下側：左緣才能與同格其他文字對齊，換行時也不擠在一起。 */
   .cell .val a.link-tag{
     display:inline-block;text-decoration:none;word-break:keep-all;
-    background:var(--gold-soft);color:var(--pill-ink,#6d5322);
-    border:1px solid color-mix(in srgb, var(--gold) 45%, transparent);
+    /* 底色與框線刻意壓淡，讓文字成為主體；字色維持高對比不動 */
+    background:color-mix(in srgb, var(--gold) 13%, transparent);
+    color:var(--pill-ink,#6d5322);
+    border:1px solid color-mix(in srgb, var(--gold) 26%, transparent);
     border-radius:6px;padding:1px 10px;margin:0 6px 4px 0;
     transition:background-color .15s,color .15s;
   }
-  .cell .val a.link-tag:hover{background:var(--gold);color:var(--paper)}
+  .cell .val a.link-tag:hover{
+    background:color-mix(in srgb, var(--gold) 26%, transparent);
+    border-color:color-mix(in srgb, var(--gold) 55%, transparent);
+  }
   .cell .val a.link-tag .sheet-tag{font-size:.78em;opacity:.75}
 
   .callout{background:linear-gradient(180deg,var(--callout-top,#FCFAF4),var(--card));border:1px solid var(--gold-soft);border-radius:14px;padding:24px 26px;margin-top:8px}

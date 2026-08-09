@@ -300,10 +300,37 @@
   .of-code .of-num-2{color:#4FD1C5}
   .of-code .of-num-3{color:#FF8A4C}
   .of-code .of-dash{opacity:.1}
+  /* 順序切換開關：歌名右側的 iOS 風格滑動鈕。
+     只要該首歌帶有 data-order-alt 就會自動出現，沒有則自動隱藏；
+     三首歌共用同一個狀態（切一首、其餘跟著切）。 */
+  .of-top{display:flex;align-items:center;gap:10px}
+  .of-name{flex:1}
+  .of-switch{display:none}
+  .of-switch.show{display:flex}
+  .ios-switch{
+    position:relative;display:flex;width:92px;height:22px;
+    border-radius:11px;border:none;padding:2px;cursor:pointer;
+    background:rgba(255,255,255,.16);
+  }
+  .switch-knob{
+    position:absolute;top:2px;left:2px;
+    width:calc(50% - 2px);height:calc(100% - 4px);
+    border-radius:9px;background:#fff;
+    transition:transform .2s,background-color .2s;
+  }
+  .ios-switch.on .switch-knob{transform:translateX(100%);background:#F0B429}
+  .switch-text{
+    position:relative;flex:1;text-align:center;white-space:nowrap;
+    font-size:10.5px;line-height:18px;color:rgba(255,255,255,.6);
+    transition:color .2s,font-weight .2s;
+  }
+  .ios-switch:not(.on) .switch-text[data-mode="worship"]{color:#1c1c1e;font-weight:700}
+  .ios-switch.on .switch-text[data-mode="alt"]{color:#1c1c1e;font-weight:700}
   @media (max-width:560px){
     .order-float{right:12px;bottom:12px;padding:10px 16px}
     .of-name{font-size:11px}
     .of-code{font-size:16px}
+    .of-code.compact{font-size:12px}
   }
 </style>
 </head>
@@ -315,7 +342,16 @@
   </button>
 
   <div class="order-float" id="orderFloat">
-    <div class="of-name" id="ofName"></div>
+    <div class="of-top">
+      <div class="of-name" id="ofName"></div>
+      <div class="of-switch" id="ofSwitch">
+        <button type="button" class="ios-switch" id="orderModeSwitch" onclick="toggleOrderMode()" aria-label="切換敬拜／調 Key 順序">
+          <span class="switch-knob"></span>
+          <span class="switch-text" data-mode="worship">敬拜</span>
+          <span class="switch-text" data-mode="alt">調Key</span>
+        </button>
+      </div>
+    </div>
     <div class="of-code" id="ofCode"></div>
   </div>
 
@@ -375,7 +411,7 @@
   </div>
 
   <!-- 1 仰望主 -->
-  <div class="song" style="--stage:var(--s1);--panel:var(--s1-panel)" data-song data-name="( 1 ) 仰望主" data-order="V–V–C–V–C–V" data-stage="s1">
+  <div class="song" style="--stage:var(--s1);--panel:var(--s1-panel)" data-song data-name="( 1 ) 仰望主" data-order-alt="V–C–V" data-order="V–V–C–V–C–V" data-stage="s1">
     <details class="song-collapse">
       <summary class="song-bar">
         <span class="idx">1</span>
@@ -417,7 +453,7 @@
   </div>
 
   <!-- 2 信靠跟隨 -->
-  <div class="song" style="--stage:var(--s2);--panel:var(--s2-panel)" data-song data-name="( 2 ) 信靠跟隨" data-order="V1–V1–V2–C–V1–V2–C–B–B–C–*尾×2" data-order-desktop="V1–V1–V2–C–V1–V2–C&#10;B–B–C–*尾×2" data-stage="s2">
+  <div class="song" style="--stage:var(--s2);--panel:var(--s2-panel)" data-song data-name="( 2 ) 信靠跟隨" data-order-alt="V1–V2–C–B–C" data-order="V1–V1–V2–C–V1–V2–C–B–B–C–*尾×2" data-order-desktop="V1–V1–V2–C–V1–V2–C&#10;B–B–C–*尾×2" data-stage="s2">
     <details class="song-collapse">
       <summary class="song-bar">
         <span class="idx">2</span>
@@ -474,7 +510,7 @@
   </div>
 
   <!-- 3 奔跑不放棄 -->
-  <div class="song" style="--stage:var(--s3);--panel:var(--s3-panel)" data-song data-name="( 3 ) 奔跑不放棄" data-order="V–V–C–V–C–B–B–C–C–*尾" data-order-desktop="V–V–C–V–C–B–B&#10;C–C–*尾" data-stage="s3">
+  <div class="song" style="--stage:var(--s3);--panel:var(--s3-panel)" data-song data-name="( 3 ) 奔跑不放棄" data-order-alt="V–C–B–升C–*尾" data-order="V–V–C–V–C–B–B–C–C–*尾" data-order-desktop="V–V–C–V–C–B–B&#10;C–C–*尾" data-stage="s3">
     <details class="song-collapse">
       <summary class="song-bar">
         <span class="idx">3</span>
@@ -643,11 +679,24 @@
       return window.matchMedia('(min-width:561px)').matches;
     }
 
+    var switchEl = document.getElementById('ofSwitch');
+    var switchBtn = document.getElementById('orderModeSwitch');
+    var orderMode = 'worship';   // 三首歌共用同一個狀態：worship（敬拜）／alt（調 Key）
+
+    // 依「目前模式 × 是否桌機」挑出要顯示的順序字串。
+    // 桌機版屬性（-desktop）不存在時自動退回手機版，兩者不必成對出現。
+    function pickOrder(song){
+      var base = (orderMode === 'alt' && song.hasAttribute('data-order-alt'))
+        ? 'data-order-alt' : 'data-order';
+      var deskAttr = base + '-desktop';
+      return (isDesktop() && song.hasAttribute(deskAttr))
+        ? song.getAttribute(deskAttr)
+        : song.getAttribute(base);
+    }
+
     function renderCode(song){
-      var useDesktop = isDesktop() && song.hasAttribute('data-order-desktop');
-      var raw = useDesktop
-        ? song.getAttribute('data-order-desktop')
-        : song.getAttribute('data-order');
+      var hasAlt = song.hasAttribute('data-order-alt');
+      var raw = pickOrder(song);
       // 把 V1、V2、C1、C2 這類字母後面的數字縮小並上色，方便辨識（每個數字用不同對比色）
       var html = raw.replace(/([VC])(\d+)/g, function(m, letter, digits){
         return letter + '<span class="of-num of-num-' + digits + '">' + digits + '</span>';
@@ -655,7 +704,16 @@
       // 短橫線降低透明度，讓字母、數字更突出
       html = html.replace(/–/g, '<span class="of-dash">–</span>');
       codeEl.innerHTML = html;
+      // 內容含換行才縮字級，短的替代順序不會被無謂縮小
+      codeEl.classList.toggle('compact', raw.indexOf('\n') >= 0);
+      switchEl.classList.toggle('show', hasAlt);
+      switchBtn.classList.toggle('on', hasAlt && orderMode === 'alt');
     }
+
+    window.toggleOrderMode = function(){
+      orderMode = (orderMode === 'worship') ? 'alt' : 'worship';
+      if(current) renderCode(current);
+    };
 
     function update(song){
       if(song === current) return;
@@ -726,7 +784,9 @@
 
     function clamp(val, min, max){ return Math.min(Math.max(val, min), max); }
 
-    function startDrag(x, y){
+    function startDrag(x, y, target){
+      // 點在切換開關上時不啟動拖曳，否則按不到開關
+      if(target && target.closest && target.closest('.ios-switch')) return false;
       dragging = true;
       lockToPixelPosition();
       var rect = panel.getBoundingClientRect();
@@ -752,7 +812,7 @@
 
     // ── 滑鼠（桌面）──
     panel.addEventListener('mousedown', function(e){
-      if(!startDrag(e.clientX, e.clientY)) return;
+      if(!startDrag(e.clientX, e.clientY, e.target)) return;
       e.preventDefault();
     });
     document.addEventListener('mousemove', function(e){
@@ -766,7 +826,7 @@
     panel.addEventListener('touchstart', function(e){
       var t = e.touches[0];
       if(!t) return;
-      if(!startDrag(t.clientX, t.clientY)) return;
+      if(!startDrag(t.clientX, t.clientY, e.target)) return;
       e.preventDefault();
     }, { passive:false });
 

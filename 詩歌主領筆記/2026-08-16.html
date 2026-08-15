@@ -142,6 +142,8 @@
   .lc-bridge{color:color-mix(in srgb, var(--stage, var(--gold)) 90%, black 8%)}
   .lc-tail{color:color-mix(in srgb, var(--stage, var(--gold)) 85%, black 15%)}
   .lc-tail-mark{color:color-mix(in srgb, var(--stage, var(--gold)) 92%, white 8%)}
+  /* (尾句) 提示字：縮到歌詞字級的一半，避免跟正文搶視覺 */
+  .lyrics .tail-note{font-size:.5em}
   /* s2（青綠）、s4（靛紫）在暗黑模式色相本身較暗，同比例會顯得過暗，個別調亮（僅暗黑模式） */
   html[data-theme="dark"] [data-stage="s2"] .lc-verse{color:color-mix(in srgb, var(--stage) 55%, white 45%)}
   html[data-theme="dark"] [data-stage="s2"] .lc-chorus{color:color-mix(in srgb, var(--stage) 80%, white 20%)}
@@ -562,7 +564,7 @@
       <p><span class="lc-chorus">我</span>愛祢　用盡我全心全意全力
 榮耀高舉祢的名　我跟隨不懷疑
 我愛祢　用盡我全心全意力
-<span class="lc-tail-mark">*</span><span class="lc-tail">在</span>這愛的路程裡　我奔跑不放棄 (尾句)</p>
+<span class="lc-tail-mark">*</span><span class="lc-tail">在</span>這愛的路程裡　我奔跑不放棄 <span class="tail-note">(尾句)</span></p>
       <div class="lyr-lab">Bridge</div>
       <p><span class="lc-bridge">四</span>面受敵　卻不被困住
 心裡作難　卻不至失望

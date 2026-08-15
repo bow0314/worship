@@ -134,7 +134,17 @@
   .lyrics .lyr-lab:first-child{margin-top:0}
   /* 口白標籤：沿用 .lyr-lab 的橘色（--stage）與版位，只把字重、字距
      調成跟「連結」欄標籤（.cell .lab）一樣輕、一樣密，其餘不動。 */
-  .lyrics .cue-lab{font-weight:500;letter-spacing:.14em}
+  /* 口白標籤：套用「連結」欄 Tag 按鈕（.link-tag）同一套配色公式
+     （13% 底色／10% 框線），圓角拉到 999px 做成橢圓形徽章。
+     文字與底色都改用 #F2652A —— 這是本曲（s3）Bridge 段強調色，
+     亮暗兩模式共用同一個值，口白緊接在 Bridge 前面正好呼應。 */
+  .lyrics .cue-lab{
+    display:inline-block;font-weight:500;letter-spacing:.14em;
+    color:#F2652A;
+    background:color-mix(in srgb, #F2652A 13%, transparent);
+    border:1px solid color-mix(in srgb, #F2652A 10%, transparent);
+    border-radius:999px;padding:3px 14px;
+  }
   /* keep-all：禁止在中文字之間斷行，只在全形空格（歌詞的分句點）斷。
      否則窄螢幕會斷在句子中間，例如「每個狂風暴雨裡　祢同在 / 在那裡」。
      最長的分句是 10 字，任何裝置寬度都放得下，不會溢出。 */
@@ -150,7 +160,9 @@
   /* 主領口白：夾在歌詞中間的講話提示，用無襯線字體＋較淡的墨色
      跟旁邊有色的演唱歌詞明確區分，避免被誤讀成要唱的內容。
      字級沿用歌詞區塊（46.5px／手機 24px），現場帶領時仍看得清楚。 */
-  .lyrics .lead-cue{font-family:var(--sans);font-weight:500;color:var(--ink-soft)}
+  .lyrics .lead-cue{font-family:var(--sans);font-weight:500;color:#F2652A}
+  /* 引號本身降低到 25% 不透明度，讓句子主體更突出 */
+  .lyrics .lead-cue .quote-mark{opacity:.25}
   /* 口白句子在桌機／平板一律不斷行：字級隨可用寬度縮放，
      24 是本句（含引號）在 100px 字級下的實測寬度，單位 em；
      92px = body 左右 padding 40 + .song 卡片左右 padding 52。
@@ -159,7 +171,7 @@
      手機（≤560px）沿用 .lyrics p 既有的 24px，不套用這條。
      日後若改動這句文字，要重新量 24 這個值。 */
   @media(min-width:561px){
-    .lyrics .lead-cue{white-space:nowrap;font-size:min(46.5px, calc((100vw - 92px) / 24))}
+    .lyrics .lead-cue{white-space:nowrap;font-size:min(46.5px, calc((100vw - 92px) / 25))}
   }
   /* s2（青綠）、s4（靛紫）在暗黑模式色相本身較暗，同比例會顯得過暗，個別調亮（僅暗黑模式） */
   html[data-theme="dark"] [data-stage="s2"] .lc-verse{color:color-mix(in srgb, var(--stage) 55%, white 45%)}
@@ -583,7 +595,7 @@
 我愛祢　用盡我全心全意力
 <span class="lc-tail-mark">*</span><span class="lc-tail">在</span>這愛的路程裡　我奔跑不放棄 <span class="tail-note">(尾句)</span></p>
       <div class="lyr-lab cue-lab">口白</div>
-      <p class="lead-cue">「各位，請轉頭看著在你身旁的弟兄姊妹們，然後說」</p>
+      <p class="lead-cue"><span class="quote-mark">「</span>各位，讓我們轉頭看著你身旁的弟兄姊妹們，然後說<span class="quote-mark">」</span></p>
       <div class="lyr-lab">Bridge</div>
       <p><span class="lc-bridge">四</span>面受敵　卻不被困住
 心裡作難　卻不至失望

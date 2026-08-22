@@ -29,6 +29,11 @@
     --s2:#5C7A9E;  /* 你是唯一 · 霧藍 */
     --s3:#BE875A;  /* 最珍貴的角落 · 暖陶 */
     --s4:#4E5A78;  /* 相約在主裡 · 靛藍 */
+    /* 浮動面板專用：同色相加深、帶透明度做毛玻璃染色 */
+    --s1-panel:rgba(122,92,32,.62);
+    --s2-panel:rgba(40,60,78,.62);
+    --s3-panel:rgba(112,68,32,.62);
+    --s4-panel:rgba(42,46,68,.66);
     --serif:"Noto Sans TC",-apple-system,"PingFang TC","Microsoft JhengHei",sans-serif;
     --sans:"Noto Sans TC",-apple-system,"PingFang TC","Microsoft JhengHei",sans-serif;
   }
@@ -45,6 +50,10 @@
     --s2:#7B98BB;
     --s3:#CE9868;
     --s4:#7580A0;
+    --s1-panel:rgba(100,74,26,.66);
+    --s2-panel:rgba(32,50,66,.66);
+    --s3-panel:rgba(96,58,28,.66);
+    --s4-panel:rgba(34,38,58,.7);
   }
   *{box-sizing:border-box;margin:0;padding:0}
   body{background:var(--paper);color:var(--ink);font-family:var(--sans);font-weight:400;line-height:1.75;-webkit-font-smoothing:antialiased;padding:48px 20px 80px}
@@ -162,22 +171,25 @@
   }
   .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 
-  /* 浮動歌詞提示面板：跟隨捲動顯示目前這首歌的演唱順序 */
+  /* 浮動歌詞提示面板：跟隨捲動顯示目前這首歌的演唱順序，毛玻璃 + 階段色染色 */
   .order-float{
     position:fixed;right:20px;bottom:20px;z-index:50;
-    background:rgba(32,32,34,.72);
+    background:var(--panel,rgba(60,60,64,.6));
     backdrop-filter:blur(16px) saturate(180%);
     -webkit-backdrop-filter:blur(16px) saturate(180%);
-    border:1px solid rgba(255,255,255,.16);
-    border-left:3px solid var(--stage,var(--gold));
+    border:1px solid rgba(255,255,255,.22);
     border-radius:14px;
-    padding:12px 20px;box-shadow:0 6px 22px rgba(0,0,0,.25);
+    padding:12px 20px;box-shadow:0 6px 22px rgba(0,0,0,.18);
     opacity:0;transform:translateY(8px);pointer-events:none;
-    transition:opacity .25s,transform .25s,border-color .3s;
-    max-width:min(78vw,320px);
+    transition:opacity .25s,transform .25s,background-color .3s;
+    max-width:min(80vw,320px);
+    cursor:grab;touch-action:none;
+    -webkit-user-select:none;user-select:none;-webkit-touch-callout:none;
   }
-  .order-float.show{opacity:1;transform:translateY(0)}
-  .of-name{font-size:12px;color:rgba(255,255,255,.8)}
+  .order-float.dragging{transition:none;cursor:grabbing}
+  html[data-theme="dark"] .order-float{box-shadow:0 6px 22px rgba(0,0,0,.5)}
+  .order-float.show{opacity:1;transform:translateY(0);pointer-events:auto}
+  .of-name{font-size:12px;color:rgba(255,255,255,.82)}
   .of-code{font-family:var(--serif);font-size:18px;color:#fff;letter-spacing:.02em;white-space:pre-line;margin-top:4px;font-weight:700}
   @media (max-width:560px){
     .order-float{right:12px;bottom:12px;padding:10px 16px}
@@ -528,7 +540,7 @@
           current = match;
           nameEl.textContent = match.getAttribute('data-name');
           codeEl.textContent = match.getAttribute('data-order');
-          floatEl.style.setProperty('--stage', 'var(--' + match.getAttribute('data-stage') + ')');
+          floatEl.style.setProperty('--panel', 'var(--' + match.getAttribute('data-stage') + '-panel)');
         }
         floatEl.classList.add('show');
       } else {
@@ -545,9 +557,77 @@
     }
 
     window.addEventListener('scroll', onScroll, { passive:true });
-    window.addEventListener('resize', onScroll);
+    window.addEventListener('resize', function(){ onScroll(); });
     window.__refreshOrderFloat = check;
     check();
+  })();
+
+  /* 浮動面板：可用滑鼠或手指拖曳到任意位置 */
+  (function(){
+    var panel = document.getElementById('orderFloat');
+    var dragging = false;
+    var offsetX = 0, offsetY = 0;
+
+    function lockToPixelPosition(){
+      var rect = panel.getBoundingClientRect();
+      panel.style.left = rect.left + 'px';
+      panel.style.top = rect.top + 'px';
+      panel.style.right = 'auto';
+      panel.style.bottom = 'auto';
+    }
+
+    function clamp(val, min, max){ return Math.min(Math.max(val, min), max); }
+
+    function startDrag(x, y){
+      dragging = true;
+      lockToPixelPosition();
+      var rect = panel.getBoundingClientRect();
+      offsetX = x - rect.left;
+      offsetY = y - rect.top;
+      panel.classList.add('dragging');
+      return true;
+    }
+
+    function moveDrag(x, y){
+      if(!dragging) return;
+      var w = panel.offsetWidth, h = panel.offsetHeight;
+      var left = clamp(x - offsetX, 8, window.innerWidth - w - 8);
+      var top = clamp(y - offsetY, 8, window.innerHeight - h - 8);
+      panel.style.left = left + 'px';
+      panel.style.top = top + 'px';
+    }
+
+    function endDrag(){
+      dragging = false;
+      panel.classList.remove('dragging');
+    }
+
+    panel.addEventListener('mousedown', function(e){
+      startDrag(e.clientX, e.clientY);
+      e.preventDefault();
+    });
+    document.addEventListener('mousemove', function(e){
+      if(!dragging) return;
+      e.preventDefault();
+      moveDrag(e.clientX, e.clientY);
+    });
+    document.addEventListener('mouseup', endDrag);
+
+    panel.addEventListener('touchstart', function(e){
+      var t = e.touches[0];
+      if(!t) return;
+      startDrag(t.clientX, t.clientY);
+      e.preventDefault();
+    }, { passive:false });
+    document.addEventListener('touchmove', function(e){
+      if(!dragging) return;
+      var t = e.touches[0];
+      if(!t) return;
+      e.preventDefault();
+      moveDrag(t.clientX, t.clientY);
+    }, { passive:false });
+    document.addEventListener('touchend', endDrag);
+    document.addEventListener('touchcancel', endDrag);
   })();
 
   (function(){

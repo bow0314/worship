@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="zh-Hant" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>黃彭淑嫻師母追思紀念會</title>
+<script>
+  (function(){
+    try{
+      var saved = localStorage.getItem('worship-theme');
+      if(saved === 'light'){ document.documentElement.setAttribute('data-theme','light'); }
+    }catch(e){}
+  })();
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F5F4F1;
+    --card:#FCFBF8;
+    --ink:#2C3138;
+    --ink-soft:#666B72;
+    --hair:#E4E2DA;
+    --gold:#B4924F;
+    --gold-soft:#EAE0C6;
+    --s1:#B4924F;  /* 愛使我們相聚一起 · 暖金 */
+    --s2:#5C7A9E;  /* 你是唯一 · 霧藍 */
+    --s3:#BE875A;  /* 最珍貴的角落 · 暖陶 */
+    --s4:#4E5A78;  /* 相約在主裡 · 靛藍 */
+    --serif:"Noto Sans TC",-apple-system,"PingFang TC","Microsoft JhengHei",sans-serif;
+    --sans:"Noto Sans TC",-apple-system,"PingFang TC","Microsoft JhengHei",sans-serif;
+  }
+  html[data-theme="dark"]{
+    --paper:#18181A;
+    --card:#232326;
+    --ink:#EDEBE6;
+    --ink-soft:#9C9990;
+    --hair:#37373A;
+    --gold:#D2B876;
+    --gold-soft:#4A4023;
+    --s1:#C7A768;
+    --s2:#7B98BB;
+    --s3:#CE9868;
+    --s4:#7580A0;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body,.card-inner,.lyrics{transition:background-color .2s,border-color .2s,color .2s}
+  body{background:var(--paper);color:var(--ink);font-family:var(--sans);font-weight:400;line-height:1.75;-webkit-font-smoothing:antialiased;padding:48px 20px 80px}
+  .wrap{max-width:1200px;margin:0 auto}
+
+  header{margin-bottom:32px;text-align:center}
+  .eyebrow{font-size:11px;letter-spacing:.26em;color:var(--gold);margin-bottom:10px;font-weight:500}
+  h1{font-family:var(--serif);font-size:clamp(19px,3.6vw,24px);line-height:1.4;letter-spacing:.02em;font-weight:700;margin-bottom:6px}
+  .sub{font-family:var(--serif);font-size:12.5px;color:var(--ink-soft)}
+
+  .sec-title{display:flex;align-items:baseline;gap:10px;margin:36px 0 16px;padding-bottom:10px;border-bottom:1px solid var(--hair)}
+  .sec-title .n{font-family:var(--serif);font-size:11px;color:var(--gold);letter-spacing:.05em;font-weight:700}
+  .sec-title h2{font-family:var(--serif);font-size:14px;letter-spacing:.02em;font-weight:700}
+
+  /* 節目卡共用的序號徽章 */
+  .seq{position:relative}
+  .seq-num{font-family:var(--serif);font-size:10.5px;color:var(--gold);letter-spacing:.08em;margin-bottom:6px;font-weight:700}
+
+  /* 詩歌卡 */
+  .song{background:var(--card);border:1px solid var(--hair);border-left:4px solid var(--stage,var(--gold));border-radius:12px;padding:20px 26px 26px;margin-bottom:16px}
+  .song-name{font-family:var(--serif);font-size:14px;font-weight:700;color:var(--stage,var(--ink));margin-bottom:0}
+
+  .lyrics{margin-top:18px}
+  .lyrics .lyr-lab{font-size:11px;letter-spacing:.16em;color:var(--stage,var(--gold));margin:20px 0 6px;text-transform:uppercase;font-weight:700}
+  .lyrics .lyr-lab:first-child{margin-top:0}
+  .lyrics p{font-family:var(--serif);font-size:46.5px;font-weight:500;line-height:1.65;color:var(--ink);white-space:pre-wrap;word-break:keep-all}
+  .lc-verse{color:color-mix(in srgb, var(--stage, var(--gold)) 65%, white 35%)}
+  .lc-chorus{color:var(--stage, var(--gold))}
+  html[data-theme="light"] .lc-verse{color:color-mix(in srgb, var(--stage, var(--gold)) 90%, black 10%)}
+  html[data-theme="light"] .lc-chorus{color:color-mix(in srgb, var(--stage, var(--gold)) 78%, black 10%)}
+
+  /* 非詩歌段落(經文、信息、分享、禱告)的交接卡 */
+  .handoff{
+    display:flex;align-items:flex-start;gap:12px;
+    background:var(--card);border:1px solid var(--hair);border-radius:12px;
+    padding:13px 18px;margin:0 0 12px;
+  }
+  .handoff-icon{
+    flex:none;width:26px;height:26px;border-radius:50%;
+    background:var(--gold-soft);color:var(--gold);
+    display:flex;align-items:center;justify-content:center;
+    font-size:10.5px;font-weight:700;font-family:var(--serif);
+  }
+  .handoff-body{flex:1}
+  .handoff-badge{
+    display:inline-block;font-size:10px;letter-spacing:.1em;
+    color:var(--ink-soft);border:1px solid var(--hair);border-radius:20px;
+    padding:1px 9px;margin-bottom:6px;font-weight:500;
+  }
+  .handoff-line{font-family:var(--serif);font-size:14.5px;line-height:1.65;color:var(--ink);font-weight:700}
+  .handoff-note{font-size:11px;color:var(--ink-soft);margin-top:5px;line-height:1.6}
+
+  footer{margin-top:44px;text-align:center;color:var(--ink-soft);font-size:11px}
+
+  @media print{body{padding:0}}
+
+  .theme-toggle{
+    position:fixed;top:20px;right:20px;z-index:50;
+    display:flex;align-items:center;gap:8px;
+    background:var(--card);border:1px solid var(--hair);border-radius:999px;
+    padding:9px 16px;cursor:pointer;font-size:13px;color:var(--ink);
+    box-shadow:0 2px 10px rgba(0,0,0,.08);
+  }
+  html[data-theme="dark"] .theme-toggle{box-shadow:0 2px 10px rgba(0,0,0,.35)}
+  .theme-toggle .icon{font-size:15px;line-height:1}
+  @media print{.theme-toggle{display:none}}
+  @media (max-width:560px){
+    .theme-toggle{top:12px;right:12px;padding:8px 13px;font-size:12px}
+    .lyrics p{font-size:24px;line-height:1.55}
+    .handoff-line{font-size:13.5px}
+  }
+</style>
+</head>
+<body>
+
+  <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()">
+    <span class="icon" id="themeIcon">🌙</span>
+    <span id="themeText">暗黑模式</span>
+  </button>
+
+<div class="wrap">
+
+  <header>
+    <div class="eyebrow">追　思　聚　會　·　歌　詞　與　程　序</div>
+    <h1>黃彭淑嫻師母　追思紀念會</h1>
+    <p class="sub">2026 / 08 / 23（日）13:30　同光教會大堂</p>
+  </header>
+
+  <div class="sec-title">
+    <span class="n">01</span>
+    <h2>程序 · 歌詞</h2>
+  </div>
+
+  <!-- 01 宣召 -->
+  <div class="handoff seq">
+    <div class="handoff-icon">01</div>
+    <div class="handoff-body">
+      <div class="handoff-badge">宣召</div>
+      <p class="handoff-line">「我知道我的救贖主活著，末後他必站在塵土上。我這皮肉滅絕之後，我必在肉體之外得見上帝」</p>
+      <p class="handoff-note">約伯記 19:25–26</p>
+    </div>
+  </div>
+
+  <!-- 02 愛使我們相聚一起 -->
+  <div class="song seq" style="--stage:var(--s1)">
+    <div class="seq-num">02</div>
+    <div class="song-name">愛使我們相聚一起</div>
+    <div class="lyrics">
+      <div class="lyr-lab">Chorus</div>
+      <p><span class="lc-chorus">愛</span>使我們相聚一起
+愛使我們相聚一起
+上帝的愛使我們合而為一
+愛使我們相聚一起</p>
+      <div class="lyr-lab">Verse</div>
+      <p><span class="lc-verse">讓</span>我們一起歌唱
+讓主愛從我們開始
+我們手拉手讓世界知道
+愛使我們相聚一起</p>
+    </div>
+  </div>
+
+  <!-- 03 信息 -->
+  <div class="handoff seq">
+    <div class="handoff-icon">03</div>
+    <div class="handoff-body">
+      <div class="handoff-badge">信息</div>
+      <p class="handoff-line">獨特的你、唯一的你</p>
+      <p class="handoff-note">陳小恩傳道 &amp; 黃國堯牧師</p>
+    </div>
+  </div>
+
+  <!-- 04 你是唯一 -->
+  <div class="song seq" style="--stage:var(--s2)">
+    <div class="seq-num">04</div>
+    <div class="song-name">你是唯一</div>
+    <div class="lyrics">
+      <div class="lyr-lab">Verse</div>
+      <p><span class="lc-verse">世</span>界有你會更美好
+沒有人能像你
+神的眼中你是寶貝
+在世上你就是唯一</p>
+      <div class="lyr-lab">Chorus</div>
+      <p><span class="lc-chorus">你</span>是如此如此特別　在上帝的眼中
+沒有人能取代你
+
+你是如此如此特別　在上帝的眼中
+沒有人能取代你</p>
+    </div>
+  </div>
+
+  <!-- 05 分享 -->
+  <div class="handoff seq">
+    <div class="handoff-icon">05</div>
+    <div class="handoff-body">
+      <div class="handoff-badge">分享時間</div>
+      <p class="handoff-line">心目中的師母 / 對師母的第一印象</p>
+    </div>
+  </div>
+
+  <!-- 06 最珍貴的角落 -->
+  <div class="song seq" style="--stage:var(--s3)">
+    <div class="seq-num">06</div>
+    <div class="song-name">最珍貴的角落</div>
+    <div class="lyrics">
+      <div class="lyr-lab">Verse 1</div>
+      <p><span class="lc-verse">謝</span>謝你璨爛笑容
+照亮我的天空
+謝謝你分享心情
+把我放在你心中</p>
+      <div class="lyr-lab">Verse 2</div>
+      <p><span class="lc-verse">夜</span>裡有時為寒冷
+你我生根同暖土
+友情是最亮的星
+我的生命從此美麗</p>
+      <div class="lyr-lab">Chorus</div>
+      <p><span class="lc-chorus">當</span>你被花朵包圍盡情歡欣
+我帶春風使你舞其中
+當你正走在坎坷路
+我會伴你在左右
+
+一起向藍天歡呼
+向白雲招手
+我們要一起笑一起哭
+千萬人中有個人懂我
+你有最珍貴的角落</p>
+    </div>
+  </div>
+
+  <!-- 07 分享 -->
+  <div class="handoff seq">
+    <div class="handoff-icon">07</div>
+    <div class="handoff-body">
+      <div class="handoff-badge">分享時間</div>
+      <p class="handoff-line">與師母互動裡印象最深的事</p>
+    </div>
+  </div>
+
+  <!-- 08 相約在主裡 -->
+  <div class="song seq" style="--stage:var(--s4)">
+    <div class="seq-num">08</div>
+    <div class="song-name">相約在主裡</div>
+    <div class="lyrics">
+      <div class="lyr-lab">Verse</div>
+      <p><span class="lc-verse">我</span>們相約在主裡
+共同生活常相憶
+我們相約在主裡
+將來有一天要再歡聚</p>
+      <div class="lyr-lab">Chorus</div>
+      <p><span class="lc-chorus">在</span>主裡祝福你
+我在主裡思念你
+願主帶領你進入迦南地
+
+在主裡祝福你
+我在主裡思念你
+願主賜給你
+豐富的奶與蜜
+
+你可不要忘記
+我們相約在主裡
+記得我們相約在主裡</p>
+    </div>
+  </div>
+
+  <!-- 09 終有盡頭 -->
+  <div class="handoff seq">
+    <div class="handoff-icon">09</div>
+    <div class="handoff-body">
+      <div class="handoff-badge">程序</div>
+      <p class="handoff-line">終有盡頭</p>
+    </div>
+  </div>
+
+  <!-- 10 代禱與祝福 -->
+  <div class="handoff seq">
+    <div class="handoff-icon">10</div>
+    <div class="handoff-body">
+      <div class="handoff-badge">代禱與祝福</div>
+      <p class="handoff-line">代禱與祝福</p>
+      <p class="handoff-note">陳小恩傳道 &amp; 黃國堯牧師</p>
+    </div>
+  </div>
+
+  <!-- 11 結束禱告 -->
+  <div class="handoff seq">
+    <div class="handoff-icon">11</div>
+    <div class="handoff-body">
+      <div class="handoff-badge">結束禱告</div>
+      <p class="handoff-line">「在至高之處榮耀歸於神，在地上平安歸與祂所喜悅的人」</p>
+      <p class="handoff-note">路加福音 2:14</p>
+    </div>
+  </div>
+
+  <footer>
+    <p>黃彭淑嫻師母追思紀念會　·　2026 / 08 / 23</p>
+  </footer>
+
+</div>
+
+<script>
+  (function(){
+    syncButton(document.documentElement.getAttribute('data-theme'));
+
+    function syncButton(t){
+      var icon = document.getElementById('themeIcon');
+      var text = document.getElementById('themeText');
+      if(t === 'dark'){
+        icon.textContent = '☀️';
+        text.textContent = '亮色模式';
+      } else {
+        icon.textContent = '🌙';
+        text.textContent = '暗黑模式';
+      }
+    }
+
+    window.toggleTheme = function(){
+      var current = document.documentElement.getAttribute('data-theme');
+      var next = current === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      syncButton(next);
+      try{ localStorage.setItem('worship-theme', next); }catch(e){}
+    };
+  })();
+</script>
+</body>
+</html>

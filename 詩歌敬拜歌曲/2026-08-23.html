@@ -103,6 +103,16 @@
   .handoff-line{font-family:var(--serif);font-size:14.5px;line-height:1.65;color:var(--ink);font-weight:700;white-space:pre-wrap}
   .handoff-note{font-size:11px;color:var(--ink-soft);margin-top:5px;line-height:1.6}
 
+  /* 併入同一個框的項目(例如歌曲後接著的程序段落) */
+  .coda{margin-top:22px;border-top:1px dashed var(--hair);padding-top:14px;display:flex;flex-direction:column;gap:10px}
+  .coda-item{display:flex;flex-wrap:wrap;align-items:baseline;gap:8px}
+  .coda-badge{font-size:10px;letter-spacing:.1em;color:var(--ink-soft);border:1px solid var(--hair);border-radius:20px;padding:1px 9px;flex:none}
+  .coda-line{font-family:var(--serif);font-size:14.5px;font-weight:700;color:var(--ink)}
+  .coda-note{font-size:11px;color:var(--ink-soft)}
+  .coda-song{flex-direction:column;align-items:stretch}
+  .coda-lyrics{margin-top:8px}
+  .coda-lyrics p{font-size:20px}
+
   footer{margin-top:44px;text-align:center;color:var(--ink-soft);font-size:11px}
 
   @media print{body{padding:0}}
@@ -148,6 +158,8 @@
   .edit-row-head{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
   .edit-type-tag{font-size:10px;letter-spacing:.08em;color:var(--gold);border:1px solid var(--gold-soft);border-radius:20px;padding:2px 9px;flex:none}
   .stage-dot{width:10px;height:10px;border-radius:50%;flex:none}
+  .merge-toggle{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--ink-soft);flex:none;white-space:nowrap;margin-left:auto}
+  .merge-toggle input{width:auto}
   .edit-fields input,.edit-fields textarea,.edit-fields select{
     font-family:var(--sans);font-size:13.5px;color:var(--ink);
     background:var(--paper);border:1px solid var(--hair);border-radius:8px;
@@ -266,8 +278,8 @@
     {id:'i7', type:'handoff', badge:'分享時間', line:'與師母互動裡印象最深的事'},
     {id:'i8', type:'song', stage:'s4', name:'相約在主裡', order:'V–C', body:
 '## Verse\n我們相約在主裡\n共同生活常相憶\n我們相約在主裡\n將來有一天要再歡聚\n\n## Chorus\n在主裡祝福你\n我在主裡思念你\n願主帶領你進入迦南地\n\n在主裡祝福你\n我在主裡思念你\n願主賜給你\n豐富的奶與蜜\n\n你可不要忘記\n我們相約在主裡\n記得我們相約在主裡'},
-    {id:'i9', type:'handoff', badge:'程序', line:'終有盡頭'},
-    {id:'i10', type:'handoff', badge:'代禱與祝福', line:'代禱與祝福', note:'陳小恩傳道 & 黃國堯牧師'},
+    {id:'i9', type:'handoff', badge:'程序', line:'終有盡頭', mergeUp:true},
+    {id:'i10', type:'handoff', badge:'代禱與祝福', line:'代禱與祝福', note:'陳小恩傳道 & 黃國堯牧師', mergeUp:true},
     {id:'i11', type:'handoff', badge:'結束禱告', line:'「在至高之處榮耀歸於神，在地上平安歸與祂所喜悅的人」', note:'路加福音 2:14'}
   ];
 
@@ -297,27 +309,59 @@
     }).join('\n');
   }
 
-  function renderItem(item, num){
-    var numStr = String(num).length < 2 ? '0' + num : String(num);
+  /* 把標了 mergeUp 的項目，併進前一個項目所在的框裡（同一個序號、同一個外框） */
+  function groupItems(items){
+    var groups = [];
+    items.forEach(function(item){
+      if(item.mergeUp && groups.length){
+        groups[groups.length - 1].extra.push(item);
+      } else {
+        groups.push({ main: item, extra: [] });
+      }
+    });
+    return groups;
+  }
+
+  function renderCodaItem(item){
     if(item.type === 'song'){
-      return '<div class="song seq" style="--stage:var(--' + item.stage + ')" data-song data-name="' +
-        escapeHtml(item.name) + '" data-order="' + escapeHtml(item.order || '') + '" data-stage="' + item.stage + '">' +
+      return '<div class="coda-item coda-song">' +
+        '<span class="coda-line">' + escapeHtml(item.name) + '</span>' +
+        '<div class="coda-lyrics">' + renderSongBody(item.body) + '</div>' +
+        '</div>';
+    }
+    return '<div class="coda-item">' +
+      '<span class="coda-badge">' + escapeHtml(item.badge || '') + '</span>' +
+      '<span class="coda-line">' + escapeHtml(item.line || '') + '</span>' +
+      (item.note ? '<span class="coda-note">' + escapeHtml(item.note) + '</span>' : '') +
+      '</div>';
+  }
+
+  function renderGroup(group, num){
+    var numStr = String(num).length < 2 ? '0' + num : String(num);
+    var main = group.main;
+    var codaHtml = group.extra.length ? '<div class="coda">' + group.extra.map(renderCodaItem).join('') + '</div>' : '';
+    if(main.type === 'song'){
+      return '<div class="song seq" style="--stage:var(--' + main.stage + ')" data-song data-name="' +
+        escapeHtml(main.name) + '" data-order="' + escapeHtml(main.order || '') + '" data-stage="' + main.stage + '">' +
         '<div class="seq-num">' + numStr + '</div>' +
-        '<div class="song-name">' + escapeHtml(item.name) + '</div>' +
-        '<div class="lyrics">' + renderSongBody(item.body) + '</div>' +
+        '<div class="song-name">' + escapeHtml(main.name) + '</div>' +
+        '<div class="lyrics">' + renderSongBody(main.body) + '</div>' +
+        codaHtml +
         '</div>';
     }
     return '<div class="handoff seq">' +
       '<div class="handoff-icon">' + numStr + '</div>' +
       '<div class="handoff-body">' +
-      '<div class="handoff-badge">' + escapeHtml(item.badge) + '</div>' +
-      '<p class="handoff-line">' + escapeHtml(item.line) + '</p>' +
-      (item.note ? '<p class="handoff-note">' + escapeHtml(item.note) + '</p>' : '') +
+      '<div class="handoff-badge">' + escapeHtml(main.badge) + '</div>' +
+      '<p class="handoff-line">' + escapeHtml(main.line) + '</p>' +
+      (main.note ? '<p class="handoff-note">' + escapeHtml(main.note) + '</p>' : '') +
+      codaHtml +
       '</div></div>';
   }
 
   function renderSeq(){
-    document.getElementById('seqRoot').innerHTML = ITEMS.map(renderItem).join('\n');
+    var groups = groupItems(ITEMS);
+    document.getElementById('seqRoot').innerHTML = groups.map(function(g, i){ return renderGroup(g, i + 1); }).join('\n');
     if(window.__refreshOrderFloat) window.__refreshOrderFloat();
   }
 
@@ -326,6 +370,8 @@
       '<button type="button" class="mv-up" title="上移"' + (idx === 0 ? ' disabled' : '') + '>↑</button>' +
       '<button type="button" class="mv-down" title="下移"' + (idx === draftItems.length - 1 ? ' disabled' : '') + '>↓</button>' +
       '</div>';
+    var mergeToggle = '<label class="merge-toggle"' + (idx === 0 ? ' style="display:none"' : '') + '>' +
+      '<input type="checkbox" class="f-mergeup"' + (item.mergeUp ? ' checked' : '') + '>併入上一格</label>';
     if(item.type === 'song'){
       var options = ['s1','s2','s3','s4'].map(function(s){
         return '<option value="' + s + '"' + (item.stage === s ? ' selected' : '') + '>' + STAGE_LABEL[s] + '</option>';
@@ -338,6 +384,7 @@
         '<input class="f-name" value="' + escapeHtml(item.name) + '" placeholder="歌名">' +
         '<select class="f-stage">' + options + '</select>' +
         '<input class="f-order" value="' + escapeHtml(item.order || '') + '" placeholder="演唱順序，如 V-C-V-C" style="max-width:170px">' +
+        mergeToggle +
         '</div>' +
         '<textarea class="f-body" rows="8" spellcheck="false">' + escapeHtml(item.body) + '</textarea>' +
         '<p class="edit-hint">用「## 段落名稱」標記每段(例如 ## Verse、## Chorus)，段落之間空一行；「演唱順序」會顯示在右下角浮動面板。</p>' +
@@ -348,6 +395,7 @@
       '<div class="edit-row-head">' +
       '<span class="edit-type-tag">程序</span>' +
       '<input class="f-badge" value="' + escapeHtml(item.badge || '') + '" placeholder="標籤(如：分享時間)">' +
+      mergeToggle +
       '</div>' +
       '<textarea class="f-line" rows="2" spellcheck="false">' + escapeHtml(item.line || '') + '</textarea>' +
       '<input class="f-note" value="' + escapeHtml(item.note || '') + '" placeholder="附註(選填，如：陳小恩傳道)">' +
@@ -374,6 +422,8 @@
         item.line = row.querySelector('.f-line').value;
         item.note = row.querySelector('.f-note').value;
       }
+      var mergeEl = row.querySelector('.f-mergeup');
+      item.mergeUp = !!(mergeEl && mergeEl.checked);
     });
   }
 

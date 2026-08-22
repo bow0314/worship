@@ -24,6 +24,7 @@
     --hair:#E4E2DA;
     --gold:#B4924F;
     --gold-soft:#EAE0C6;
+    --danger:#C0392B;
     --s1:#B4924F;  /* 愛使我們相聚一起 · 暖金 */
     --s2:#5C7A9E;  /* 你是唯一 · 霧藍 */
     --s3:#BE875A;  /* 最珍貴的角落 · 暖陶 */
@@ -39,13 +40,13 @@
     --hair:#37373A;
     --gold:#D2B876;
     --gold-soft:#4A4023;
+    --danger:#E0685A;
     --s1:#C7A768;
     --s2:#7B98BB;
     --s3:#CE9868;
     --s4:#7580A0;
   }
   *{box-sizing:border-box;margin:0;padding:0}
-  body,.card-inner,.lyrics{transition:background-color .2s,border-color .2s,color .2s}
   body{background:var(--paper);color:var(--ink);font-family:var(--sans);font-weight:400;line-height:1.75;-webkit-font-smoothing:antialiased;padding:48px 20px 80px}
   .wrap{max-width:1200px;margin:0 auto}
 
@@ -58,11 +59,9 @@
   .sec-title .n{font-family:var(--serif);font-size:11px;color:var(--gold);letter-spacing:.05em;font-weight:700}
   .sec-title h2{font-family:var(--serif);font-size:14px;letter-spacing:.02em;font-weight:700}
 
-  /* 節目卡共用的序號徽章 */
   .seq{position:relative}
   .seq-num{font-family:var(--serif);font-size:10.5px;color:var(--gold);letter-spacing:.08em;margin-bottom:6px;font-weight:700}
 
-  /* 詩歌卡 */
   .song{background:var(--card);border:1px solid var(--hair);border-left:4px solid var(--stage,var(--gold));border-radius:12px;padding:20px 26px 26px;margin-bottom:16px}
   .song-name{font-family:var(--serif);font-size:14px;font-weight:700;color:var(--stage,var(--ink));margin-bottom:0}
 
@@ -75,7 +74,6 @@
   html[data-theme="light"] .lc-verse{color:color-mix(in srgb, var(--stage, var(--gold)) 90%, black 10%)}
   html[data-theme="light"] .lc-chorus{color:color-mix(in srgb, var(--stage, var(--gold)) 78%, black 10%)}
 
-  /* 非詩歌段落(經文、信息、分享、禱告)的交接卡 */
   .handoff{
     display:flex;align-items:flex-start;gap:12px;
     background:var(--card);border:1px solid var(--hair);border-radius:12px;
@@ -87,42 +85,96 @@
     display:flex;align-items:center;justify-content:center;
     font-size:10.5px;font-weight:700;font-family:var(--serif);
   }
-  .handoff-body{flex:1}
+  .handoff-body{flex:1;min-width:0}
   .handoff-badge{
     display:inline-block;font-size:10px;letter-spacing:.1em;
     color:var(--ink-soft);border:1px solid var(--hair);border-radius:20px;
     padding:1px 9px;margin-bottom:6px;font-weight:500;
   }
-  .handoff-line{font-family:var(--serif);font-size:14.5px;line-height:1.65;color:var(--ink);font-weight:700}
+  .handoff-line{font-family:var(--serif);font-size:14.5px;line-height:1.65;color:var(--ink);font-weight:700;white-space:pre-wrap}
   .handoff-note{font-size:11px;color:var(--ink-soft);margin-top:5px;line-height:1.6}
 
   footer{margin-top:44px;text-align:center;color:var(--ink-soft);font-size:11px}
 
   @media print{body{padding:0}}
 
-  .theme-toggle{
-    position:fixed;top:20px;right:20px;z-index:50;
+  /* 右上角工具列：主題切換 + 改動順序 */
+  .toolbar{position:fixed;top:20px;right:20px;z-index:50;display:flex;gap:10px}
+  .tbtn{
     display:flex;align-items:center;gap:8px;
     background:var(--card);border:1px solid var(--hair);border-radius:999px;
-    padding:9px 16px;cursor:pointer;font-size:13px;color:var(--ink);
+    padding:9px 16px;cursor:pointer;font-size:13px;color:var(--ink);font-family:var(--sans);
     box-shadow:0 2px 10px rgba(0,0,0,.08);
   }
-  html[data-theme="dark"] .theme-toggle{box-shadow:0 2px 10px rgba(0,0,0,.35)}
-  .theme-toggle .icon{font-size:15px;line-height:1}
-  @media print{.theme-toggle{display:none}}
+  html[data-theme="dark"] .tbtn{box-shadow:0 2px 10px rgba(0,0,0,.35)}
+  .tbtn .icon{font-size:15px;line-height:1}
+  @media print{.toolbar{display:none}}
   @media (max-width:560px){
-    .theme-toggle{top:12px;right:12px;padding:8px 13px;font-size:12px}
+    .toolbar{top:12px;right:12px;gap:6px}
+    .tbtn{padding:8px 12px;font-size:11.5px}
+    .tbtn span:not(.icon){display:none}
     .lyrics p{font-size:24px;line-height:1.55}
     .handoff-line{font-size:13.5px}
   }
+
+  /* 改動順序 —— 彈窗 */
+  dialog#editDialog{
+    width:min(720px,92vw);max-height:86vh;border:none;border-radius:16px;
+    padding:0;background:var(--card);color:var(--ink);
+    box-shadow:0 20px 60px rgba(0,0,0,.35);
+  }
+  dialog#editDialog::backdrop{background:rgba(10,10,10,.55)}
+  .edit-head{padding:20px 24px 14px;border-bottom:1px solid var(--hair)}
+  .edit-head h3{font-family:var(--serif);font-size:17px;font-weight:700}
+  .edit-head p{font-size:12px;color:var(--ink-soft);margin-top:6px;line-height:1.7}
+  .modal-error{margin:12px 24px 0;padding:9px 14px;background:color-mix(in srgb, var(--danger) 14%, transparent);border:1px solid color-mix(in srgb, var(--danger) 32%, transparent);color:var(--danger);border-radius:8px;font-size:12px}
+  .modal-error[hidden]{display:none}
+  .edit-list{padding:6px 24px;overflow-y:auto;max-height:calc(86vh - 168px)}
+  .edit-row{display:flex;gap:12px;padding:16px 0;border-bottom:1px dashed var(--hair)}
+  .edit-row:last-child{border-bottom:none}
+  .edit-controls{flex:none;display:flex;flex-direction:column;gap:6px}
+  .edit-controls button{width:28px;height:28px;border-radius:8px;border:1px solid var(--hair);background:var(--paper);color:var(--ink);cursor:pointer;font-size:13px;font-family:var(--sans)}
+  .edit-controls button:disabled{opacity:.3;cursor:not-allowed}
+  .edit-fields{flex:1;min-width:0;display:flex;flex-direction:column;gap:8px}
+  .edit-row-head{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  .edit-type-tag{font-size:10px;letter-spacing:.08em;color:var(--gold);border:1px solid var(--gold-soft);border-radius:20px;padding:2px 9px;flex:none}
+  .stage-dot{width:10px;height:10px;border-radius:50%;flex:none}
+  .edit-fields input,.edit-fields textarea,.edit-fields select{
+    font-family:var(--sans);font-size:13.5px;color:var(--ink);
+    background:var(--paper);border:1px solid var(--hair);border-radius:8px;
+    padding:8px 10px;line-height:1.6;width:100%;
+  }
+  .edit-fields input.f-name{flex:1;width:auto;min-width:120px}
+  .edit-fields select.f-stage{flex:none;width:auto}
+  .edit-fields textarea{resize:vertical;font-family:var(--serif);white-space:pre-wrap}
+  .edit-hint{font-size:11px;color:var(--ink-soft)}
+  .edit-actions{display:flex;justify-content:flex-end;gap:10px;padding:14px 24px;border-top:1px solid var(--hair)}
+  .edit-actions button{font-size:13.5px;padding:9px 18px;border-radius:8px;cursor:pointer;font-weight:500;font-family:var(--sans)}
+  .btn-cancel{background:transparent;border:1px solid var(--hair);color:var(--ink)}
+  .btn-update{background:var(--gold);border:1px solid var(--gold);color:#1c1c1e}
+  .btn-update:disabled{opacity:.6;cursor:progress}
+
+  .toast{
+    position:fixed;left:50%;bottom:28px;transform:translateX(-50%) translateY(10px);
+    background:var(--ink);color:var(--paper);padding:10px 18px;border-radius:999px;
+    font-size:13px;opacity:0;pointer-events:none;transition:opacity .25s,transform .25s;
+    z-index:80;box-shadow:0 6px 20px rgba(0,0,0,.25);max-width:88vw;text-align:center;
+  }
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 </style>
 </head>
 <body>
 
-  <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()">
-    <span class="icon" id="themeIcon">🌙</span>
-    <span id="themeText">暗黑模式</span>
-  </button>
+  <div class="toolbar">
+    <button class="tbtn" id="themeToggle" onclick="toggleTheme()">
+      <span class="icon" id="themeIcon">🌙</span>
+      <span id="themeText">暗黑模式</span>
+    </button>
+    <button class="tbtn" id="editBtn" onclick="openEditDialog()">
+      <span class="icon">✏️</span>
+      <span>改動順序</span>
+    </button>
+  </div>
 
 <div class="wrap">
 
@@ -137,164 +189,7 @@
     <h2>程序 · 歌詞</h2>
   </div>
 
-  <!-- 01 宣召 -->
-  <div class="handoff seq">
-    <div class="handoff-icon">01</div>
-    <div class="handoff-body">
-      <div class="handoff-badge">宣召</div>
-      <p class="handoff-line">「我知道我的救贖主活著，末後他必站在塵土上。我這皮肉滅絕之後，我必在肉體之外得見上帝」</p>
-      <p class="handoff-note">約伯記 19:25–26</p>
-    </div>
-  </div>
-
-  <!-- 02 愛使我們相聚一起 -->
-  <div class="song seq" style="--stage:var(--s1)">
-    <div class="seq-num">02</div>
-    <div class="song-name">愛使我們相聚一起</div>
-    <div class="lyrics">
-      <div class="lyr-lab">Chorus</div>
-      <p><span class="lc-chorus">愛</span>使我們相聚一起
-愛使我們相聚一起
-上帝的愛使我們合而為一
-愛使我們相聚一起</p>
-      <div class="lyr-lab">Verse</div>
-      <p><span class="lc-verse">讓</span>我們一起歌唱
-讓主愛從我們開始
-我們手拉手讓世界知道
-愛使我們相聚一起</p>
-    </div>
-  </div>
-
-  <!-- 03 信息 -->
-  <div class="handoff seq">
-    <div class="handoff-icon">03</div>
-    <div class="handoff-body">
-      <div class="handoff-badge">信息</div>
-      <p class="handoff-line">獨特的你、唯一的你</p>
-      <p class="handoff-note">陳小恩傳道 &amp; 黃國堯牧師</p>
-    </div>
-  </div>
-
-  <!-- 04 你是唯一 -->
-  <div class="song seq" style="--stage:var(--s2)">
-    <div class="seq-num">04</div>
-    <div class="song-name">你是唯一</div>
-    <div class="lyrics">
-      <div class="lyr-lab">Verse</div>
-      <p><span class="lc-verse">世</span>界有你會更美好
-沒有人能像你
-神的眼中你是寶貝
-在世上你就是唯一</p>
-      <div class="lyr-lab">Chorus</div>
-      <p><span class="lc-chorus">你</span>是如此如此特別　在上帝的眼中
-沒有人能取代你
-
-你是如此如此特別　在上帝的眼中
-沒有人能取代你</p>
-    </div>
-  </div>
-
-  <!-- 05 分享 -->
-  <div class="handoff seq">
-    <div class="handoff-icon">05</div>
-    <div class="handoff-body">
-      <div class="handoff-badge">分享時間</div>
-      <p class="handoff-line">心目中的師母 / 對師母的第一印象</p>
-    </div>
-  </div>
-
-  <!-- 06 最珍貴的角落 -->
-  <div class="song seq" style="--stage:var(--s3)">
-    <div class="seq-num">06</div>
-    <div class="song-name">最珍貴的角落</div>
-    <div class="lyrics">
-      <div class="lyr-lab">Verse 1</div>
-      <p><span class="lc-verse">謝</span>謝你璨爛笑容
-照亮我的天空
-謝謝你分享心情
-把我放在你心中</p>
-      <div class="lyr-lab">Verse 2</div>
-      <p><span class="lc-verse">夜</span>裡有時為寒冷
-你我生根同暖土
-友情是最亮的星
-我的生命從此美麗</p>
-      <div class="lyr-lab">Chorus</div>
-      <p><span class="lc-chorus">當</span>你被花朵包圍盡情歡欣
-我帶春風使你舞其中
-當你正走在坎坷路
-我會伴你在左右
-
-一起向藍天歡呼
-向白雲招手
-我們要一起笑一起哭
-千萬人中有個人懂我
-你有最珍貴的角落</p>
-    </div>
-  </div>
-
-  <!-- 07 分享 -->
-  <div class="handoff seq">
-    <div class="handoff-icon">07</div>
-    <div class="handoff-body">
-      <div class="handoff-badge">分享時間</div>
-      <p class="handoff-line">與師母互動裡印象最深的事</p>
-    </div>
-  </div>
-
-  <!-- 08 相約在主裡 -->
-  <div class="song seq" style="--stage:var(--s4)">
-    <div class="seq-num">08</div>
-    <div class="song-name">相約在主裡</div>
-    <div class="lyrics">
-      <div class="lyr-lab">Verse</div>
-      <p><span class="lc-verse">我</span>們相約在主裡
-共同生活常相憶
-我們相約在主裡
-將來有一天要再歡聚</p>
-      <div class="lyr-lab">Chorus</div>
-      <p><span class="lc-chorus">在</span>主裡祝福你
-我在主裡思念你
-願主帶領你進入迦南地
-
-在主裡祝福你
-我在主裡思念你
-願主賜給你
-豐富的奶與蜜
-
-你可不要忘記
-我們相約在主裡
-記得我們相約在主裡</p>
-    </div>
-  </div>
-
-  <!-- 09 終有盡頭 -->
-  <div class="handoff seq">
-    <div class="handoff-icon">09</div>
-    <div class="handoff-body">
-      <div class="handoff-badge">程序</div>
-      <p class="handoff-line">終有盡頭</p>
-    </div>
-  </div>
-
-  <!-- 10 代禱與祝福 -->
-  <div class="handoff seq">
-    <div class="handoff-icon">10</div>
-    <div class="handoff-body">
-      <div class="handoff-badge">代禱與祝福</div>
-      <p class="handoff-line">代禱與祝福</p>
-      <p class="handoff-note">陳小恩傳道 &amp; 黃國堯牧師</p>
-    </div>
-  </div>
-
-  <!-- 11 結束禱告 -->
-  <div class="handoff seq">
-    <div class="handoff-icon">11</div>
-    <div class="handoff-body">
-      <div class="handoff-badge">結束禱告</div>
-      <p class="handoff-line">「在至高之處榮耀歸於神，在地上平安歸與祂所喜悅的人」</p>
-      <p class="handoff-note">路加福音 2:14</p>
-    </div>
-  </div>
+  <div id="seqRoot"></div>
 
   <footer>
     <p>黃彭淑嫻師母追思紀念會　·　2026 / 08 / 23</p>
@@ -302,7 +197,267 @@
 
 </div>
 
+<dialog id="editDialog">
+  <div class="edit-head">
+    <h3>調整程序順序與內容</h3>
+    <p>用 ↑↓ 調整每一項的先後順序；歌詞用「## 段落名稱」標記每段(例如 <code>## Verse</code>、<code>## Chorus</code>)，段落之間空一行分隔。按「更新」後會直接儲存並套用。</p>
+  </div>
+  <div class="modal-error" id="modalError" hidden></div>
+  <div class="edit-list" id="editList"></div>
+  <div class="edit-actions">
+    <button type="button" class="btn-cancel" id="cancelBtn">取消</button>
+    <button type="button" class="btn-update" id="updateBtn">更新</button>
+  </div>
+</dialog>
+
 <script>
+  var STAGE_LABEL = {s1:'① 暖金',s2:'② 霧藍',s3:'③ 暖陶',s4:'④ 靛藍'};
+
+  var DEFAULT_ITEMS = [
+    {id:'i1', type:'handoff', badge:'宣召', line:'「我知道我的救贖主活著，末後他必站在塵土上。我這皮肉滅絕之後，我必在肉體之外得見上帝」', note:'約伯記 19:25–26'},
+    {id:'i2', type:'song', stage:'s1', name:'愛使我們相聚一起', body:
+'## Chorus\n愛使我們相聚一起\n愛使我們相聚一起\n上帝的愛使我們合而為一\n愛使我們相聚一起\n\n## Verse\n讓我們一起歌唱\n讓主愛從我們開始\n我們手拉手讓世界知道\n愛使我們相聚一起'},
+    {id:'i3', type:'handoff', badge:'信息', line:'獨特的你、唯一的你', note:'陳小恩傳道 & 黃國堯牧師'},
+    {id:'i4', type:'song', stage:'s2', name:'你是唯一', body:
+'## Verse\n世界有你會更美好\n沒有人能像你\n神的眼中你是寶貝\n在世上你就是唯一\n\n## Chorus\n你是如此如此特別　在上帝的眼中\n沒有人能取代你\n\n你是如此如此特別　在上帝的眼中\n沒有人能取代你'},
+    {id:'i5', type:'handoff', badge:'分享時間', line:'心目中的師母 / 對師母的第一印象'},
+    {id:'i6', type:'song', stage:'s3', name:'最珍貴的角落', body:
+'## Verse 1\n謝謝你璨爛笑容\n照亮我的天空\n謝謝你分享心情\n把我放在你心中\n\n## Verse 2\n夜裡有時為寒冷\n你我生根同暖土\n友情是最亮的星\n我的生命從此美麗\n\n## Chorus\n當你被花朵包圍盡情歡欣\n我帶春風使你舞其中\n當你正走在坎坷路\n我會伴你在左右\n\n一起向藍天歡呼\n向白雲招手\n我們要一起笑一起哭\n千萬人中有個人懂我\n你有最珍貴的角落'},
+    {id:'i7', type:'handoff', badge:'分享時間', line:'與師母互動裡印象最深的事'},
+    {id:'i8', type:'song', stage:'s4', name:'相約在主裡', body:
+'## Verse\n我們相約在主裡\n共同生活常相憶\n我們相約在主裡\n將來有一天要再歡聚\n\n## Chorus\n在主裡祝福你\n我在主裡思念你\n願主帶領你進入迦南地\n\n在主裡祝福你\n我在主裡思念你\n願主賜給你\n豐富的奶與蜜\n\n你可不要忘記\n我們相約在主裡\n記得我們相約在主裡'},
+    {id:'i9', type:'handoff', badge:'程序', line:'終有盡頭'},
+    {id:'i10', type:'handoff', badge:'代禱與祝福', line:'代禱與祝福', note:'陳小恩傳道 & 黃國堯牧師'},
+    {id:'i11', type:'handoff', badge:'結束禱告', line:'「在至高之處榮耀歸於神，在地上平安歸與祂所喜悅的人」', note:'路加福音 2:14'}
+  ];
+
+  var ITEMS = DEFAULT_ITEMS;
+  var draftItems = null;
+  var artifactApi = null;
+  var readOnly = false;
+
+  function escapeHtml(s){
+    return String(s == null ? '' : s).replace(/[&<>"']/g, function(c){
+      return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
+    });
+  }
+
+  function renderSongBody(body){
+    var blocks = String(body || '').split(/\n(?=##\s)/).map(function(b){ return b.trim(); }).filter(Boolean);
+    if(!blocks.length) return '';
+    return blocks.map(function(block){
+      var m = block.match(/^##\s*(.+?)\s*\n([\s\S]*)$/);
+      var label = m ? m[1] : '';
+      var text = (m ? m[2] : block).replace(/^\n+/, '');
+      var isChorus = /chorus/i.test(label);
+      var first = text.charAt(0);
+      var rest = text.slice(1);
+      return '<div class="lyr-lab">' + escapeHtml(label) + '</div>\n' +
+        '<p><span class="' + (isChorus ? 'lc-chorus' : 'lc-verse') + '">' + escapeHtml(first) + '</span>' + escapeHtml(rest) + '</p>';
+    }).join('\n');
+  }
+
+  function renderItem(item, num){
+    var numStr = String(num).length < 2 ? '0' + num : String(num);
+    if(item.type === 'song'){
+      return '<div class="song seq" style="--stage:var(--' + item.stage + ')">' +
+        '<div class="seq-num">' + numStr + '</div>' +
+        '<div class="song-name">' + escapeHtml(item.name) + '</div>' +
+        '<div class="lyrics">' + renderSongBody(item.body) + '</div>' +
+        '</div>';
+    }
+    return '<div class="handoff seq">' +
+      '<div class="handoff-icon">' + numStr + '</div>' +
+      '<div class="handoff-body">' +
+      '<div class="handoff-badge">' + escapeHtml(item.badge) + '</div>' +
+      '<p class="handoff-line">' + escapeHtml(item.line) + '</p>' +
+      (item.note ? '<p class="handoff-note">' + escapeHtml(item.note) + '</p>' : '') +
+      '</div></div>';
+  }
+
+  function renderSeq(){
+    document.getElementById('seqRoot').innerHTML = ITEMS.map(renderItem).join('\n');
+  }
+
+  function renderEditRow(item, idx){
+    var controls = '<div class="edit-controls">' +
+      '<button type="button" class="mv-up" title="上移"' + (idx === 0 ? ' disabled' : '') + '>↑</button>' +
+      '<button type="button" class="mv-down" title="下移"' + (idx === draftItems.length - 1 ? ' disabled' : '') + '>↓</button>' +
+      '</div>';
+    if(item.type === 'song'){
+      var options = ['s1','s2','s3','s4'].map(function(s){
+        return '<option value="' + s + '"' + (item.stage === s ? ' selected' : '') + '>' + STAGE_LABEL[s] + '</option>';
+      }).join('');
+      return '<div class="edit-row" data-idx="' + idx + '" data-type="song">' + controls +
+        '<div class="edit-fields">' +
+        '<div class="edit-row-head">' +
+        '<span class="edit-type-tag">詩歌</span>' +
+        '<span class="stage-dot" style="background:var(--' + item.stage + ')"></span>' +
+        '<input class="f-name" value="' + escapeHtml(item.name) + '" placeholder="歌名">' +
+        '<select class="f-stage">' + options + '</select>' +
+        '</div>' +
+        '<textarea class="f-body" rows="8" spellcheck="false">' + escapeHtml(item.body) + '</textarea>' +
+        '<p class="edit-hint">用「## 段落名稱」標記每段(例如 ## Verse、## Chorus)，段落之間空一行。</p>' +
+        '</div></div>';
+    }
+    return '<div class="edit-row" data-idx="' + idx + '" data-type="handoff">' + controls +
+      '<div class="edit-fields">' +
+      '<div class="edit-row-head">' +
+      '<span class="edit-type-tag">程序</span>' +
+      '<input class="f-badge" value="' + escapeHtml(item.badge || '') + '" placeholder="標籤(如：分享時間)">' +
+      '</div>' +
+      '<textarea class="f-line" rows="2" spellcheck="false">' + escapeHtml(item.line || '') + '</textarea>' +
+      '<input class="f-note" value="' + escapeHtml(item.note || '') + '" placeholder="附註(選填，如：陳小恩傳道)">' +
+      '</div></div>';
+  }
+
+  function renderEditList(){
+    document.getElementById('editList').innerHTML = draftItems.map(renderEditRow).join('\n');
+  }
+
+  function syncDraftFromDom(){
+    var rows = document.querySelectorAll('#editList .edit-row');
+    rows.forEach(function(row){
+      var idx = Number(row.dataset.idx);
+      var item = draftItems[idx];
+      if(!item) return;
+      if(item.type === 'song'){
+        item.name = row.querySelector('.f-name').value;
+        item.stage = row.querySelector('.f-stage').value;
+        item.body = row.querySelector('.f-body').value;
+      } else {
+        item.badge = row.querySelector('.f-badge').value;
+        item.line = row.querySelector('.f-line').value;
+        item.note = row.querySelector('.f-note').value;
+      }
+    });
+  }
+
+  function moveDraftItem(fromIdx, delta){
+    syncDraftFromDom();
+    var toIdx = fromIdx + delta;
+    if(toIdx < 0 || toIdx >= draftItems.length) return;
+    var moved = draftItems.splice(fromIdx, 1)[0];
+    draftItems.splice(toIdx, 0, moved);
+    renderEditList();
+  }
+
+  function showToast(msg){
+    var el = document.getElementById('toast');
+    if(!el){
+      el = document.createElement('div');
+      el.id = 'toast';
+      el.className = 'toast';
+      document.body.appendChild(el);
+    }
+    el.textContent = msg;
+    el.classList.add('show');
+    clearTimeout(el._hideTimer);
+    el._hideTimer = setTimeout(function(){ el.classList.remove('show'); }, 3200);
+  }
+
+  function showModalError(msg){
+    var el = document.getElementById('modalError');
+    el.textContent = msg;
+    el.hidden = false;
+  }
+
+  function hideModalError(){
+    document.getElementById('modalError').hidden = true;
+  }
+
+  window.openEditDialog = function(){
+    draftItems = JSON.parse(JSON.stringify(ITEMS));
+    hideModalError();
+    renderEditList();
+    document.getElementById('editDialog').showModal();
+  };
+
+  document.addEventListener('DOMContentLoaded', function(){
+    var dialog = document.getElementById('editDialog');
+    var editList = document.getElementById('editList');
+    var updateBtn = document.getElementById('updateBtn');
+    var cancelBtn = document.getElementById('cancelBtn');
+
+    editList.addEventListener('click', function(e){
+      var btn = e.target.closest('button');
+      if(!btn) return;
+      var row = btn.closest('.edit-row');
+      var idx = Number(row.dataset.idx);
+      if(btn.classList.contains('mv-up')) moveDraftItem(idx, -1);
+      else if(btn.classList.contains('mv-down')) moveDraftItem(idx, 1);
+    });
+
+    cancelBtn.addEventListener('click', function(){
+      dialog.close();
+    });
+
+    dialog.addEventListener('cancel', function(){
+      draftItems = null;
+    });
+
+    updateBtn.addEventListener('click', async function(){
+      syncDraftFromDom();
+      hideModalError();
+      updateBtn.disabled = true;
+      updateBtn.textContent = '更新中…';
+      try{
+        if(!artifactApi && window.claude){
+          try{ artifactApi = await window.claude.use('artifact'); }catch(e){ artifactApi = null; }
+        }
+        if(artifactApi && !readOnly){
+          await artifactApi.publish({ 'data/items.json': JSON.stringify(draftItems, null, 2) });
+          ITEMS = draftItems;
+          renderSeq();
+          dialog.close();
+          showToast('已更新並儲存');
+        } else {
+          ITEMS = draftItems;
+          renderSeq();
+          dialog.close();
+          showToast('已套用(此檢視無法儲存，重新整理後會還原)');
+        }
+      }catch(err){
+        var code = err && err.code;
+        if(code === 'not_writer' || code === 'not_granted'){
+          readOnly = true;
+          document.getElementById('editBtn').style.display = 'none';
+          showModalError('此檢視為唯讀，無法儲存變更。');
+        } else if(code === 'conflict'){
+          showModalError('有其他更新已送出，頁面即將重新整理。');
+        } else if(code === 'rate_limited'){
+          showModalError('更新太頻繁，請稍等片刻再試一次。');
+        } else if(code === 'too_large'){
+          showModalError('內容太多，請縮減後再試。');
+        } else {
+          showModalError('更新失敗，請稍後再試。');
+        }
+      }finally{
+        updateBtn.disabled = false;
+        updateBtn.textContent = '更新';
+      }
+    });
+  });
+
+  async function loadItems(){
+    try{
+      var res = await fetch('data/items.json', { cache: 'no-store' });
+      if(res.ok){
+        var data = await res.json();
+        if(Array.isArray(data) && data.length) return data;
+      }
+    }catch(e){}
+    return DEFAULT_ITEMS;
+  }
+
+  (async function init(){
+    ITEMS = await loadItems();
+    renderSeq();
+    if(window.claude){
+      try{ artifactApi = await window.claude.use('artifact'); }catch(e){ artifactApi = null; }
+    }
+  })();
+
   (function(){
     syncButton(document.documentElement.getAttribute('data-theme'));
 

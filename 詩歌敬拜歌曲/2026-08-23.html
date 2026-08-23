@@ -25,6 +25,7 @@
     --gold:#B4924F;
     --gold-soft:#EAE0C6;
     --danger:#C0392B;
+    --pill-ink:#6d5322;
     --s1:#B4924F;  /* 愛使我們相聚一起 · 暖金 */
     --s2:#5C7A9E;  /* 你是唯一 · 霧藍 */
     --s3:#BE875A;  /* 最珍貴的角落 · 暖陶 */
@@ -46,6 +47,7 @@
     --gold:#D2B876;
     --gold-soft:#4A4023;
     --danger:#E0685A;
+    --pill-ink:#E8D9AE;
     --s1:#C7A768;
     --s2:#7B98BB;
     --s3:#CE9868;
@@ -94,6 +96,23 @@
   }
   .handoff-line{font-family:var(--serif);font-size:14.5px;line-height:1.65;color:var(--ink);font-weight:700;white-space:pre-wrap}
   .handoff-note{font-size:11px;color:var(--ink-soft);margin-top:5px;line-height:1.6}
+
+  /* 每首詩歌下方的 YouTube／樂譜下載連結 */
+  .song-links{margin-top:20px;padding-top:14px;border-top:1px dashed var(--hair);display:flex;flex-wrap:wrap;gap:8px}
+  .link-tag{
+    display:inline-block;text-decoration:none;word-break:keep-all;
+    background:color-mix(in srgb, var(--gold) 13%, transparent);
+    color:var(--pill-ink);
+    border:1px solid color-mix(in srgb, var(--gold) 10%, transparent);
+    border-radius:6px;padding:3px 12px;font-size:12.5px;font-weight:500;
+    transition:background-color .15s,color .15s;
+  }
+  .link-tag:hover{
+    background:color-mix(in srgb, var(--gold) 26%, transparent);
+    border-color:color-mix(in srgb, var(--gold) 38%, transparent);
+  }
+  .link-tag .sheet-tag{font-size:.78em;opacity:.75}
+  .footer-links{margin-top:10px}
 
   /* 併入同一個框的項目(例如歌曲後接著的程序段落) */
   .coda{margin-top:22px;border-top:1px dashed var(--hair);padding-top:14px;display:flex;flex-direction:column;gap:10px}
@@ -232,6 +251,7 @@
 
   <footer>
     <p>黃彭淑嫻師母追思紀念會　·　2026 / 08 / 23</p>
+    <p class="footer-links"><a class="link-tag" href="https://drive.google.com/open?id=1Vo1nZN4j5C_8WDGmkROUxna0MlnWOf3g&usp=drive_fs" target="_blank" rel="noopener">全部歌譜 <span class="sheet-tag">(Google Drive)</span></a></p>
   </footer>
 
 </div>
@@ -259,16 +279,24 @@
 
   var DEFAULT_ITEMS = [
     {id:'i1', type:'handoff', badge:'宣召', line:'「我知道我的救贖主活著，末後他必站在塵土上。我這皮肉滅絕之後，我必在肉體之外得見上帝」', note:'約伯記 19:25–26'},
-    {id:'i2', type:'song', stage:'s1', name:'愛使我們相聚一起', order:'C–V',  body:
+    {id:'i2', type:'song', stage:'s1', name:'愛使我們相聚一起', order:'C–V',
+     youtube:'https://www.youtube.com/watch?v=phOcOCMspAk',
+     sheet:'https://drive.google.com/open?id=16O_8_wby07a3iTl8KJTc7GfEzxbcInnq&usp=drive_fs', body:
 '## Chorus\n愛使我們相聚一起\n愛使我們相聚一起\n上帝的愛使我們合而為一\n愛使我們相聚一起\n\n## Verse\n讓我們一起高聲唱\n讓主愛從我們開始\n我們手拉手讓世界知道\n愛使我們相聚一起'},
     {id:'i3', type:'handoff', badge:'信息', line:'獨特的你、唯一的你', note:'陳小恩傳道 & 黃國堯牧師'},
-    {id:'i4', type:'song', stage:'s2', name:'你是唯一', order:'V–C–C', body:
+    {id:'i4', type:'song', stage:'s2', name:'你是唯一', order:'V–C–C',
+     youtube:'https://www.youtube.com/watch?v=PmRR-lcLj0U',
+     sheet:'https://drive.google.com/open?id=1YOirYDfS7dpgJcxR2aiAVKAGVAOXxNRP&usp=drive_fs', body:
 '## Verse\n世界有你會更美好\n沒有人能像你\n神的眼中　你是寶貝\n在這世界　你就是唯一\n\n## Chorus\n噢～你是如此如此特別　在上帝的眼中\n沒有人能取代你\n\n噢～你是如此如此特別　在上帝的眼中\n沒有人能取代你'},
     {id:'i5', type:'handoff', badge:'分享時間', line:'心目中的師母 / 對師母的第一印象'},
-    {id:'i6', type:'song', stage:'s3', name:'最珍貴的角落', order:'V1–V2–C', body:
+    {id:'i6', type:'song', stage:'s3', name:'最珍貴的角落', order:'V1–V2–C',
+     youtube:'https://www.youtube.com/watch?v=1jlQz4s3KP8',
+     sheet:'https://drive.google.com/open?id=1m9qu-wC5J1W9nWzFX7sXOBTiJpFT7i9g&usp=drive_fs', body:
 '## Verse 1\n謝謝你璨爛笑容\n照亮我的天空\n謝謝你分享心情\n把我放在你心中\n\n## Verse 2\n夜裡有時為寒冷\n你我生根同暖土\n友情是最亮的星\n我的生命從此美麗\n\n## Chorus\n當你被花朵包圍盡情歡欣\n我帶春風使你舞其中\n當你正走在坎坷路\n我會伴你在左右\n\n一起向藍天歡呼\n向白雲招手\n我們要一起笑一起哭\n千萬人中有個人懂我\n你有最珍貴的角落'},
     {id:'i7', type:'handoff', badge:'分享時間', line:'與師母互動裡印象最深的事'},
-    {id:'i8', type:'song', stage:'s4', name:'相約在主裡', order:'V1–V2–C', body:
+    {id:'i8', type:'song', stage:'s4', name:'相約在主裡', order:'V1–V2–C',
+     youtube:'https://www.youtube.com/watch?v=Sjfw9ZxXGg8',
+     sheet:'https://drive.google.com/open?id=1ty1qPTUZVMokgJz5Bs5KzQ2Cz2cbgrzB&usp=drive_fs', body:
 '## Verse 1\n我們相約　在主裡\n共同生活　常相憶\n我們相約　在主裡\n將來有一天　要再歡聚\n\n## Verse 2\n回憶過去　日子裡\n縱有歡笑　也有淚滴\n捨不得要　告訴你\n在主的愛裡　我等著你\n\n## Chorus\n在主裡祝福你\n我在主裡思念你\n願主帶領你　進入迦南地\n\n在主裡祝福你\n我在主裡思念你\n願主賜給你\n豐富的奶與蜜\n\n你可不要忘記\n我們相約在主裡\n記得我們相約　在主裡'},
     {id:'i9', type:'handoff', badge:'程序', line:'終有盡頭'},
     {id:'i10', type:'handoff', badge:'代禱與祝福', line:'代禱與祝福', note:'陳小恩傳道 & 黃國堯牧師', mergeUp:true},
@@ -333,6 +361,13 @@
     return '( ' + num + ' ) ' + escapeHtml(name);
   }
 
+  function renderSongLinks(item){
+    var links = [];
+    if(item.youtube) links.push('<a class="link-tag" href="' + escapeHtml(item.youtube) + '" target="_blank" rel="noopener">YouTube</a>');
+    if(item.sheet) links.push('<a class="link-tag" href="' + escapeHtml(item.sheet) + '" target="_blank" rel="noopener">' + escapeHtml(item.name) + ' <span class="sheet-tag">(樂譜)</span></a>');
+    return links.length ? '<div class="song-links">' + links.join('') + '</div>' : '';
+  }
+
   function renderGroup(group, songNum){
     var main = group.main;
     var codaHtml = group.extra.length ? '<div class="coda">' + group.extra.map(renderCodaItem).join('') + '</div>' : '';
@@ -342,6 +377,7 @@
         label + '" data-order="' + escapeHtml(main.order || '') + '" data-stage="' + main.stage + '">' +
         '<div class="song-name">' + label + '</div>' +
         '<div class="lyrics">' + renderSongBody(main.body) + '</div>' +
+        renderSongLinks(main) +
         codaHtml +
         '</div>';
     }
@@ -388,6 +424,8 @@
         '</div>' +
         '<textarea class="f-body" rows="8" spellcheck="false">' + escapeHtml(item.body) + '</textarea>' +
         '<p class="edit-hint">用「## 段落名稱」標記每段(例如 ## Verse、## Chorus)，段落之間空一行；「演唱順序」會顯示在右下角浮動面板。</p>' +
+        '<input class="f-youtube" value="' + escapeHtml(item.youtube || '') + '" placeholder="YouTube 連結(選填)">' +
+        '<input class="f-sheet" value="' + escapeHtml(item.sheet || '') + '" placeholder="樂譜下載連結(選填)">' +
         '</div></div>';
     }
     return '<div class="edit-row" data-idx="' + idx + '" data-type="handoff">' + controls +
@@ -417,6 +455,8 @@
         item.stage = row.querySelector('.f-stage').value;
         item.order = row.querySelector('.f-order').value;
         item.body = row.querySelector('.f-body').value;
+        item.youtube = row.querySelector('.f-youtube').value;
+        item.sheet = row.querySelector('.f-sheet').value;
       } else {
         item.badge = row.querySelector('.f-badge').value;
         item.line = row.querySelector('.f-line').value;

@@ -128,7 +128,7 @@
 
   @media print{body{padding:0}}
 
-  /* 右上角工具列：主題切換 + 改動順序 */
+  /* 右上角工具列：主題切換 */
   .toolbar{position:fixed;top:20px;right:20px;z-index:50;display:flex;gap:10px}
   .tbtn{
     display:flex;align-items:center;gap:8px;
@@ -146,53 +146,6 @@
     .lyrics p{font-size:24px;line-height:1.55}
     .handoff-line{font-size:13.5px}
   }
-
-  /* 改動順序 —— 彈窗 */
-  dialog#editDialog{
-    width:min(720px,92vw);max-height:86vh;border:none;border-radius:16px;
-    padding:0;background:var(--card);color:var(--ink);
-    box-shadow:0 20px 60px rgba(0,0,0,.35);
-  }
-  dialog#editDialog::backdrop{background:rgba(10,10,10,.55)}
-  .edit-head{padding:20px 24px 14px;border-bottom:1px solid var(--hair)}
-  .edit-head h3{font-family:var(--serif);font-size:17px;font-weight:700}
-  .edit-head p{font-size:12px;color:var(--ink-soft);margin-top:6px;line-height:1.7}
-  .modal-error{margin:12px 24px 0;padding:9px 14px;background:color-mix(in srgb, var(--danger) 14%, transparent);border:1px solid color-mix(in srgb, var(--danger) 32%, transparent);color:var(--danger);border-radius:8px;font-size:12px}
-  .modal-error[hidden]{display:none}
-  .edit-list{padding:6px 24px;overflow-y:auto;max-height:calc(86vh - 168px)}
-  .edit-row{display:flex;gap:12px;padding:16px 0;border-bottom:1px dashed var(--hair)}
-  .edit-row:last-child{border-bottom:none}
-  .edit-controls{flex:none;display:flex;flex-direction:column;gap:6px}
-  .edit-controls button{width:28px;height:28px;border-radius:8px;border:1px solid var(--hair);background:var(--paper);color:var(--ink);cursor:pointer;font-size:13px;font-family:var(--sans)}
-  .edit-controls button:disabled{opacity:.3;cursor:not-allowed}
-  .edit-fields{flex:1;min-width:0;display:flex;flex-direction:column;gap:8px}
-  .edit-row-head{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-  .edit-type-tag{font-size:10px;letter-spacing:.08em;color:var(--gold);border:1px solid var(--gold-soft);border-radius:20px;padding:2px 9px;flex:none}
-  .stage-dot{width:10px;height:10px;border-radius:50%;flex:none}
-  .merge-toggle{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--ink-soft);flex:none;white-space:nowrap;margin-left:auto}
-  .merge-toggle input{width:auto}
-  .edit-fields input,.edit-fields textarea,.edit-fields select{
-    font-family:var(--sans);font-size:13.5px;color:var(--ink);
-    background:var(--paper);border:1px solid var(--hair);border-radius:8px;
-    padding:8px 10px;line-height:1.6;width:100%;
-  }
-  .edit-fields input.f-name{flex:1;width:auto;min-width:120px}
-  .edit-fields select.f-stage{flex:none;width:auto}
-  .edit-fields textarea{resize:vertical;font-family:var(--serif);white-space:pre-wrap}
-  .edit-hint{font-size:11px;color:var(--ink-soft)}
-  .edit-actions{display:flex;justify-content:flex-end;gap:10px;padding:14px 24px;border-top:1px solid var(--hair)}
-  .edit-actions button{font-size:13.5px;padding:9px 18px;border-radius:8px;cursor:pointer;font-weight:500;font-family:var(--sans)}
-  .btn-cancel{background:transparent;border:1px solid var(--hair);color:var(--ink)}
-  .btn-update{background:var(--gold);border:1px solid var(--gold);color:#1c1c1e}
-  .btn-update:disabled{opacity:.6;cursor:progress}
-
-  .toast{
-    position:fixed;left:50%;bottom:28px;transform:translateX(-50%) translateY(10px);
-    background:var(--ink);color:var(--paper);padding:10px 18px;border-radius:999px;
-    font-size:13px;opacity:0;pointer-events:none;transition:opacity .25s,transform .25s;
-    z-index:80;box-shadow:0 6px 20px rgba(0,0,0,.25);max-width:88vw;text-align:center;
-  }
-  .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 
   /* 浮動歌詞提示面板：跟隨捲動顯示目前這首歌的演唱順序，毛玻璃 + 階段色染色 */
   .order-float{
@@ -228,10 +181,6 @@
       <span class="icon" id="themeIcon">🌙</span>
       <span id="themeText">暗黑模式</span>
     </button>
-    <button class="tbtn" id="editBtn" onclick="openEditDialog()">
-      <span class="icon">✏️</span>
-      <span>改動順序</span>
-    </button>
   </div>
 
 <div class="wrap">
@@ -261,22 +210,7 @@
   <div class="of-code" id="ofCode"></div>
 </div>
 
-<dialog id="editDialog">
-  <div class="edit-head">
-    <h3>調整程序順序與內容</h3>
-    <p>用 ↑↓ 調整每一項的先後順序；歌詞用「## 段落名稱」標記每段(例如 <code>## Verse</code>、<code>## Chorus</code>)，段落之間空一行分隔。詩歌的「演唱順序代碼」會顯示在右下角浮動面板上。按「更新」後會直接儲存並套用。</p>
-  </div>
-  <div class="modal-error" id="modalError" hidden></div>
-  <div class="edit-list" id="editList"></div>
-  <div class="edit-actions">
-    <button type="button" class="btn-cancel" id="cancelBtn">取消</button>
-    <button type="button" class="btn-update" id="updateBtn">更新</button>
-  </div>
-</dialog>
-
 <script>
-  var STAGE_LABEL = {s1:'① 暖金',s2:'② 霧藍',s3:'③ 暖陶',s4:'④ 靛藍'};
-
   var DEFAULT_ITEMS = [
     {id:'i1', type:'handoff', badge:'宣召', line:'「我知道我的救贖主活著，末後他必站在塵土上。我這皮肉滅絕之後，我必在肉體之外得見上帝」', note:'約伯記 19:25–26'},
     {id:'i2', type:'song', stage:'s1', name:'愛使我們相聚一起', order:'C–V',
@@ -304,9 +238,6 @@
   ];
 
   var ITEMS = DEFAULT_ITEMS;
-  var draftItems = null;
-  var artifactApi = null;
-  var readOnly = false;
 
   function escapeHtml(s){
     return String(s == null ? '' : s).replace(/[&<>"']/g, function(c){
@@ -401,196 +332,7 @@
     if(window.__refreshOrderFloat) window.__refreshOrderFloat();
   }
 
-  function renderEditRow(item, idx){
-    var controls = '<div class="edit-controls">' +
-      '<button type="button" class="mv-up" title="上移"' + (idx === 0 ? ' disabled' : '') + '>↑</button>' +
-      '<button type="button" class="mv-down" title="下移"' + (idx === draftItems.length - 1 ? ' disabled' : '') + '>↓</button>' +
-      '</div>';
-    var mergeToggle = '<label class="merge-toggle"' + (idx === 0 ? ' style="display:none"' : '') + '>' +
-      '<input type="checkbox" class="f-mergeup"' + (item.mergeUp ? ' checked' : '') + '>併入上一格</label>';
-    if(item.type === 'song'){
-      var options = ['s1','s2','s3','s4'].map(function(s){
-        return '<option value="' + s + '"' + (item.stage === s ? ' selected' : '') + '>' + STAGE_LABEL[s] + '</option>';
-      }).join('');
-      return '<div class="edit-row" data-idx="' + idx + '" data-type="song">' + controls +
-        '<div class="edit-fields">' +
-        '<div class="edit-row-head">' +
-        '<span class="edit-type-tag">詩歌</span>' +
-        '<span class="stage-dot" style="background:var(--' + item.stage + ')"></span>' +
-        '<input class="f-name" value="' + escapeHtml(item.name) + '" placeholder="歌名">' +
-        '<select class="f-stage">' + options + '</select>' +
-        '<input class="f-order" value="' + escapeHtml(item.order || '') + '" placeholder="演唱順序，如 V-C-V-C" style="max-width:170px">' +
-        mergeToggle +
-        '</div>' +
-        '<textarea class="f-body" rows="8" spellcheck="false">' + escapeHtml(item.body) + '</textarea>' +
-        '<p class="edit-hint">用「## 段落名稱」標記每段(例如 ## Verse、## Chorus)，段落之間空一行；「演唱順序」會顯示在右下角浮動面板。</p>' +
-        '<input class="f-youtube" value="' + escapeHtml(item.youtube || '') + '" placeholder="YouTube 連結(選填)">' +
-        '<input class="f-sheet" value="' + escapeHtml(item.sheet || '') + '" placeholder="樂譜下載連結(選填)">' +
-        '</div></div>';
-    }
-    return '<div class="edit-row" data-idx="' + idx + '" data-type="handoff">' + controls +
-      '<div class="edit-fields">' +
-      '<div class="edit-row-head">' +
-      '<span class="edit-type-tag">程序</span>' +
-      '<input class="f-badge" value="' + escapeHtml(item.badge || '') + '" placeholder="標籤(如：分享時間)">' +
-      mergeToggle +
-      '</div>' +
-      '<textarea class="f-line" rows="2" spellcheck="false">' + escapeHtml(item.line || '') + '</textarea>' +
-      '<input class="f-note" value="' + escapeHtml(item.note || '') + '" placeholder="附註(選填，如：陳小恩傳道)">' +
-      '</div></div>';
-  }
-
-  function renderEditList(){
-    document.getElementById('editList').innerHTML = draftItems.map(renderEditRow).join('\n');
-  }
-
-  function syncDraftFromDom(){
-    var rows = document.querySelectorAll('#editList .edit-row');
-    rows.forEach(function(row){
-      var idx = Number(row.dataset.idx);
-      var item = draftItems[idx];
-      if(!item) return;
-      if(item.type === 'song'){
-        item.name = row.querySelector('.f-name').value;
-        item.stage = row.querySelector('.f-stage').value;
-        item.order = row.querySelector('.f-order').value;
-        item.body = row.querySelector('.f-body').value;
-        item.youtube = row.querySelector('.f-youtube').value;
-        item.sheet = row.querySelector('.f-sheet').value;
-      } else {
-        item.badge = row.querySelector('.f-badge').value;
-        item.line = row.querySelector('.f-line').value;
-        item.note = row.querySelector('.f-note').value;
-      }
-      var mergeEl = row.querySelector('.f-mergeup');
-      item.mergeUp = !!(mergeEl && mergeEl.checked);
-    });
-  }
-
-  function moveDraftItem(fromIdx, delta){
-    syncDraftFromDom();
-    var toIdx = fromIdx + delta;
-    if(toIdx < 0 || toIdx >= draftItems.length) return;
-    var moved = draftItems.splice(fromIdx, 1)[0];
-    draftItems.splice(toIdx, 0, moved);
-    renderEditList();
-  }
-
-  function showToast(msg){
-    var el = document.getElementById('toast');
-    if(!el){
-      el = document.createElement('div');
-      el.id = 'toast';
-      el.className = 'toast';
-      document.body.appendChild(el);
-    }
-    el.textContent = msg;
-    el.classList.add('show');
-    clearTimeout(el._hideTimer);
-    el._hideTimer = setTimeout(function(){ el.classList.remove('show'); }, 3200);
-  }
-
-  function showModalError(msg){
-    var el = document.getElementById('modalError');
-    el.textContent = msg;
-    el.hidden = false;
-  }
-
-  function hideModalError(){
-    document.getElementById('modalError').hidden = true;
-  }
-
-  window.openEditDialog = function(){
-    draftItems = JSON.parse(JSON.stringify(ITEMS));
-    hideModalError();
-    renderEditList();
-    document.getElementById('editDialog').showModal();
-  };
-
-  document.addEventListener('DOMContentLoaded', function(){
-    var dialog = document.getElementById('editDialog');
-    var editList = document.getElementById('editList');
-    var updateBtn = document.getElementById('updateBtn');
-    var cancelBtn = document.getElementById('cancelBtn');
-
-    editList.addEventListener('click', function(e){
-      var btn = e.target.closest('button');
-      if(!btn) return;
-      var row = btn.closest('.edit-row');
-      var idx = Number(row.dataset.idx);
-      if(btn.classList.contains('mv-up')) moveDraftItem(idx, -1);
-      else if(btn.classList.contains('mv-down')) moveDraftItem(idx, 1);
-    });
-
-    cancelBtn.addEventListener('click', function(){
-      dialog.close();
-    });
-
-    dialog.addEventListener('cancel', function(){
-      draftItems = null;
-    });
-
-    updateBtn.addEventListener('click', async function(){
-      syncDraftFromDom();
-      hideModalError();
-      updateBtn.disabled = true;
-      updateBtn.textContent = '更新中…';
-      try{
-        if(!artifactApi && window.claude){
-          try{ artifactApi = await window.claude.use('artifact'); }catch(e){ artifactApi = null; }
-        }
-        if(artifactApi && !readOnly){
-          await artifactApi.publish({ 'data/items.json': JSON.stringify(draftItems, null, 2) });
-          ITEMS = draftItems;
-          renderSeq();
-          dialog.close();
-          showToast('已更新並儲存');
-        } else {
-          ITEMS = draftItems;
-          renderSeq();
-          dialog.close();
-          showToast('已套用(此檢視無法儲存，重新整理後會還原)');
-        }
-      }catch(err){
-        var code = err && err.code;
-        if(code === 'not_writer' || code === 'not_granted'){
-          readOnly = true;
-          document.getElementById('editBtn').style.display = 'none';
-          showModalError('此檢視為唯讀，無法儲存變更。');
-        } else if(code === 'conflict'){
-          showModalError('有其他更新已送出，頁面即將重新整理。');
-        } else if(code === 'rate_limited'){
-          showModalError('更新太頻繁，請稍等片刻再試一次。');
-        } else if(code === 'too_large'){
-          showModalError('內容太多，請縮減後再試。');
-        } else {
-          showModalError('更新失敗，請稍後再試。');
-        }
-      }finally{
-        updateBtn.disabled = false;
-        updateBtn.textContent = '更新';
-      }
-    });
-  });
-
-  async function loadItems(){
-    try{
-      var res = await fetch('data/items.json', { cache: 'no-store' });
-      if(res.ok){
-        var data = await res.json();
-        if(Array.isArray(data) && data.length) return data;
-      }
-    }catch(e){}
-    return DEFAULT_ITEMS;
-  }
-
-  (async function init(){
-    ITEMS = await loadItems();
-    renderSeq();
-    if(window.claude){
-      try{ artifactApi = await window.claude.use('artifact'); }catch(e){ artifactApi = null; }
-    }
-  })();
+  renderSeq();
 
   /* 浮動歌詞提示：捲動時顯示目前這首歌的名稱與演唱順序代碼(如 V-C-V-C) */
   (function(){

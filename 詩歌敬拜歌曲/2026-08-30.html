@@ -69,6 +69,16 @@
   .sec-title .n{font-family:var(--serif);font-size:11px;color:var(--gold);letter-spacing:.05em;font-weight:700}
   .sec-title h2{font-family:var(--serif);font-size:14px;letter-spacing:.02em;font-weight:700}
 
+  .info-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;background:var(--card);border:1px solid var(--hair);border-radius:12px;padding:20px 24px;margin-bottom:8px}
+  @media(max-width:560px){.info-grid{grid-template-columns:1fr;gap:16px}}
+  .info-grid h3{font-size:10.5px;letter-spacing:.16em;color:var(--gold);margin-bottom:10px;text-transform:uppercase;font-weight:700}
+  .info-grid dl{display:grid;grid-template-columns:auto 1fr;gap:6px 14px;font-size:13px}
+  .info-grid dt{color:var(--ink-soft)}
+  .info-grid dd{color:var(--ink);font-weight:500}
+  .info-grid .times{list-style:none;font-size:13px}
+  .info-grid .times li{margin-bottom:6px;color:var(--ink)}
+  .info-grid .times li span{color:var(--ink-soft);display:block;font-size:11.5px;margin-top:1px}
+
   .seq{position:relative}
 
   .song{background:var(--card);border:1px solid var(--hair);border-left:4px solid var(--stage,var(--gold));border-radius:12px;padding:20px 26px 26px;margin-bottom:16px}
@@ -167,19 +177,6 @@
     .of-name{font-size:11px}
     .of-code{font-size:15px}
   }
-
-  /* 準備中提示卡：與 .handoff 同語彙，用金色外框標出「尚未定案」 */
-  .pending{
-    background:var(--card);border:1px dashed var(--gold-soft);border-radius:12px;
-    padding:18px 22px;margin:0 0 16px;text-align:center;
-  }
-  .pending-badge{
-    display:inline-block;font-size:10.5px;letter-spacing:.14em;
-    color:var(--gold);border:1px solid color-mix(in srgb, var(--gold) 40%, transparent);
-    border-radius:20px;padding:2px 12px;margin-bottom:10px;font-weight:500;
-  }
-  .pending-line{font-family:var(--serif);font-size:15px;line-height:1.7;color:var(--ink);font-weight:700}
-  .pending-note{font-size:12px;color:var(--ink-soft);margin-top:8px;line-height:1.7}
 </style>
 </head>
 <body>
@@ -201,7 +198,34 @@
 
   <div class="sec-title">
     <span class="n">01</span>
-    <h2>程序 · 歌詞</h2>
+    <h2>服事同工 · 練習時間</h2>
+  </div>
+  <div class="info-grid">
+    <div>
+      <h3>服事同工</h3>
+      <dl>
+        <dt>主領</dt><dd>Ivy Kao</dd>
+        <dt>司琴</dt><dd>Sofia Hsieh</dd>
+        <dt>和聲</dt><dd>Qebaw Pan Aikanáro Fëfalas</dd>
+        <dt>司鼓</dt><dd>Samuel Huang</dd>
+        <dt>Bass</dt><dd>Denorvina Queen</dd>
+        <dt>音控</dt><dd>Brooke Bianchi-Pennington</dd>
+        <dt>直播</dt><dd>李輝輝</dd>
+        <dt>投影片</dt><dd>施亭屹</dd>
+      </dl>
+    </div>
+    <div>
+      <h3>練習時間</h3>
+      <ul class="times">
+        <li>8 / 26（三）晚上 7:00~9:30<span>教會大堂</span></li>
+        <li>8 / 30（日）上午 9:00<span>教會大堂　·　主日當天</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="sec-title">
+    <span class="n">02</span>
+    <h2>詩歌 · 歌詞</h2>
   </div>
 
   <div id="seqRoot"></div>
@@ -218,13 +242,19 @@
 </div>
 
 <script>
-  /* 詩歌尚未提供：目前僅有狀態提示項目。
-     待歌單確定後，比照 詩歌敬拜歌曲/2026-08-23.html 的寫法，
-     在這個陣列裡補上 type:'song'（含 stage / order / youtube / sheet / body）
-     與 type:'handoff'（程序項目，如宣召、信息、代禱）即可，
-     其餘渲染與浮動提示邏輯不需要更動。 */
   var DEFAULT_ITEMS = [
-    {id:'i1', type:'pending', badge:'準備中', line:'詩歌歌單尚未提供，稍後更新', note:'待主領提供歌曲清單與服事同工資訊後，將依 8/23 的頁面架構補上完整程序與歌詞。'}
+    {id:'i1', type:'song', stage:'s1', name:'耶和華是我牧者', order:'VC1C2C2 C2C2(快、再快)尾',
+     youtube:'https://www.youtube.com/watch?v=ms2KXm0ad10', body:
+'## Verse\n耶和華是我牧者　我必不至缺乏\n使我躺臥青草地　在安歇的水邊\n祂使我靈魂甦醒　引我走正義路\n我雖過死蔭幽谷　也必不怕遭害\n\n## Chorus 1\n在我敵人面前　為我擺設筵席\n祢用油膏我的頭　使我福杯滿溢\n一生一世有恩惠　有慈愛跟隨我\n我要住在祢殿中　直到永永遠遠\n\n## Chorus 2\n嘿嘿唷　嘿嘿唷　主祢與我同在\n祢的杖和祢的竿　時時都安慰我\n嘿嘿唷　嘿嘿唷　有慈愛跟隨我\n我要住在祢殿中　直到永永遠遠'},
+    {id:'i2', type:'song', stage:'s2', name:'信心的旅途', order:'V1V2CV1V2C BX4 C',
+     youtube:'https://www.youtube.com/watch?v=7MfpK-fbF5Y', body:
+'## Verse 1\n信心是一個美好的禮物\n為我打開一扇窗戶\n讓我看見眼睛看不見的遠景\n實現在心靈的深處\n\n## Verse 2\n信心是一個奇妙的祝福\n為我打通一條道路\n讓我擁抱天父永不遲延的應許\n即使眼前烏雲密佈\n\n## Chorus\n啊！信心的旅途\n翻山越嶺　也不輕易　調轉腳步\n啊！信心的歲月\n千山萬水　總是訴說　天父在看顧\n\n## Bridge\n我相信　我經歷　我知道　祢引導'},
+    {id:'i3', type:'song', stage:'s3', name:'主你的疼', order:'VC VC C 尾',
+     youtube:'https://www.youtube.com/watch?v=WA8MqGNWRTQ', body:
+'## Verse\n我的心憂傷痛悔\n搖沌驚惶\n多多捆綁重擔\n我不堪得祢的疼\n主　祢疼我作寶貝\n不曾放棄我\n互我永遠恬祢面前\n不免閣著驚\n\n## Chorus\n主祢的疼\n釋放我的心　安慰我\n無論死或活　坎坷或開闊\n絕無什麼會當拆散\n\n主祢的疼\n引導我的路　保護我\n從今到永遠　堅持無變換\n絕無什麼會當拆散\n\n主祢的疼'},
+    {id:'i4', type:'song', stage:'s4', name:'愛.喜樂.生命', order:'VC 間 VC',
+     youtube:'https://www.youtube.com/watch?v=eg6iLKyKi0Y', body:
+'## Verse\n時空不能隔絕祂的愛\n因祂愛我直到萬代\n世界不能阻擋祂的愛\n因祂愛我永不更改\n祂的愛　勝過死亡陰霾\n祂的愛　驅走憂愁悲哀\n\n## Chorus\n讓主愛澆灌我們的心\n喜樂泉源湧自心底\n憂愁不再　我們有喜樂的生命\n讓主愛充滿我們的心\n生命火花揚自心底\n淚水不再　我們有永恆的生命'}
   ];
 
   var ITEMS = DEFAULT_ITEMS;
@@ -299,13 +329,6 @@
         '<div class="lyrics">' + renderSongBody(main.body) + '</div>' +
         renderSongLinks(main) +
         codaHtml +
-        '</div>';
-    }
-    if(main.type === 'pending'){
-      return '<div class="pending seq">' +
-        '<div class="pending-badge">' + escapeHtml(main.badge || '準備中') + '</div>' +
-        '<p class="pending-line">' + escapeHtml(main.line) + '</p>' +
-        (main.note ? '<p class="pending-note">' + escapeHtml(main.note) + '</p>' : '') +
         '</div>';
     }
     return '<div class="handoff seq">' +

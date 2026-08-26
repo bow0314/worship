@@ -172,6 +172,11 @@
   .order-float.show{opacity:1;transform:translateY(0);pointer-events:auto}
   .of-name{font-size:12px;color:rgba(255,255,255,.82)}
   .of-code{font-family:var(--serif);font-size:18px;color:#fff;letter-spacing:.02em;white-space:pre-line;margin-top:4px;font-weight:700}
+  .of-code .of-num{font-size:.7em}
+  .of-code .of-num-1{color:#FFD166}
+  .of-code .of-num-2{color:#4FD1C5}
+  .of-code .of-num-3{color:#FF8A4C}
+  .of-code .of-dash{opacity:.1}
   @media (max-width:560px){
     .order-float{right:12px;bottom:12px;padding:10px 16px}
     .of-name{font-size:11px}
@@ -243,16 +248,16 @@
 
 <script>
   var DEFAULT_ITEMS = [
-    {id:'i1', type:'song', stage:'s1', name:'耶和華是我牧者', order:'VC1C2C2 C2C2(快、再快)尾',
+    {id:'i1', type:'song', stage:'s1', name:'耶和華是我牧者', order:'V–C1–C2–C2–C2–C2(快、再快)–*尾',
      youtube:'https://www.youtube.com/watch?v=ms2KXm0ad10', body:
 '## Verse\n耶和華是我牧者　我必不至缺乏\n使我躺臥青草地　在安歇的水邊\n祂使我靈魂甦醒　引我走正義路\n我雖過死蔭幽谷　也必不怕遭害\n\n## Chorus 1\n在我敵人面前　為我擺設筵席\n祢用油膏我的頭　使我福杯滿溢\n一生一世有恩惠　有慈愛跟隨我\n我要住在祢殿中　直到永永遠遠\n\n## Chorus 2\n嘿嘿唷　嘿嘿唷　主祢與我同在\n祢的杖和祢的竿　時時都安慰我\n嘿嘿唷　嘿嘿唷　有慈愛跟隨我\n我要住在祢殿中　直到永永遠遠'},
-    {id:'i2', type:'song', stage:'s2', name:'信心的旅途', order:'V1V2CV1V2C BX4 C',
+    {id:'i2', type:'song', stage:'s2', name:'信心的旅途', order:'V1–V2–C–V1–V2–C–B×4–C',
      youtube:'https://www.youtube.com/watch?v=7MfpK-fbF5Y', body:
 '## Verse 1\n信心是一個美好的禮物\n為我打開一扇窗戶\n讓我看見眼睛看不見的遠景\n實現在心靈的深處\n\n## Verse 2\n信心是一個奇妙的祝福\n為我打通一條道路\n讓我擁抱天父永不遲延的應許\n即使眼前烏雲密佈\n\n## Chorus\n啊！信心的旅途\n翻山越嶺　也不輕易　調轉腳步\n啊！信心的歲月\n千山萬水　總是訴說　天父在看顧\n\n## Bridge\n我相信　我經歷　我知道　祢引導'},
-    {id:'i3', type:'song', stage:'s3', name:'主你的疼', order:'VC VC C 尾',
+    {id:'i3', type:'song', stage:'s3', name:'主你的疼', order:'V–C–V–C–C–*尾',
      youtube:'https://www.youtube.com/watch?v=WA8MqGNWRTQ', body:
 '## Verse\n我的心憂傷痛悔\n搖沌驚惶\n多多捆綁重擔\n我不堪得祢的疼\n主　祢疼我作寶貝\n不曾放棄我\n互我永遠恬祢面前\n不免閣著驚\n\n## Chorus\n主祢的疼\n釋放我的心　安慰我\n無論死或活　坎坷或開闊\n絕無什麼會當拆散\n\n主祢的疼\n引導我的路　保護我\n從今到永遠　堅持無變換\n絕無什麼會當拆散\n\n主祢的疼'},
-    {id:'i4', type:'song', stage:'s4', name:'愛.喜樂.生命', order:'VC 間 VC',
+    {id:'i4', type:'song', stage:'s4', name:'愛.喜樂.生命', order:'V–C–間–V–C',
      youtube:'https://www.youtube.com/watch?v=eg6iLKyKi0Y', body:
 '## Verse\n時空不能隔絕祂的愛\n因祂愛我直到萬代\n世界不能阻擋祂的愛\n因祂愛我永不更改\n祂的愛　勝過死亡陰霾\n祂的愛　驅走憂愁悲哀\n\n## Chorus\n讓主愛澆灌我們的心\n喜樂泉源湧自心底\n憂愁不再　我們有喜樂的生命\n讓主愛充滿我們的心\n生命火花揚自心底\n淚水不再　我們有永恆的生命'}
   ];
@@ -360,6 +365,17 @@
     var current = null;
     var ticking = false;
 
+    /* 演唱順序代碼格式，沿用 7/19、8/16 頁面的慣例（非 8/23）：
+       字母後面的數字（V1、C2…）縮小並依數字上色，短橫線降到 10% 透明度，
+       讓字母、數字本身更突出，而不是整串代碼一樣粗細地擠在一起。 */
+    function renderCode(raw){
+      var html = raw.replace(/([VC])(\d+)/g, function(m, letter, digits){
+        return letter + '<span class="of-num of-num-' + digits + '">' + digits + '</span>';
+      });
+      html = html.replace(/–/g, '<span class="of-dash">–</span>');
+      codeEl.innerHTML = html;
+    }
+
     function check(){
       ticking = false;
       var songs = Array.prototype.slice.call(document.querySelectorAll('#seqRoot [data-song]'));
@@ -389,7 +405,7 @@
         if(match !== current){
           current = match;
           nameEl.textContent = match.getAttribute('data-name');
-          codeEl.textContent = match.getAttribute('data-order');
+          renderCode(match.getAttribute('data-order'));
           floatEl.style.setProperty('--panel', 'var(--' + match.getAttribute('data-stage') + '-panel)');
         }
         floatEl.classList.add('show');

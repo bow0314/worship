@@ -224,11 +224,14 @@
 </div>
 
 <script>
-  /* 獻詩歌單尚未提供：目前僅有狀態提示項目。
-     待歌單確定後，在這個陣列裡補上 type:'song'（含 stage / order / youtube / sheet / body），
-     其餘渲染與浮動順序面板邏輯不需要更動。 */
+  /* 歌詞與演唱順序尚未提供：body / order 留空時，卡片顯示「歌詞待補」提示。
+     補上時照 8/30 寫法填 order（如 'V–C–V–C–*尾'）與 body（## Verse / ## Chorus 分段），
+     對應「*尾」的那一句要在歌詞後加「 (尾句)」。 */
   var DEFAULT_ITEMS = [
-    {id:'i1', type:'pending', badge:'準備中', line:'獻詩歌單尚未提供，稍後更新', note:'待提供獻詩曲目、演唱順序與歌詞後，將補上完整內容。'}
+    {id:'i1', type:'song', stage:'s1', name:'依靠我', order:'',
+     youtube:'https://youtu.be/9NyOpR9gAX8', body:''},
+    {id:'i2', type:'song', stage:'s2', name:'感謝主', order:'',
+     youtube:'https://youtu.be/6w6py3vxJ8Q', body:''}
   ];
 
   var ITEMS = DEFAULT_ITEMS;
@@ -300,7 +303,8 @@
       return '<div class="song seq" style="--stage:var(--' + main.stage + ')" data-song data-name="' +
         label + '" data-order="' + escapeHtml(main.order || '') + '" data-stage="' + main.stage + '">' +
         '<div class="song-name">' + label + '</div>' +
-        '<div class="lyrics">' + renderSongBody(main.body) + '</div>' +
+        (main.body ? '<div class="lyrics">' + renderSongBody(main.body) + '</div>'
+                   : '<p class="pending-note">歌詞待補</p>') +
         renderSongLinks(main) +
         codaHtml +
         '</div>';

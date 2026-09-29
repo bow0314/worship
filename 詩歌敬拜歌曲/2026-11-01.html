@@ -239,6 +239,7 @@
        第二遍後轉調（G 調移 A♭ 調，升半音）唱 Verse 3，接尾段結束 */
     {id:'i2', type:'song', stage:'s2', name:'感謝主', order:'V1–C–V2–C–V3–*尾',
      youtube:'https://youtu.be/6w6py3vxJ8Q', sheet:'樂譜/2026-11-01-感謝主.pdf',
+     sheets:[{label:'感謝主 (樂譜)（G大調）', url:'樂譜/2026-11-01-感謝主-G大調.pdf'}],
      audio:[
        {label:'第一部（音檔）', url:'https://drive.google.com/file/d/1PuP_04s9juKmmZ9r64T_12yxzNW0IHtM/view?usp=drivesdk'},
        {label:'第二部（音檔）', url:'https://drive.google.com/file/d/100BRDdAvTKnTNfRBM3pQIbsgE7QRGcTz/view?usp=drivesdk'},
@@ -302,23 +303,28 @@
     return '( ' + num + ' ) ' + escapeHtml(name);
   }
 
+  /* 連結按鈕：標籤裡括弧內的字（例如「（音檔）」「（G大調）」）比照樂譜連結縮小 */
+  function linkTag(url, text){
+    var label = escapeHtml(text)
+      .replace(/\s*(（[^）]*）)/g, '<span class="sheet-tag">$1</span>')   /* 全形括弧本身有留白，不再補空格 */
+      .replace(/\s*(\([^)]*\))/g, ' <span class="sheet-tag">$1</span>');
+    return '<a class="link-tag" href="' + escapeHtml(url) + '" target="_blank" rel="noopener">' + label + '</a>';
+  }
+
   function renderSongLinks(item){
     var links = [];
-    if(item.youtube) links.push('<a class="link-tag" href="' + escapeHtml(item.youtube) + '" target="_blank" rel="noopener">YouTube</a>');
-    if(item.sheet) links.push('<a class="link-tag" href="' + escapeHtml(item.sheet) + '" target="_blank" rel="noopener">' + escapeHtml(item.name) + ' <span class="sheet-tag">(樂譜)</span></a>');
+    if(item.youtube) links.push(linkTag(item.youtube, 'YouTube'));
+    if(item.sheet) links.push(linkTag(item.sheet, item.name + ' (樂譜)'));
+    /* 其他版本的樂譜（例如另一個調），接在原樂譜後面 */
+    (item.sheets || []).forEach(function(sh){ links.push(linkTag(sh.url, sh.label)); });
     var html = links.length ? '<div class="song-links">' + links.join('') + '</div>' : '';
     /* 各聲部練唱音檔：放在 YouTube／樂譜下方，另起一列以虛線區隔 */
     if(item.audio && item.audio.length){
-      html += '<div class="song-links">' + item.audio.map(function(a){
-        /* 標籤裡括弧內的字（例如「（音檔）」）比照樂譜連結縮小 */
-        var label = escapeHtml(a.label)
-          .replace(/\s*(（[^）]*）)/g, '<span class="sheet-tag">$1</span>')   /* 全形括弧本身有留白，不再補空格 */
-          .replace(/\s*(\([^)]*\))/g, ' <span class="sheet-tag">$1</span>');
-        return '<a class="link-tag" href="' + escapeHtml(a.url) + '" target="_blank" rel="noopener">' + label + '</a>';
-      }).join('') + '</div>';
+      html += '<div class="song-links">' + item.audio.map(function(a){ return linkTag(a.url, a.label); }).join('') + '</div>';
     }
     return html;
   }
+
 
   function renderGroup(group, songNum){
     var main = group.main;

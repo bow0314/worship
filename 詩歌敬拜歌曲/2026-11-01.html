@@ -82,6 +82,18 @@
   .lc-verse{color:color-mix(in srgb, var(--stage, var(--gold)) 65%, white 35%)}
   .lc-chorus{color:var(--stage, var(--gold))}
   .lyr-note{font-size:.5em;color:var(--ink-soft)}
+  .song.aids-off .aid-mark{display:none}
+  .song.aids-off .aid-word{color:inherit}
+
+  .song-head{display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px}
+  .aid-switch{display:inline-flex;align-items:center;gap:7px;cursor:pointer;font-size:11.5px;color:var(--ink-soft);-webkit-user-select:none;user-select:none}
+  .aid-toggle{position:absolute;opacity:0;width:1px;height:1px;pointer-events:none}
+  .aid-track{position:relative;width:30px;height:17px;border-radius:999px;background:var(--hair);transition:background-color .2s}
+  .aid-track::after{content:"";position:absolute;top:2px;left:2px;width:13px;height:13px;border-radius:50%;background:var(--ink-soft);transition:transform .2s,background-color .2s}
+  .aid-toggle:checked + .aid-track{background:var(--stage,var(--gold))}
+  .aid-toggle:checked + .aid-track::after{transform:translateX(13px);background:var(--card)}
+  .aid-toggle:focus-visible + .aid-track{outline:2px solid var(--stage,var(--gold));outline-offset:2px}
+  @media (prefers-reduced-motion: reduce){.aid-track,.aid-track::after{transition:none}}
   html[data-theme="light"] .lc-verse{color:color-mix(in srgb, var(--stage, var(--gold)) 90%, black 10%)}
   html[data-theme="light"] .lc-chorus{color:color-mix(in srgb, var(--stage, var(--gold)) 78%, black 10%)}
 
@@ -263,8 +275,10 @@
   function markLyric(text, cls){
     return escapeHtml(text)
       .replace(/\{([^}]*)\}|[.\-]/g, function(m, word){
-        /* 附點後面補一個半形空格，跟下一個字隔開 */
-        return '<span class="' + cls + '">' + (word != null ? word : m) + '</span>' + (m === '.' ? ' ' : '');
+        /* 語助詞（aid-word）關掉輔助標記時只拿掉顏色；附點、連音（aid-mark）整個藏起來。
+           附點後面補一個半形空格，跟下一個字隔開，空格跟著點一起藏 */
+        if(word != null) return '<span class="aid-word ' + cls + '">' + word + '</span>';
+        return '<span class="aid-mark ' + cls + '">' + m + (m === '.' ? ' ' : '') + '</span>';
       })
       /* 括弧裡的尾句註記，例如「(尾句)」「(尾句小聲)」，字縮小一半 */
       .replace(/\s*(\(尾句[^)]*\))/g, ' <span class="lyr-note">$1</span>');
@@ -347,7 +361,11 @@
       var label = songLabel(songNum, main.name);
       return '<div class="song seq" style="--stage:var(--' + main.stage + ')" data-song data-name="' +
         label + '" data-order="' + escapeHtml(main.order || '') + '" data-stage="' + main.stage + '">' +
-        '<div class="song-name">' + label + '</div>' +
+        '<div class="song-head"><div class="song-name">' + label + '</div>' +
+        (main.body ? '<label class="aid-switch" for="aid-' + main.id + '">' +
+          '<input type="checkbox" class="aid-toggle" id="aid-' + main.id + '" data-song-id="' + main.id + '" checked>' +
+          '<span class="aid-track" aria-hidden="true"></span><span class="aid-text">輔助標記</span></label>' : '') +
+        '</div>' +
         (main.body ? '<div class="lyrics">' + renderSongBody(main.body) + '</div>'
                    : '<p class="pending-note">歌詞待補</p>') +
         renderSongLinks(main) +
@@ -382,6 +400,31 @@
   }
 
   renderSeq();
+
+  /* 「輔助標記」開關：每首歌各自切換，記在這台裝置的瀏覽器裡 */
+  (function(){
+    var KEY = 'worship-aids-2026-11-01';
+    var prefs = {};
+    try{ prefs = JSON.parse(localStorage.getItem(KEY) || '{}') || {}; }catch(e){ prefs = {}; }
+
+    function apply(input){
+      var card = input.closest('.song');
+      if(card) card.classList.toggle('aids-off', !input.checked);
+    }
+
+    Array.prototype.forEach.call(document.querySelectorAll('#seqRoot .aid-toggle'), function(input){
+      if(prefs[input.getAttribute('data-song-id')] === false) input.checked = false;
+      apply(input);
+    });
+
+    document.getElementById('seqRoot').addEventListener('change', function(e){
+      var input = e.target;
+      if(!input.classList || !input.classList.contains('aid-toggle')) return;
+      apply(input);
+      prefs[input.getAttribute('data-song-id')] = input.checked;
+      try{ localStorage.setItem(KEY, JSON.stringify(prefs)); }catch(err){}
+    });
+  })();
 
   (function(){
     var floatEl = document.getElementById('orderFloat');

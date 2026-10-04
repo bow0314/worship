@@ -417,30 +417,13 @@
 
   renderSeq();
 
-  /* 「輔助標記」開關：每首歌各自切換，記在這台裝置的瀏覽器裡 */
-  (function(){
-    var KEY = 'worship-aids-2026-11-01';
-    var prefs = {};
-    try{ prefs = JSON.parse(localStorage.getItem(KEY) || '{}') || {}; }catch(e){ prefs = {}; }
-
-    function apply(input){
-      var card = input.closest('.song');
-      if(card) card.classList.toggle('aids-off', !input.checked);
-    }
-
-    Array.prototype.forEach.call(document.querySelectorAll('#seqRoot .aid-toggle'), function(input){
-      if(prefs[input.getAttribute('data-song-id')] === false) input.checked = false;
-      apply(input);
-    });
-
-    document.getElementById('seqRoot').addEventListener('change', function(e){
-      var input = e.target;
-      if(!input.classList || !input.classList.contains('aid-toggle')) return;
-      apply(input);
-      prefs[input.getAttribute('data-song-id')] = input.checked;
-      try{ localStorage.setItem(KEY, JSON.stringify(prefs)); }catch(err){}
-    });
-  })();
+  /* 「輔助標記」開關：每首歌各自切換；不記憶，每次打開都從「輔助標記」開始 */
+  document.getElementById('seqRoot').addEventListener('change', function(e){
+    var input = e.target;
+    if(!input.classList || !input.classList.contains('aid-toggle')) return;
+    var card = input.closest('.song');
+    if(card) card.classList.toggle('aids-off', !input.checked);
+  });
 
   (function(){
     var floatEl = document.getElementById('orderFloat');

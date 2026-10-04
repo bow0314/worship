@@ -263,7 +263,8 @@
   function markLyric(text, cls){
     return escapeHtml(text)
       .replace(/\{([^}]*)\}|[.\-]/g, function(m, word){
-        return '<span class="' + cls + '">' + (word != null ? word : m) + '</span>';
+        /* 附點後面補一個半形空格，跟下一個字隔開 */
+        return '<span class="' + cls + '">' + (word != null ? word : m) + '</span>' + (m === '.' ? ' ' : '');
       })
       /* 括弧裡的尾句註記，例如「(尾句)」「(尾句小聲)」，字縮小一半 */
       .replace(/\s*(\(尾句[^)]*\))/g, ' <span class="lyr-note">$1</span>');

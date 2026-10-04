@@ -90,6 +90,7 @@
   .lc-verse{color:color-mix(in srgb, var(--stage, var(--gold)) 65%, white 35%)}
   .lc-chorus{color:var(--stage, var(--gold))}
   .lyr-note{font-size:.5em;color:var(--ink-soft)}
+  .lyrics .ph{display:inline-block;max-width:100%}
   .song.aids-off .aid-mark{display:none}
   .song.aids-off .aid-word{color:inherit}
 
@@ -302,6 +303,17 @@
       .replace(/\s*(\(尾句[^)]*\))/g, ' <span class="lyr-note">$1</span>');
   }
 
+  /* 斷行：每一行用全形空格「　」切成詞組，詞組包成 inline-block，
+     手機上優先在「　」換行，不會在附點、連音後面把一個詞組拆開；
+     詞組本身比一行還長時，才在詞組裡面（附點後的空格）換行 */
+  function wrapPhrases(html){
+    return html.split('\n').map(function(line){
+      return line.split('　').map(function(seg){
+        return seg ? '<span class="ph">' + seg + '</span>' : seg;
+      }).join('　');
+    }).join('\n');
+  }
+
   function renderSongBody(body){
     var blocks = String(body || '').split(/\n(?=##\s)/).map(function(b){ return b.trim(); }).filter(Boolean);
     if(!blocks.length) return '';
@@ -314,7 +326,7 @@
       var rest = text.slice(1);
       var cls = isChorus ? 'lc-chorus' : 'lc-verse';
       return '<div class="lyr-lab">' + escapeHtml(label) + '</div>\n' +
-        '<p><span class="' + cls + '">' + escapeHtml(first) + '</span>' + markLyric(rest, cls) + '</p>';
+        '<p>' + wrapPhrases('<span class="' + cls + '">' + escapeHtml(first) + '</span>' + markLyric(rest, cls)) + '</p>';
     }).join('\n');
   }
 

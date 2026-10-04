@@ -92,6 +92,9 @@
   .lyr-note{font-size:.5em;color:var(--ink-soft)}
   .lyrics .ph{display:inline-block;max-width:100%}
   .song.aids-off .aid-mark{display:none}
+  .lyric-de{display:none}
+  .song.aids-off .aid-de{display:none}
+  .song.aids-off .lyric-de{display:inline}
   .song.aids-off .aid-word{color:inherit}
 
   .song-head{display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px}
@@ -313,7 +316,9 @@
      切到「僅歌詞」時：附點、連音、[輔助唱法] 整個藏起來，{語助詞} 只拿掉顏色（目前沒用到） */
   function markLyric(text, cls){
     return escapeHtml(text)
-      .replace(/\{([^}]*)\}|\[([^\]]*)\]|[.\-]/g, function(m, word, aid){
+      .replace(/\{([^}]*)\}|\[([^\]]*)\]|[.\-的]/g, function(m, word, aid){
+        /* 「的」在輔助標記時顯示成「地」（上色），切到「僅歌詞」時還原成「的」 */
+        if(m === '的') return '<span class="aid-de ' + cls + '">地</span><span class="lyric-de">的</span>';
         /* 語助詞（aid-word）關掉輔助標記時只拿掉顏色；附點、連音（aid-mark）整個藏起來。
            附點後面補一個半形空格，跟下一個字隔開，空格跟著點一起藏 */
         if(word != null) return '<span class="aid-word ' + cls + '">' + word + '</span>';

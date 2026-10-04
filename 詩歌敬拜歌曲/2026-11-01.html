@@ -81,6 +81,7 @@
   .lyrics p{font-family:var(--serif);font-size:46.5px;font-weight:500;line-height:1.65;color:var(--ink);white-space:pre-wrap;word-break:keep-all}
   .lc-verse{color:color-mix(in srgb, var(--stage, var(--gold)) 65%, white 35%)}
   .lc-chorus{color:var(--stage, var(--gold))}
+  .lyr-note{font-size:.5em;color:var(--ink-soft)}
   html[data-theme="light"] .lc-verse{color:color-mix(in srgb, var(--stage, var(--gold)) 90%, black 10%)}
   html[data-theme="light"] .lc-chorus{color:color-mix(in srgb, var(--stage, var(--gold)) 78%, black 10%)}
 
@@ -263,7 +264,9 @@
     return escapeHtml(text)
       .replace(/\{([^}]*)\}|[.\-]/g, function(m, word){
         return '<span class="' + cls + '">' + (word != null ? word : m) + '</span>';
-      });
+      })
+      /* 括弧裡的尾句註記，例如「(尾句)」「(尾句小聲)」，字縮小一半 */
+      .replace(/\s*(\(尾句[^)]*\))/g, ' <span class="lyr-note">$1</span>');
   }
 
   function renderSongBody(body){

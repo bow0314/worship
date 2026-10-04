@@ -192,6 +192,17 @@
   html[data-theme="dark"] .order-float{box-shadow:0 6px 22px rgba(0,0,0,.5)}
   .order-float.show{opacity:1;transform:translateY(0);pointer-events:auto}
   .of-name{font-size:12px;color:rgba(255,255,255,.82)}
+  /* 浮動面板裡的開關：面板是半透明深色底、白字 */
+  .of-switch{margin-top:9px}
+  .of-switch .aid-track,
+  .of-switch .aid-toggle:not(:checked) + .aid-track{background:rgba(255,255,255,.16)}
+  .of-switch .aid-opt,
+  .of-switch .aid-toggle:not(:checked) + .aid-track .aid-opt{color:rgba(255,255,255,.72)}
+  .of-switch .aid-toggle:checked + .aid-track::before{background:color-mix(in srgb, var(--stage, var(--gold)) 55%, white)}
+  .of-switch .aid-toggle:not(:checked) + .aid-track::before{background:#FFFFFF;box-shadow:none}
+  .of-switch .aid-toggle:checked + .aid-track .aid-opt:last-child,
+  .of-switch .aid-toggle:not(:checked) + .aid-track .aid-opt:first-child{color:#1A1A1A}
+  .of-switch .aid-toggle:focus-visible + .aid-track{outline-color:#FFFFFF}
   .of-code{font-family:var(--serif);font-size:18px;color:#fff;letter-spacing:.02em;white-space:pre-line;margin-top:4px;font-weight:700}
   .of-code .of-num{font-size:.7em}
   .of-code .of-num-1{color:#FFD166}
@@ -251,6 +262,10 @@
 <div class="order-float" id="orderFloat">
   <div class="of-name" id="ofName"></div>
   <div class="of-code" id="ofCode"></div>
+  <label class="aid-switch of-switch" for="ofAid">
+    <input type="checkbox" class="aid-toggle" id="ofAid" checked>
+    <span class="aid-track"><span class="aid-opt">僅歌詞</span><span class="aid-opt">輔助標記</span></span>
+  </label>
 </div>
 
 <script>
@@ -391,11 +406,7 @@
       var label = songLabel(songNum, main.name);
       return '<div class="song seq" style="--stage:var(--' + main.stage + ')" data-song data-name="' +
         label + '" data-order="' + escapeHtml(main.order || '') + '" data-stage="' + main.stage + '">' +
-        '<div class="song-head"><div class="song-name">' + label + '</div>' +
-        (main.body ? '<label class="aid-switch" for="aid-' + main.id + '">' +
-          '<input type="checkbox" class="aid-toggle" id="aid-' + main.id + '" data-song-id="' + main.id + '" checked>' +
-          '<span class="aid-track"><span class="aid-opt">僅歌詞</span><span class="aid-opt">輔助標記</span></span></label>' : '') +
-        '</div>' +
+        '<div class="song-head"><div class="song-name">' + label + '</div></div>' +
         (main.body ? '<div class="lyrics">' + renderSongBody(main.body) + '</div>'
                    : '<p class="pending-note">歌詞待補</p>') +
         renderSongLinks(main) +
@@ -431,18 +442,17 @@
 
   renderSeq();
 
-  /* 「輔助標記」開關：每首歌各自切換；不記憶，每次打開都從「輔助標記」開始 */
-  document.getElementById('seqRoot').addEventListener('change', function(e){
-    var input = e.target;
-    if(!input.classList || !input.classList.contains('aid-toggle')) return;
-    var card = input.closest('.song');
-    if(card) card.classList.toggle('aids-off', !input.checked);
-  });
 
   (function(){
     var floatEl = document.getElementById('orderFloat');
     var nameEl = document.getElementById('ofName');
     var codeEl = document.getElementById('ofCode');
+    var aidEl = document.getElementById('ofAid');
+
+    /* 「輔助標記」開關：切換的是面板目前顯示的那首歌；不記憶，每次打開都從「輔助標記」開始 */
+    aidEl.addEventListener('change', function(){
+      if(current) current.classList.toggle('aids-off', !aidEl.checked);
+    });
     var current = null;
     var ticking = false;
 
@@ -487,6 +497,8 @@
           current = match;
           nameEl.textContent = match.getAttribute('data-name');
           renderCode(match.getAttribute('data-order'));
+          aidEl.checked = !match.classList.contains('aids-off');
+          floatEl.style.setProperty('--stage', 'var(--' + match.getAttribute('data-stage') + ')');
           floatEl.style.setProperty('--panel', 'var(--' + match.getAttribute('data-stage') + '-panel)');
         }
         floatEl.classList.add('show');
@@ -548,7 +560,10 @@
       panel.classList.remove('dragging');
     }
 
+    function onSwitch(e){ return e.target.closest && e.target.closest('.aid-switch'); }
+
     panel.addEventListener('mousedown', function(e){
+      if(onSwitch(e)) return;
       startDrag(e.clientX, e.clientY);
       e.preventDefault();
     });
@@ -560,6 +575,7 @@
     document.addEventListener('mouseup', endDrag);
 
     panel.addEventListener('touchstart', function(e){
+      if(onSwitch(e)) return;
       var t = e.touches[0];
       if(!t) return;
       startDrag(t.clientX, t.clientY);

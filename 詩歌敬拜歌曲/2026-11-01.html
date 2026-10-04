@@ -86,14 +86,17 @@
   .song.aids-off .aid-word{color:inherit}
 
   .song-head{display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px}
-  .aid-switch{display:inline-flex;align-items:center;gap:7px;cursor:pointer;font-size:11.5px;color:var(--ink-soft);-webkit-user-select:none;user-select:none}
+  /* 兩段式開關：左「僅歌詞」、右「輔助標記」，滑塊停在目前選的那一邊 */
+  .aid-switch{display:inline-flex;cursor:pointer;-webkit-user-select:none;user-select:none}
   .aid-toggle{position:absolute;opacity:0;width:1px;height:1px;pointer-events:none}
-  .aid-track{position:relative;width:30px;height:17px;border-radius:999px;background:var(--hair);transition:background-color .2s}
-  .aid-track::after{content:"";position:absolute;top:2px;left:2px;width:13px;height:13px;border-radius:50%;background:var(--ink-soft);transition:transform .2s,background-color .2s}
-  .aid-toggle:checked + .aid-track{background:var(--stage,var(--gold))}
-  .aid-toggle:checked + .aid-track::after{transform:translateX(13px);background:var(--card)}
+  .aid-track{position:relative;display:grid;grid-template-columns:1fr 1fr;padding:2px;border-radius:999px;background:var(--hair)}
+  .aid-track::before{content:"";position:absolute;top:2px;bottom:2px;left:2px;width:calc(50% - 2px);border-radius:999px;background:var(--stage,var(--gold));transition:transform .2s}
+  .aid-opt{position:relative;padding:2px 10px;font-size:11.5px;line-height:1.6;text-align:center;white-space:nowrap;color:var(--ink-soft);transition:color .2s}
+  .aid-toggle:not(:checked) + .aid-track .aid-opt:first-child,
+  .aid-toggle:checked + .aid-track .aid-opt:last-child{color:var(--paper);font-weight:700}
+  .aid-toggle:checked + .aid-track::before{transform:translateX(100%)}
   .aid-toggle:focus-visible + .aid-track{outline:2px solid var(--stage,var(--gold));outline-offset:2px}
-  @media (prefers-reduced-motion: reduce){.aid-track,.aid-track::after{transition:none}}
+  @media (prefers-reduced-motion: reduce){.aid-track::before,.aid-opt{transition:none}}
   html[data-theme="light"] .lc-verse{color:color-mix(in srgb, var(--stage, var(--gold)) 90%, black 10%)}
   html[data-theme="light"] .lc-chorus{color:color-mix(in srgb, var(--stage, var(--gold)) 78%, black 10%)}
 
@@ -364,7 +367,7 @@
         '<div class="song-head"><div class="song-name">' + label + '</div>' +
         (main.body ? '<label class="aid-switch" for="aid-' + main.id + '">' +
           '<input type="checkbox" class="aid-toggle" id="aid-' + main.id + '" data-song-id="' + main.id + '" checked>' +
-          '<span class="aid-track" aria-hidden="true"></span><span class="aid-text">輔助標記</span></label>' : '') +
+          '<span class="aid-track"><span class="aid-opt">僅歌詞</span><span class="aid-opt">輔助標記</span></span></label>' : '') +
         '</div>' +
         (main.body ? '<div class="lyrics">' + renderSongBody(main.body) + '</div>'
                    : '<p class="pending-note">歌詞待補</p>') +

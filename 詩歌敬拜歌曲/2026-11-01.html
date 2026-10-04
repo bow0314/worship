@@ -193,7 +193,11 @@
   .order-float.show{opacity:1;transform:translateY(0);pointer-events:auto}
   .of-name{font-size:12px;color:rgba(255,255,255,.82)}
   /* 浮動面板裡的開關：面板是半透明深色底、白字 */
-  .of-switch{margin-top:9px}
+  .of-head{display:flex;align-items:center;justify-content:space-between;gap:10px}
+  .of-switch{flex:none}
+  .of-switch .aid-track{padding:1.5px}
+  .of-switch .aid-track::before{top:1.5px;bottom:1.5px;left:1.5px;width:calc(50% - 1.5px)}
+  .of-switch .aid-opt{padding:0 6px;font-size:9.5px;line-height:1.7}
   .of-switch .aid-track,
   .of-switch .aid-toggle:not(:checked) + .aid-track{background:rgba(255,255,255,.16)}
   .of-switch .aid-opt,
@@ -260,12 +264,14 @@
 </div>
 
 <div class="order-float" id="orderFloat">
-  <div class="of-name" id="ofName"></div>
+  <div class="of-head">
+    <div class="of-name" id="ofName"></div>
+    <label class="aid-switch of-switch" for="ofAid">
+      <input type="checkbox" class="aid-toggle" id="ofAid" checked>
+      <span class="aid-track"><span class="aid-opt">僅歌詞</span><span class="aid-opt">輔助標記</span></span>
+    </label>
+  </div>
   <div class="of-code" id="ofCode"></div>
-  <label class="aid-switch of-switch" for="ofAid">
-    <input type="checkbox" class="aid-toggle" id="ofAid" checked>
-    <span class="aid-track"><span class="aid-opt">僅歌詞</span><span class="aid-opt">輔助標記</span></span>
-  </label>
 </div>
 
 <script>

@@ -17,6 +17,7 @@
 - 每場敬拜一個 HTML 檔，放在 `詩歌敬拜歌曲/` 資料夾，檔名為 `YYYY-MM-DD.html`。
 - 新增檔案後，同步在上方目錄加一列（日期由新到舊排列），「短網址」欄先填 `—`。
 - 合併進 `main` 後，GitHub Actions（`.github/workflows/short-links.yml`）會自動呼叫 reurl.cc 產生短網址（API 金鑰放在 repo secret `REURL_API_KEY`），記在 `short-links.json` 並填進目錄。每頁只轉一次，之後內容怎麼改，短網址都不變。
+- 其他專案要套用同樣的 reurl.cc 短網址流程，見 [docs/reurl-短網址套用指南.md](docs/reurl-短網址套用指南.md)。
 
 ## 詩歌主領筆記
 

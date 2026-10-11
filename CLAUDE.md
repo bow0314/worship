@@ -23,6 +23,13 @@
 - 附點音符是前一個字延長（連結線）過來的，點加在那個被延長的字後面。
 - 只看人聲旋律的附點，休止符、鋼琴伴奏的附點不算。
 
+## 短網址
+
+- 分享出去的網址是 GitHub Pages（`https://bow0314.github.io/worship/<資料夾>/<檔名>`），再轉成短網址。
+- 短網址由 GitHub Actions 自動產生（`.github/workflows/short-links.yml` + `.github/scripts/shorten_links.py`），結果記在 `short-links.json`，並填進 README 目錄的「短網址」欄。不要手動編造或改寫短網址。
+- 每頁只在第一次合併進 `main` 時轉一次，之後修改內容都沿用同一個短網址。所以頁面檔名一經發布就不要改名，改名會變成新網址。
+- 新增頁面時，README 目錄那一列的「短網址」欄先填 `—`。合併後等 Action 跑完，從 `main` 的 `short-links.json` 讀出短網址回報給使用者。
+
 ## 工作慣例
 
 - 使用者說「發布」，指的是把目前分支合併進 `main`（開 PR 後 merge），不是其他意思。

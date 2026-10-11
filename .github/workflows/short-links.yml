@@ -26,8 +26,12 @@ jobs:
         with:
           python-version: "3.12"
       - name: 轉短網址並更新 README
+        env:
+          REURL_API_KEY: ${{ secrets.REURL_API_KEY }}
         run: python .github/scripts/shorten_links.py
       - name: 有新短網址就 commit 回 main
+        # 部分頁面失敗時，已成功的短網址也要存回去
+        if: success() || failure()
         run: |
           git config core.quotepath false
           if git diff --quiet -- short-links.json README.md; then

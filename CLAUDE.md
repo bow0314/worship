@@ -26,6 +26,7 @@
 ## 短網址
 
 - 分享出去的網址是 GitHub Pages（`https://bow0314.github.io/worship/<資料夾>/<檔名>`），再轉成短網址。
+- 短網址服務一律用 reurl.cc（使用者指定，其他專案也一樣），不要用 TinyURL、is.gd 等其他服務。API 金鑰放在 repo secret `REURL_API_KEY`，不能寫進程式碼或 commit。
 - 短網址由 GitHub Actions 自動產生（`.github/workflows/short-links.yml` + `.github/scripts/shorten_links.py`），結果記在 `short-links.json`，並填進 README 目錄的「短網址」欄。不要手動編造或改寫短網址。
 - 每頁只在第一次合併進 `main` 時轉一次，之後修改內容都沿用同一個短網址。所以頁面檔名一經發布就不要改名，改名會變成新網址。
 - 新增頁面時，README 目錄那一列的「短網址」欄先填 `—`。合併後等 Action 跑完，從 `main` 的 `short-links.json` 讀出短網址回報給使用者。

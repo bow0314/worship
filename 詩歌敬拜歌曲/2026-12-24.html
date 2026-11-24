@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="zh-Hant" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-12-24 平安夜崇拜 · 歌詞</title>
+<script>
+  (function(){
+    try{
+      var saved = localStorage.getItem('worship-theme');
+      if(saved === 'light'){ document.documentElement.setAttribute('data-theme','light'); }
+    }catch(e){}
+  })();
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F5F4F1;
+    --card:#FCFBF8;
+    --ink:#2C3138;
+    --ink-soft:#666B72;
+    --hair:#E4E2DA;
+    --gold:#B4924F;
+    --gold-soft:#EAE0C6;
+    --danger:#C0392B;
+    --pill-ink:#6d5322;
+    --s1:#B4924F;
+    --s2:#5C7A9E;
+    --s3:#BE875A;
+    --s4:#4E5A78;
+    --s1-panel:rgba(122,92,32,.62);
+    --s2-panel:rgba(40,60,78,.62);
+    --s3-panel:rgba(112,68,32,.62);
+    --s4-panel:rgba(42,46,68,.66);
+    --sw-track:#E6E6E6;
+    --sw-knob:#FFFFFF;
+    --sw-knob-ink:#1A1A1A;
+    --sw-ink:#6B6B6B;
+    --serif:"Noto Sans TC",-apple-system,"PingFang TC","Microsoft JhengHei",sans-serif;
+    --sans:"Noto Sans TC",-apple-system,"PingFang TC","Microsoft JhengHei",sans-serif;
+  }
+  html[data-theme="dark"]{
+    --paper:#18181A;
+    --card:#232326;
+    --ink:#EDEBE6;
+    --ink-soft:#9C9990;
+    --hair:#37373A;
+    --gold:#D2B876;
+    --gold-soft:#4A4023;
+    --danger:#E0685A;
+    --pill-ink:#E8D9AE;
+    --s1:#C7A768;
+    --s2:#7B98BB;
+    --s3:#CE9868;
+    --s4:#7580A0;
+    --s1-panel:rgba(100,74,26,.66);
+    --s2-panel:rgba(32,50,66,.66);
+    --s3-panel:rgba(96,58,28,.66);
+    --s4-panel:rgba(34,38,58,.7);
+    --sw-track:#3A3A3A;
+    --sw-knob:#F2F2F2;
+    --sw-knob-ink:#1A1A1A;
+    --sw-ink:#9A9A9A;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--paper);color:var(--ink);font-family:var(--sans);font-weight:400;line-height:1.75;-webkit-font-smoothing:antialiased;padding:48px 20px 80px}
+  .wrap{max-width:1200px;margin:0 auto}
+
+  header{margin-bottom:32px;text-align:center}
+  .eyebrow{font-size:11px;letter-spacing:.26em;color:var(--gold);margin-bottom:10px;font-weight:500}
+  h1{font-family:var(--serif);font-size:clamp(19px,3.6vw,24px);line-height:1.4;letter-spacing:.02em;font-weight:700;margin-bottom:6px}
+  .sub{font-family:var(--serif);font-size:12.5px;color:var(--ink-soft)}
+
+  .sec-title{display:flex;align-items:baseline;gap:10px;margin:36px 0 16px;padding-bottom:10px;border-bottom:1px solid var(--hair)}
+  .sec-title .n{font-family:var(--serif);font-size:11px;color:var(--gold);letter-spacing:.05em;font-weight:700}
+  .sec-title h2{font-family:var(--serif);font-size:14px;letter-spacing:.02em;font-weight:700}
+
+
+  .seq{position:relative}
+
+  .song{background:var(--card);border:1px solid var(--hair);border-left:4px solid var(--stage,var(--gold));border-radius:12px;padding:20px 26px 26px;margin-bottom:16px}
+  .song-name{font-family:var(--serif);font-size:20px;font-weight:700;color:var(--stage,var(--ink));margin-bottom:0}
+
+  .lyrics{margin-top:18px}
+  .lyrics .lyr-lab{font-size:11px;letter-spacing:.16em;color:var(--stage,var(--gold));margin:20px 0 6px;text-transform:uppercase;font-weight:700}
+  .lyrics .lyr-lab:first-child{margin-top:0}
+  .lyrics p{font-family:var(--serif);font-size:46.5px;font-weight:500;line-height:1.65;color:var(--ink);white-space:pre-wrap;word-break:keep-all}
+  .lc-verse{color:color-mix(in srgb, var(--stage, var(--gold)) 65%, white 35%)}
+  .lc-chorus{color:var(--stage, var(--gold))}
+  .lyr-note{font-size:.5em;color:var(--ink-soft)}
+  .lyrics .ph{display:inline-block;max-width:100%}
+  .song.aids-off .aid-mark{display:none}
+  .lyric-de{display:none}
+  .song.aids-off .aid-de{display:none}
+  .song.aids-off .lyric-de{display:inline}
+  .song.aids-off .aid-word{color:inherit}
+
+  .song-head{display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px}
+  /* 兩段式開關：左「僅歌詞」、右「輔助標記」，滑塊停在目前選的那一邊 */
+  .aid-switch{display:inline-flex;cursor:pointer;-webkit-user-select:none;user-select:none}
+  .aid-toggle{position:absolute;opacity:0;width:1px;height:1px;pointer-events:none}
+  .aid-track{position:relative;display:grid;grid-template-columns:1fr 1fr;padding:2px;border-radius:999px;background:var(--hair)}
+  .aid-track::before{content:"";position:absolute;top:2px;bottom:2px;left:2px;width:calc(50% - 2px);border-radius:999px;background:var(--stage,var(--gold));transition:transform .2s}
+  .aid-opt{position:relative;padding:2px 10px;font-size:11.5px;line-height:1.6;text-align:center;white-space:nowrap;color:var(--ink-soft);transition:color .2s}
+  .aid-toggle:not(:checked) + .aid-track .aid-opt:first-child,
+  .aid-toggle:checked + .aid-track .aid-opt:last-child{color:var(--paper);font-weight:700}
+  .aid-toggle:checked + .aid-track::before{transform:translateX(100%)}
+  /* 選「僅歌詞」時整個開關改用中性黑白灰（不用歌曲主題色） */
+  .aid-toggle:not(:checked) + .aid-track{background:var(--sw-track)}
+  .aid-toggle:not(:checked) + .aid-track::before{background:var(--sw-knob);box-shadow:0 1px 2px rgba(0,0,0,.18)}
+  .aid-toggle:not(:checked) + .aid-track .aid-opt{color:var(--sw-ink)}
+  .aid-toggle:not(:checked) + .aid-track .aid-opt:first-child{color:var(--sw-knob-ink)}
+  .aid-toggle:focus-visible + .aid-track{outline:2px solid var(--stage,var(--gold));outline-offset:2px}
+  @media (prefers-reduced-motion: reduce){.aid-track::before,.aid-opt{transition:none}}
+  html[data-theme="light"] .lc-verse{color:color-mix(in srgb, var(--stage, var(--gold)) 90%, black 10%)}
+  html[data-theme="light"] .lc-chorus{color:color-mix(in srgb, var(--stage, var(--gold)) 78%, black 10%)}
+
+  .handoff{
+    background:var(--card);border:1px solid var(--hair);border-radius:12px;
+    padding:13px 18px;margin:0 0 12px;
+  }
+  .handoff-body{flex:1;min-width:0}
+  .handoff-badge{
+    display:inline-block;font-size:10px;letter-spacing:.1em;
+    color:var(--ink-soft);border:1px solid var(--hair);border-radius:20px;
+    padding:1px 9px;margin-bottom:6px;font-weight:500;
+  }
+  .handoff-line{font-family:var(--serif);font-size:14.5px;line-height:1.65;color:var(--ink);font-weight:700;white-space:pre-wrap}
+  .handoff-note{font-size:11px;color:var(--ink-soft);margin-top:5px;line-height:1.6}
+
+  .song-links{margin-top:20px;padding-top:14px;border-top:1px dashed var(--hair);display:flex;flex-wrap:wrap;gap:8px}
+  .link-tag{
+    display:inline-block;text-decoration:none;word-break:keep-all;
+    background:color-mix(in srgb, var(--gold) 13%, transparent);
+    color:var(--pill-ink);
+    border:1px solid color-mix(in srgb, var(--gold) 10%, transparent);
+    border-radius:6px;padding:3px 12px;font-size:12.5px;font-weight:500;
+    transition:background-color .15s,color .15s;
+  }
+  .link-tag:hover{
+    background:color-mix(in srgb, var(--gold) 26%, transparent);
+    border-color:color-mix(in srgb, var(--gold) 38%, transparent);
+  }
+  .link-tag .sheet-tag{font-size:.78em;opacity:.75}
+  .footer-links{margin-top:10px}
+
+  .coda{margin-top:22px;border-top:1px dashed var(--hair);padding-top:14px;display:flex;flex-direction:column;gap:10px}
+  .coda-item{display:flex;flex-wrap:wrap;align-items:baseline;gap:8px}
+  .coda-badge{font-size:10px;letter-spacing:.1em;color:var(--ink-soft);border:1px solid var(--hair);border-radius:20px;padding:1px 9px;flex:none}
+  .coda-line{font-family:var(--serif);font-size:14.5px;font-weight:700;color:var(--ink)}
+  .coda-note{font-size:11px;color:var(--ink-soft)}
+  .coda-song{flex-direction:column;align-items:stretch}
+  .coda-lyrics{margin-top:8px}
+  .coda-lyrics p{font-size:20px}
+
+  footer{margin-top:44px;text-align:center;color:var(--ink-soft);font-size:11px}
+
+  @media print{body{padding:0}}
+
+  .toolbar{position:fixed;top:20px;right:20px;z-index:50;display:flex;gap:10px}
+  .tbtn{
+    display:flex;align-items:center;gap:8px;
+    background:var(--card);border:1px solid var(--hair);border-radius:999px;
+    padding:9px 16px;cursor:pointer;font-size:13px;color:var(--ink);font-family:var(--sans);
+    box-shadow:0 2px 10px rgba(0,0,0,.08);
+  }
+  html[data-theme="dark"] .tbtn{box-shadow:0 2px 10px rgba(0,0,0,.35)}
+  .tbtn .icon{font-size:15px;line-height:1}
+  @media print{.toolbar{display:none}}
+  @media (max-width:560px){
+    .toolbar{top:12px;right:12px;gap:6px}
+    .tbtn{padding:8px 12px;font-size:11.5px}
+    .tbtn span:not(.icon){display:none}
+    .lyrics p{font-size:24px;line-height:1.55}
+    .handoff-line{font-size:13.5px}
+  }
+
+  .order-float{
+    position:fixed;right:20px;bottom:20px;z-index:50;
+    background:var(--panel,rgba(60,60,64,.6));
+    backdrop-filter:blur(16px) saturate(180%);
+    -webkit-backdrop-filter:blur(16px) saturate(180%);
+    border:1px solid rgba(255,255,255,.22);
+    border-radius:14px;
+    padding:12px 20px;box-shadow:0 6px 22px rgba(0,0,0,.18);
+    opacity:0;transform:translateY(8px);pointer-events:none;
+    transition:opacity .25s,transform .25s,background-color .3s;
+    max-width:min(80vw,320px);
+    cursor:grab;touch-action:none;
+    -webkit-user-select:none;user-select:none;-webkit-touch-callout:none;
+  }
+  .order-float.dragging{transition:none;cursor:grabbing}
+  html[data-theme="dark"] .order-float{box-shadow:0 6px 22px rgba(0,0,0,.5)}
+  .order-float.show{opacity:1;transform:translateY(0);pointer-events:auto}
+  .of-name{font-size:12px;color:rgba(255,255,255,.82)}
+  /* 浮動面板裡的開關：面板是半透明深色底、白字 */
+  .of-head{display:flex;align-items:center;justify-content:space-between;gap:10px}
+  .of-switch{flex:none}
+  .of-switch .aid-track{padding:1.5px}
+  .of-switch .aid-track::before{top:1.5px;bottom:1.5px;left:1.5px;width:calc(50% - 1.5px)}
+  .of-switch .aid-opt{padding:0 6px;font-size:9.5px;line-height:1.7}
+  .of-switch .aid-track,
+  .of-switch .aid-toggle:not(:checked) + .aid-track{background:rgba(255,255,255,.16)}
+  .of-switch .aid-opt,
+  .of-switch .aid-toggle:not(:checked) + .aid-track .aid-opt{color:rgba(255,255,255,.72)}
+  .of-switch .aid-toggle:checked + .aid-track::before{background:color-mix(in srgb, var(--stage, var(--gold)) 55%, white)}
+  .of-switch .aid-toggle:not(:checked) + .aid-track::before{background:#FFFFFF;box-shadow:none}
+  .of-switch .aid-toggle:checked + .aid-track .aid-opt:last-child,
+  .of-switch .aid-toggle:not(:checked) + .aid-track .aid-opt:first-child{color:#1A1A1A}
+  .of-switch .aid-toggle:focus-visible + .aid-track{outline-color:#FFFFFF}
+  .of-code{font-family:var(--serif);font-size:18px;color:#fff;letter-spacing:.02em;white-space:pre-line;margin-top:4px;font-weight:700}
+  .of-code .of-num{font-size:.7em}
+  .of-code .of-num-1{color:#FFD166}
+  .of-code .of-num-2{color:#4FD1C5}
+  .of-code .of-num-3{color:#FF8A4C}
+  .of-code .of-dash{opacity:.1}
+  @media (max-width:560px){
+    .order-float{right:12px;bottom:12px;padding:10px 16px}
+    .of-name{font-size:11px}
+    .of-code{font-size:15px}
+  }
+
+  /* 準備中提示卡：與 .handoff 同語彙，用金色外框標出「尚未定案」 */
+  .pending{
+    background:var(--card);border:1px dashed var(--gold-soft);border-radius:12px;
+    padding:18px 22px;margin:0 0 16px;text-align:center;
+  }
+  .pending-badge{
+    display:inline-block;font-size:10.5px;letter-spacing:.14em;
+    color:var(--gold);border:1px solid color-mix(in srgb, var(--gold) 40%, transparent);
+    border-radius:20px;padding:2px 12px;margin-bottom:10px;font-weight:500;
+  }
+  .pending-line{font-family:var(--serif);font-size:15px;line-height:1.7;color:var(--ink);font-weight:700}
+  .pending-note{font-size:12px;color:var(--ink-soft);margin-top:8px;line-height:1.7}
+</style>
+</head>
+<body>
+
+  <div class="toolbar">
+    <button class="tbtn" id="themeToggle" onclick="toggleTheme()">
+      <span class="icon" id="themeIcon">🌙</span>
+      <span id="themeText">暗黑模式</span>
+    </button>
+  </div>
+
+<div class="wrap">
+
+  <header>
+    <div class="eyebrow">敬　拜　·　歌　詞</div>
+    <h1>平安夜崇拜</h1>
+    <p class="sub">2026 / 12 / 24（四）</p>
+  </header>
+
+  <div class="sec-title">
+    <span class="n">01</span>
+    <h2>崇拜程序 · 歌詞</h2>
+  </div>
+
+  <div id="seqRoot"></div>
+
+  <footer>
+    <p>平安夜崇拜　·　2026 / 12 / 24</p>
+  </footer>
+
+</div>
+
+<div class="order-float" id="orderFloat">
+  <div class="of-head">
+    <div class="of-name" id="ofName"></div>
+    <label class="aid-switch of-switch" for="ofAid">
+      <input type="checkbox" class="aid-toggle" id="ofAid" checked>
+      <span class="aid-track"><span class="aid-opt">僅歌詞</span><span class="aid-opt">輔助標記</span></span>
+    </label>
+  </div>
+  <div class="of-code" id="ofCode"></div>
+</div>
+
+<script>
+  var DEFAULT_ITEMS = [
+    /* 開場：音樂 → 經文 → 音樂 → 經文（曲目、經文段落待定） */
+    {id:'m1', type:'handoff', badge:'音樂', line:'音樂', note:'曲目待定'},
+    {id:'r1', type:'handoff', badge:'經文', line:'經文待定'},
+    {id:'m2', type:'handoff', badge:'音樂', line:'音樂', note:'曲目待定'},
+    {id:'r2', type:'handoff', badge:'經文', line:'經文待定'},
+    /* 歌詞依樂譜；附點依旋律聲部（Melody）標記 */
+    {id:'i1', type:'song', stage:'s1', name:'平安夜', order:'V1–V2–V3',
+     sheet:'樂譜/2026-12-24-平安夜.pdf', body:
+'## Verse 1\n平.安夜.　聖.善夜.\n萬暗中.　光華射.\n照著聖.母也　照.著聖嬰\n多少慈.祥也　多.少天真\n靜享天.賜安眠.[～]　靜.享天.賜安眠.\n\n' +
+'## Verse 2\n平.安夜.　聖.善夜.\n牧羊人.　在曠野.\n忽然看.見了　天.上光華\n聽見天.軍唱　哈.利路亞\n救主今.夜降生.[～]　救.主今.夜降生.\n\n' +
+'## Verse 3\n平.安夜.　聖.善夜.\n神子愛.　光皎潔.\n救贖宏.恩的　黎.明來到\n聖容發.出來　榮.光普照\n耶穌我.主降生.[～]　耶.穌我.主降生.'},
+    /* 歌詞依樂譜（張漢業中文譯詞，已轉繁體）；演唱順序待確認 */
+    {id:'i2', type:'song', stage:'s2', name:'全能上帝是我的主我的神', order:'V1–V2–C',
+     youtube:'https://www.youtube.com/watch?v=0bs-bKwD3A8', sheet:'樂譜/2026-12-24-全能上帝是我的主我的神.pdf', body:
+'## Verse 1\n全能上帝是我的主我的神\n在祂沒有什麼難.成的事\n垂聽我們一切祈求　保守我們所有思想\n加添我們力量和我們的盼望\n\n' +
+'## Verse 2\n信實上帝是我的主我的神\n祂全然改變我　所有的煩惱苦痛\n曾經不可能成為可能　曾經死的人如今復活\n誰也不能勝過全能.主上帝\n\n' +
+'## Chorus\n依然順服神的話語　將網撒在水深之處\n你看祂今日為你成就　何等偉大的事物\n依然順服神的話語　將網撒在信心之處.\n信靠主耶穌　在祂凡事都能'},
+    /* 待確認；歌詞待補 */
+    {id:'i3', type:'song', stage:'s3', name:'普世歡騰（待確認）', order:''}
+  ];
+
+  var ITEMS = DEFAULT_ITEMS;
+
+  function escapeHtml(s){
+    return String(s == null ? '' : s).replace(/[&<>"']/g, function(c){
+      return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
+    });
+  }
+
+  /* 歌詞裡的附點「.」、連音「-」與 [輔助唱法]（如 [～]、[～嗚嗚]、[嗯]、[啊]）；{語助詞} 則只上色
+     用跟段落開頭第一個字一樣的顏色標出；括號本身不顯示。
+     切到「僅歌詞」時：附點、連音、[輔助唱法] 整個藏起來，{語助詞} 只拿掉顏色（目前沒用到） */
+  function markLyric(text, cls){
+    return escapeHtml(text)
+      .replace(/\{([^}]*)\}|\[([^\]]*)\]|[.\-]/g, function(m, word, aid){
+        /* 語助詞（aid-word）關掉輔助標記時只拿掉顏色；附點、連音（aid-mark）整個藏起來。
+           附點後面補一個半形空格，跟下一個字隔開，空格跟著點一起藏 */
+        if(word != null) return '<span class="aid-word ' + cls + '">' + word + '</span>';
+        if(aid != null) return '<span class="aid-mark ' + cls + '">' + aid + '</span>';
+        return '<span class="aid-mark ' + cls + '">' + m + (m === '.' ? ' ' : '') + '</span>';
+      })
+      /* 括弧裡的尾句註記，例如「(尾句)」「(尾句小聲)」，字縮小一半 */
+      .replace(/\s*(\(尾句[^)]*\))/g, ' <span class="lyr-note">$1</span>');
+  }
+
+  /* 斷行：每一行用全形空格「　」切成詞組，詞組包成 inline-block，
+     手機上優先在「　」換行，不會在附點、連音後面把一個詞組拆開；
+     詞組本身比一行還長時，才在詞組裡面（附點後的空格）換行 */
+  function wrapPhrases(html){
+    return html.split('\n').map(function(line){
+      return line.split('　').map(function(seg){
+        return seg ? '<span class="ph">' + seg + '</span>' : seg;
+      }).join('　');
+    }).join('\n');
+  }
+
+  function renderSongBody(body){
+    var blocks = String(body || '').split(/\n(?=##\s)/).map(function(b){ return b.trim(); }).filter(Boolean);
+    if(!blocks.length) return '';
+    return blocks.map(function(block){
+      var m = block.match(/^##\s*(.+?)\s*\n([\s\S]*)$/);
+      var label = m ? m[1] : '';
+      var text = (m ? m[2] : block).replace(/^\n+/, '');
+      var isChorus = /chorus/i.test(label);
+      var first = text.charAt(0);
+      var rest = text.slice(1);
+      var cls = isChorus ? 'lc-chorus' : 'lc-verse';
+      return '<div class="lyr-lab">' + escapeHtml(label) + '</div>\n' +
+        '<p>' + wrapPhrases('<span class="' + cls + '">' + escapeHtml(first) + '</span>' + markLyric(rest, cls)) + '</p>';
+    }).join('\n');
+  }
+
+  function groupItems(items){
+    var groups = [];
+    items.forEach(function(item){
+      if(item.mergeUp && groups.length){
+        groups[groups.length - 1].extra.push(item);
+      } else {
+        groups.push({ main: item, extra: [] });
+      }
+    });
+    return groups;
+  }
+
+  function renderCodaItem(item){
+    if(item.type === 'song'){
+      return '<div class="coda-item coda-song">' +
+        '<span class="coda-line">' + escapeHtml(item.name) + '</span>' +
+        '<div class="coda-lyrics">' + renderSongBody(item.body) + '</div>' +
+        '</div>';
+    }
+    return '<div class="coda-item">' +
+      '<span class="coda-badge">' + escapeHtml(item.badge || '') + '</span>' +
+      '<span class="coda-line">' + escapeHtml(item.line || '') + '</span>' +
+      (item.note ? '<span class="coda-note">' + escapeHtml(item.note) + '</span>' : '') +
+      '</div>';
+  }
+
+  /* 只有詩歌編號，格式「( n ) 歌名」（半形括弧＋空格），其餘程序項目不編號 */
+  function songLabel(num, name){
+    return '( ' + num + ' ) ' + escapeHtml(name);
+  }
+
+  /* 連結按鈕：標籤裡括弧內的字（例如「（音檔）」「（G大調）」）比照樂譜連結縮小 */
+  function linkTag(url, text){
+    var label = escapeHtml(text)
+      .replace(/\s*(（[^）]*）)/g, '<span class="sheet-tag">$1</span>')   /* 全形括弧本身有留白，不再補空格 */
+      .replace(/\s*(\([^)]*\))/g, ' <span class="sheet-tag">$1</span>');
+    return '<a class="link-tag" href="' + escapeHtml(url) + '" target="_blank" rel="noopener">' + label + '</a>';
+  }
+
+  function renderSongLinks(item){
+    var links = [];
+    if(item.youtube) links.push(linkTag(item.youtube, 'YouTube'));
+    if(item.sheet) links.push(linkTag(item.sheet, item.sheetLabel || (item.name + ' (樂譜)')));
+    /* 其他版本的樂譜（例如另一個調），接在原樂譜後面 */
+    (item.sheets || []).forEach(function(sh){ links.push(linkTag(sh.url, sh.label)); });
+    var html = links.length ? '<div class="song-links">' + links.join('') + '</div>' : '';
+    /* 各聲部練唱音檔：放在 YouTube／樂譜下方，另起一列以虛線區隔 */
+    if(item.audio && item.audio.length){
+      html += '<div class="song-links">' + item.audio.map(function(a){ return linkTag(a.url, a.label); }).join('') + '</div>';
+    }
+    return html;
+  }
+
+
+  function renderGroup(group, songNum){
+    var main = group.main;
+    var codaHtml = group.extra.length ? '<div class="coda">' + group.extra.map(renderCodaItem).join('') + '</div>' : '';
+    if(main.type === 'song'){
+      var label = songLabel(songNum, main.name);
+      return '<div class="song seq" style="--stage:var(--' + main.stage + ')" data-song data-name="' +
+        label + '" data-order="' + escapeHtml(main.order || '') + '" data-stage="' + main.stage + '">' +
+        '<div class="song-head"><div class="song-name">' + label + '</div></div>' +
+        (main.body ? '<div class="lyrics">' + renderSongBody(main.body) + '</div>'
+                   : '<p class="pending-note">歌詞待補</p>') +
+        renderSongLinks(main) +
+        codaHtml +
+        '</div>';
+    }
+    if(main.type === 'pending'){
+      return '<div class="pending seq">' +
+        '<div class="pending-badge">' + escapeHtml(main.badge || '準備中') + '</div>' +
+        '<p class="pending-line">' + escapeHtml(main.line) + '</p>' +
+        (main.note ? '<p class="pending-note">' + escapeHtml(main.note) + '</p>' : '') +
+        '</div>';
+    }
+    return '<div class="handoff seq">' +
+      '<div class="handoff-body">' +
+      '<div class="handoff-badge">' + escapeHtml(main.badge) + '</div>' +
+      '<p class="handoff-line">' + escapeHtml(main.line) + '</p>' +
+      (main.note ? '<p class="handoff-note">' + escapeHtml(main.note) + '</p>' : '') +
+      codaHtml +
+      '</div></div>';
+  }
+
+  function renderSeq(){
+    var groups = groupItems(ITEMS);
+    var songNum = 0;
+    var html = groups.map(function(g){
+      if(g.main.type === 'song') songNum++;
+      return renderGroup(g, songNum);
+    }).join('\n');
+    document.getElementById('seqRoot').innerHTML = html;
+    if(window.__refreshOrderFloat) window.__refreshOrderFloat();
+  }
+
+  renderSeq();
+
+
+  (function(){
+    var floatEl = document.getElementById('orderFloat');
+    var nameEl = document.getElementById('ofName');
+    var codeEl = document.getElementById('ofCode');
+    var aidEl = document.getElementById('ofAid');
+
+    /* 「輔助標記」開關：切換的是面板目前顯示的那首歌；不記憶，每次打開都從「輔助標記」開始 */
+    aidEl.addEventListener('change', function(){
+      if(current) current.classList.toggle('aids-off', !aidEl.checked);
+    });
+    var current = null;
+    var ticking = false;
+
+    /* 演唱順序代碼格式，沿用 7/19、8/16 頁面的慣例（非 8/23）：
+       字母後面的數字（V1、C2…）縮小並依數字上色，短橫線降到 10% 透明度，
+       讓字母、數字本身更突出，而不是整串代碼一樣粗細地擠在一起。 */
+    function renderCode(raw){
+      var html = raw.replace(/([VC])(\d+)/g, function(m, letter, digits){
+        return letter + '<span class="of-num of-num-' + digits + '">' + digits + '</span>';
+      });
+      html = html.replace(/–/g, '<span class="of-dash">–</span>');
+      codeEl.innerHTML = html;
+    }
+
+    function check(){
+      ticking = false;
+      var songs = Array.prototype.slice.call(document.querySelectorAll('#seqRoot [data-song]'));
+      if(!songs.length){ floatEl.classList.remove('show'); return; }
+
+      var viewH = window.innerHeight;
+      var refY = viewH * 0.35;
+      var match = null;
+
+      for(var i = 0; i < songs.length; i++){
+        var r = songs[i].getBoundingClientRect();
+        if(r.top <= refY && r.bottom >= refY){ match = songs[i]; break; }
+      }
+
+      if(!match){
+        var best = null, bestDist = Infinity;
+        for(var j = 0; j < songs.length; j++){
+          var rr = songs[j].getBoundingClientRect();
+          if(rr.bottom < 0 || rr.top > viewH) continue;
+          var dist = Math.abs(rr.top - refY);
+          if(dist < bestDist){ bestDist = dist; best = songs[j]; }
+        }
+        match = best;
+      }
+
+      if(match){
+        if(match !== current){
+          current = match;
+          nameEl.textContent = match.getAttribute('data-name');
+          renderCode(match.getAttribute('data-order'));
+          aidEl.checked = !match.classList.contains('aids-off');
+          floatEl.style.setProperty('--stage', 'var(--' + match.getAttribute('data-stage') + ')');
+          floatEl.style.setProperty('--panel', 'var(--' + match.getAttribute('data-stage') + '-panel)');
+        }
+        floatEl.classList.add('show');
+      } else {
+        current = null;
+        floatEl.classList.remove('show');
+      }
+    }
+
+    function onScroll(){
+      if(!ticking){
+        ticking = true;
+        requestAnimationFrame(check);
+      }
+    }
+
+    window.addEventListener('scroll', onScroll, { passive:true });
+    window.addEventListener('resize', function(){ onScroll(); });
+    window.__refreshOrderFloat = check;
+    check();
+  })();
+
+  (function(){
+    var panel = document.getElementById('orderFloat');
+    var dragging = false;
+    var offsetX = 0, offsetY = 0;
+
+    function lockToPixelPosition(){
+      var rect = panel.getBoundingClientRect();
+      panel.style.left = rect.left + 'px';
+      panel.style.top = rect.top + 'px';
+      panel.style.right = 'auto';
+      panel.style.bottom = 'auto';
+    }
+
+    function clamp(val, min, max){ return Math.min(Math.max(val, min), max); }
+
+    function startDrag(x, y){
+      dragging = true;
+      lockToPixelPosition();
+      var rect = panel.getBoundingClientRect();
+      offsetX = x - rect.left;
+      offsetY = y - rect.top;
+      panel.classList.add('dragging');
+      return true;
+    }
+
+    function moveDrag(x, y){
+      if(!dragging) return;
+      var w = panel.offsetWidth, h = panel.offsetHeight;
+      var left = clamp(x - offsetX, 8, window.innerWidth - w - 8);
+      var top = clamp(y - offsetY, 8, window.innerHeight - h - 8);
+      panel.style.left = left + 'px';
+      panel.style.top = top + 'px';
+    }
+
+    function endDrag(){
+      dragging = false;
+      panel.classList.remove('dragging');
+    }
+
+    function onSwitch(e){ return e.target.closest && e.target.closest('.aid-switch'); }
+
+    panel.addEventListener('mousedown', function(e){
+      if(onSwitch(e)) return;
+      startDrag(e.clientX, e.clientY);
+      e.preventDefault();
+    });
+    document.addEventListener('mousemove', function(e){
+      if(!dragging) return;
+      e.preventDefault();
+      moveDrag(e.clientX, e.clientY);
+    });
+    document.addEventListener('mouseup', endDrag);
+
+    panel.addEventListener('touchstart', function(e){
+      if(onSwitch(e)) return;
+      var t = e.touches[0];
+      if(!t) return;
+      startDrag(t.clientX, t.clientY);
+      e.preventDefault();
+    }, { passive:false });
+    document.addEventListener('touchmove', function(e){
+      if(!dragging) return;
+      var t = e.touches[0];
+      if(!t) return;
+      e.preventDefault();
+      moveDrag(t.clientX, t.clientY);
+    }, { passive:false });
+    document.addEventListener('touchend', endDrag);
+    document.addEventListener('touchcancel', endDrag);
+  })();
+
+  (function(){
+    syncButton(document.documentElement.getAttribute('data-theme'));
+
+    function syncButton(t){
+      var icon = document.getElementById('themeIcon');
+      var text = document.getElementById('themeText');
+      if(t === 'dark'){
+        icon.textContent = '☀️';
+        text.textContent = '亮色模式';
+      } else {
+        icon.textContent = '🌙';
+        text.textContent = '暗黑模式';
+      }
+    }
+
+    window.toggleTheme = function(){
+      var current = document.documentElement.getAttribute('data-theme');
+      var next = current === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      syncButton(next);
+      try{ localStorage.setItem('worship-theme', next); }catch(e){}
+    };
+  })();
+</script>
+</body>
+</html>

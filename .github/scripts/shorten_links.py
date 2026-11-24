@@ -10,6 +10,7 @@ import os
 import pathlib
 import re
 import sys
+import time
 import urllib.error
 import urllib.parse
 import urllib.request
@@ -34,15 +35,24 @@ def shorten_url(url, api_key):
         headers={"Content-Type": "application/json", "reurl-api-key": api_key},
         method="POST",
     )
-    try:
-        r = urllib.request.urlopen(req, timeout=15)
-        data = json.loads(r.read().decode())
-    except urllib.error.HTTPError as e:
-        print(f"  reurl.cc 回應 HTTP {e.code}：{e.read().decode(errors='replace')[:300]}")
-        return None
-    except Exception as e:
-        print(f"  呼叫 reurl.cc 失敗：{e}")
-        return None
+    # 新頁面剛合併時 GitHub Pages 可能還沒部署好，reurl.cc 會因為打不開網址回 HTTP 424，
+    # 這時每 30 秒重試一次，最多等約 5 分鐘
+    for attempt in range(11):
+        try:
+            r = urllib.request.urlopen(req, timeout=15)
+            data = json.loads(r.read().decode())
+            break
+        except urllib.error.HTTPError as e:
+            body = e.read().decode(errors="replace")[:300]
+            if e.code == 424 and attempt < 10:
+                print(f"  網頁可能還沒部署好（HTTP 424），30 秒後重試（第 {attempt + 1} 次）")
+                time.sleep(30)
+                continue
+            print(f"  reurl.cc 回應 HTTP {e.code}：{body}")
+            return None
+        except Exception as e:
+            print(f"  呼叫 reurl.cc 失敗：{e}")
+            return None
     if data.get("res") == "success" and str(data.get("short_url", "")).startswith(SHORT_PREFIX):
         return data["short_url"]
     print(f"  reurl.cc 回應：{data}")
